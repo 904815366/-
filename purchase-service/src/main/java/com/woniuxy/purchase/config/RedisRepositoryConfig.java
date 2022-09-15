@@ -20,7 +20,7 @@ public class RedisRepositoryConfig {
         Config config = new Config();
 //        config.setLockWatchdogTimeout();
         config.useSingleServer()
-                .setAddress("redis://127.0.0.1:6379")
+                .setAddress("redis://192.172.0.201:6379")
                 .setKeepAlive(true);
         return Redisson.create(config);
     }
