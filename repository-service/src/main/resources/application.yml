@@ -1,0 +1,27 @@
+
+server:
+    port: 1230
+spring:
+    application:
+        name: repository-service
+    main:
+        banner-mode: off
+    datasource:
+        url: jdbc:mysql://192.172.0.201:3307/erp?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        name: defaultDataSource
+        username: 'root'
+        password: '123456'
+mybatis-plus:
+    mapper-locations: classpath:mappers/*xml
+    type-aliases-package: com.example.employee.mybatis.entity
+    global-config:
+        banner: off
+feign:
+    httpclient:
+        enabled: true
+    sentinel:
+        enabled: on
+logging:
+    level:
+        com.example.department.api.http: DEBUG
