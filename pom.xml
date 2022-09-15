@@ -23,12 +23,16 @@
     </properties>
 
     <modules>
-        <module>spring-gateway-gateway</module>
         <module>auth-service</module>
+        <module>commons-util</module>
         <module>fund-service</module>
+        <module>fund-service-api</module>
+        <module>home-service</module>
         <module>purchase-service</module>
         <module>repository-service</module>
         <module>shipment-Service</module>
+        <module>spring-gateway-gateway</module>
+
     </modules>
 
     <dependencies>
@@ -49,16 +53,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
+
+
+<!--        util-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
 <!--        util-->
