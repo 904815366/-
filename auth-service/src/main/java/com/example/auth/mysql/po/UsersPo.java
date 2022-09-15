@@ -20,7 +20,7 @@ public class UsersPo {
     private Long id;
     private String username;
     private String password;
-    private Integer tel;
+    private String tel;
     private String email;
     private Long roleId;
     private String status;

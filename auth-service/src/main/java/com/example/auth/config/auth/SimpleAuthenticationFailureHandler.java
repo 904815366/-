@@ -1,7 +1,8 @@
 package com.example.auth.config.auth;
 
-import com.example.util.JsonUtils;
-import com.example.util.MapUtils;
+import com.example.auth.util.JsonUtils;
+import com.example.auth.util.MapUtils;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AccountExpiredException;

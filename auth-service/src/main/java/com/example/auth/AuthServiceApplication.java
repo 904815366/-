@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
+
 /**
  * spring-security 认证：
  *
@@ -25,6 +28,9 @@ public class AuthServiceApplication {
         SpringApplication.run(AuthServiceApplication.class, args);
     }
 
-
+    @PostConstruct
+    void started() {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
+    }
 
 }

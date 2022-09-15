@@ -1,10 +1,12 @@
 package com.example.auth.config.auth;
 
 
-import com.example.util.JwtUtils;
-import com.example.util.JsonUtils;
-import com.example.util.MapUtils;
+import com.example.auth.mysql.LoginLogDao;
+import com.example.auth.mysql.po.LoginlogPo;
+import com.example.auth.util.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.utils.DateUtils;
+import org.apache.tomcat.util.http.RequestUtil;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,8 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
@@ -30,16 +35,31 @@ import java.util.Map;
 public class SimpleAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Resource private StringRedisTemplate template;
-
+    @Resource private LoginLogDao loginLogDao;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
         log.info("用户 {} 登录成功", user.getUsername());
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        String ip = IpUtil.getIpAddress(httpServletRequest);
+        log.info("请求方ip:{}",ip);
+        String adder = IpUtil.getAdder(ip);
+        log.info("请求方地址:{}",adder);
+        String osAndBrowserInfo = IpUtil.getOsAndBrowserInfo(httpServletRequest);
+        log.info("请求方操作系统和浏览器版本:{}",osAndBrowserInfo);
+        String[] splitosAndBrowserInfo = osAndBrowserInfo.split("---");
 
-//        saveAuthoritiesToRedis(user, authorities);
+        //雪花ID
+        SnowflakeIdGenerator snowflakeIdGenerator = new SnowflakeIdGenerator(1, 1);
+        long id = snowflakeIdGenerator.nextId();
+        //新增登录日志
+        loginLogDao.save(LoginlogPo.builder().id(id).logintime(new Timestamp(System.currentTimeMillis()))
+                .ip(ip).adder(adder).systems(splitosAndBrowserInfo[0]).browser(splitosAndBrowserInfo[1])
+                .username(user.getUsername()).build());
+        log.info("loginLog 添加成功");
+
+
 
         respInfo(httpServletResponse, user);
     }
@@ -51,7 +71,7 @@ public class SimpleAuthenticationSuccessHandler implements AuthenticationSuccess
         Collection<GrantedAuthority> authorities = user.getAuthorities();
         String strAuthorities = StringUtils.collectionToCommaDelimitedString(authorities);
         String jwtStr = JwtUtils.createJWT(user.getUsername(),strAuthorities);
-
+        template.opsForValue().set(jwtStr,jwtStr,1, TimeUnit.HOURS);
         Map<String, String> map = MapUtils.of(
                 "code", "10000",
                 "msg", "success",

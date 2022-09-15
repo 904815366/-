@@ -23,11 +23,12 @@
     </properties>
 
     <modules>
-        <module>commons-util</module>
         <module>spring-gateway-gateway</module>
         <module>auth-service</module>
-        <module>fund-service-api</module>
-
+        <module>fund-service</module>
+        <module>purchase-service</module>
+        <module>repository-service</module>
+        <module>shipment-Service</module>
     </modules>
 
     <dependencies>
@@ -59,6 +60,30 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+<!--        util-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

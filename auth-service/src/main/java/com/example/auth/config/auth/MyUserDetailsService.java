@@ -1,8 +1,10 @@
 package com.example.auth.config.auth;
 
+import com.alibaba.nacos.common.utils.IPUtil;
 import com.example.auth.mysql.PermsDao;
 import com.example.auth.mysql.UserDao;
 import com.example.auth.mysql.po.UsersPo;
+import com.example.auth.util.IpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -30,6 +32,9 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+
+
         log.info("查询数据库，根据用户名 {} 查询这个用户的密码和所具有的所有权限。", username);
         boolean enabled = true;
         boolean accountNonExpired = true;
@@ -40,6 +45,12 @@ public class MyUserDetailsService implements UserDetailsService {
         if (Objects.isNull(userPo)){
             log.info("登录的用户名不存在");
             accountNonExpired = false;
+            return new User("null", "null",
+                    enabled, accountNonExpired, credentialsNonExpired, accountNonLocked,authorities);
+        }
+        if (!userPo.getStatus().equals("0")){
+            log.info("账号未激活或已注销");
+            accountNonLocked = false;
             return new User("null", "null",
                     enabled, accountNonExpired, credentialsNonExpired, accountNonLocked,authorities);
         }

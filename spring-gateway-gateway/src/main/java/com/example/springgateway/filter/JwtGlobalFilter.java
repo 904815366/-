@@ -1,8 +1,7 @@
 package com.example.springgateway.filter;
 
-
-import com.example.util.JwtUtils;
-import com.example.util.MapUtils;
+import com.example.springgateway.util.JwtUtils;
+import com.example.springgateway.util.MapUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -26,7 +24,6 @@ import javax.annotation.Resource;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -98,34 +95,46 @@ public class JwtGlobalFilter implements GlobalFilter {
 
             String jwtToken = arrToken.get(0);
 
+
             if (!JwtUtils.verify(jwtToken)) {
                 System.out.println("x-jwt-token是校验失败,拦截");
                 return responseErorr("401", "请重新登录", response);
             }
 
-            //当前登录的用户名
-            String usernameFromJWT = JwtUtils.getUsernameFromJWT(jwtToken);
-            //当前用户的权限
-            String authoritiesFromJwt = JwtUtils.getAuthoritiesFromJwt(jwtToken);
-            Set<String> authoritiesFromJwtSet = StringUtils.commaDelimitedListToSet(authoritiesFromJwt);
+            Mono<String> monoJwtToken = reactiveStringRedisTemplate.opsForValue().get(jwtToken);
 
-
-            Mono<String> monoAuthorities = reactiveStringRedisTemplate.opsForValue().get(methodUri);
-
-            return monoAuthorities.flatMap(requiredAuthorities -> {
-                //访问请求所需要的权限
-                Set<String> requiredAuthoritiesSet = StringUtils.commaDelimitedListToSet(requiredAuthorities);
-
-                for (String myAuthorities : authoritiesFromJwtSet) {
-                    if (requiredAuthoritiesSet.contains(myAuthorities)) {
-                        System.out.println("有权限,放行");
-                        return chain.filter(exchange);
-                    }
+            return monoJwtToken.flatMap(s -> {
+                if (ObjectUtils.isEmpty(s) || "".equals(s)) {
+                    System.out.println("x-jwt-token过期");
+                    return responseErorr("401", "请重新登录", response);
                 }
-                System.out.println("迭代结束,当前无权限访问");
-                return responseErorr("401", "当前无权限访问", response);
+
+                //当前登录的用户名
+                String usernameFromJWT = JwtUtils.getUsernameFromJWT(jwtToken);
+                //当前用户的权限
+                String authoritiesFromJwt = JwtUtils.getAuthoritiesFromJwt(jwtToken);
+                Set<String> authoritiesFromJwtSet = StringUtils.commaDelimitedListToSet(authoritiesFromJwt);
+
+
+                Mono<String> monoAuthorities = reactiveStringRedisTemplate.opsForValue().get(methodUri);
+
+                return monoAuthorities.flatMap(requiredAuthorities -> {
+                    //访问请求所需要的权限
+                    Set<String> requiredAuthoritiesSet = StringUtils.commaDelimitedListToSet(requiredAuthorities);
+
+                    for (String myAuthorities : authoritiesFromJwtSet) {
+                        if (requiredAuthoritiesSet.contains(myAuthorities)) {
+                            System.out.println("有权限,放行");
+                            return chain.filter(exchange);
+                        }
+                    }
+                    System.out.println("迭代结束,当前无权限访问");
+                    return responseErorr("401", "当前无权限访问", response);
+
+                });
 
             });
+
         });
 
     }
