@@ -10,7 +10,7 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
+
 @Table(name = "goods_type", schema = "erp")
 public class GoodsTypePo {
     @Id

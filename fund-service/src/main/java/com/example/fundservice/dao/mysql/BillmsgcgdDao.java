@@ -2,6 +2,7 @@ package com.example.fundservice.dao.mysql;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.fundservice.dao.mysql.po.BillmsgcgdPo;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface BillmsgcgdDao extends BaseMapper<BillmsgcgdPo> {
