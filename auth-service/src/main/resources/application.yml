@@ -1,3 +1,38 @@
+
+logging:
+    level:
+        com:
+            example:
+                auth: DEBUG
+        root: INFO
+    pattern:
+        console: '%clr(%5level) %clr(|){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint}
+            %m%n'
+server:
+    port: 8080
 spring:
     application:
         name: auth-service
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        name: defaultDataSource
+        password: 123456
+        url: jdbc:mysql://192.172.0.201:3307/erp?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+        username: root
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL8Dialect
+                format_sql: true
+                hbm2ddl:
+                    auto: update
+        show-sql: true
+    main:
+        banner-mode: off
+    rabbitmq:
+        host: 192.172.0.201
+        password: guest
+        port: 5672
+        username: guest
+    redis:
+        host: 192.172.0.201

@@ -19,7 +19,7 @@ spring:
                 password: nacos
                 server-addr: 192.172.0.201:8848
                 username: nacos
-                group: LeTian
+#                group: LeTian
     shardingsphere:
         datasource:
             names: ds0, ds1
@@ -50,7 +50,7 @@ spring:
         show-sql: true
     rabbitmq:
         publisher-confirm-type: CORRELATED #确认消息到达交换机
-        host: 127.0.0.1
+        host: 192.172.0.201
         listener:
             direct:
                 acknowledge-mode: manual

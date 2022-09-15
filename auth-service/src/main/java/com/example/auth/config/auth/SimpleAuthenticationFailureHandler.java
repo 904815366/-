@@ -25,7 +25,9 @@ public class SimpleAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         System.out.println(exception.getClass());
-
+        response.setCharacterEncoding("utf-8");
+        //解决response中writer乱码方案
+        response.setHeader("Content-Type", "text/html;charset=UTF-8");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());  // 返回什么状态码取决于你的项目经理的要求：大概率是无论成功还是失败，无脑返回 200 ，再根据返回数据中的 code 来判断是真的成功还是失败。
         PrintWriter out = response.getWriter();

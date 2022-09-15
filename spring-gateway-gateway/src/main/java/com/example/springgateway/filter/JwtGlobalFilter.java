@@ -56,7 +56,7 @@ public class JwtGlobalFilter implements GlobalFilter {
         //获取请求方式
         HttpMethod method = request.getMethod();
 
-        //将请求中的路径替换成*
+        //将请求中的ID替换成*
         String uri = Arrays.stream(urlSplit).map(s -> {
             try {
                 Long.parseLong(s);

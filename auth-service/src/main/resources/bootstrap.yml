@@ -1,10 +1,6 @@
 spring:
-    cloud:
-        nacos:
-            config:
-                file-extension: yaml
-                server-addr: 150.158.196.179:8848
-                group: luohu
-                shared-configs:
-                    - data-id: logger.yaml
-                      group: luohu
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.172.0.201:8848
+

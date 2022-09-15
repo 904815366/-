@@ -1,14 +1,15 @@
 package com.example.auth.config.auth;
 
+
 import com.example.auth.mysql.UrlAuthorityDao;
-import com.example.auth.mysql.po.UrlAuthority;
+import com.example.auth.mysql.po.UrlAuthorityPo;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.Resource;
 import java.util.List;
+
 
 @Component
 public class ApplicationStartedEventListener implements ApplicationListener<ApplicationStartedEvent> {
@@ -19,8 +20,8 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
-        List<UrlAuthority> all = urlAuthorityDao.findAll();
-        for (UrlAuthority url : all) {
+        List<UrlAuthorityPo> all = urlAuthorityDao.findAll();
+        for (UrlAuthorityPo url : all) {
             stringRedisTemplate.opsForValue().set(url.getMethod()+":"+url.getUri(),url.getAuthority());
         }
     }
