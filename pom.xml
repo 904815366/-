@@ -28,7 +28,6 @@
         <module>fund-service-api</module>
 
         <module>auth-service</module>
-        <module>commons-util</module>
         <module>fund-service</module>
         <module>home-service</module>
         <module>purchase-service</module>
