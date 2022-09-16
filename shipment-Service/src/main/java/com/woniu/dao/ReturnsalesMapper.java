@@ -1,6 +1,6 @@
 package com.woniu.dao;
 
-import com.woniu.po.Returnsales;
+import com.woniu.dao.po.Returnsales;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

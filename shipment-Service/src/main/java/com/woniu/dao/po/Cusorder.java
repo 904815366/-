@@ -1,4 +1,4 @@
-package com.woniu.po;
+package com.woniu.dao.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -50,7 +50,7 @@ public class Cusorder implements Serializable {
 
     private String version;
 
-    private String status;
+    private String name;
 
 
 }

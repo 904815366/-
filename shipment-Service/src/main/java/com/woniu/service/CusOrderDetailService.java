@@ -1,6 +1,6 @@
 package com.woniu.service;
 
-import com.woniu.po.CusOrderDetail;
+import com.woniu.dao.po.CusOrderDetail;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

@@ -2,4 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniu.dao.CusorderMapper">
 
+    <select id="querypageByfo" resultType="com.woniu.dao.po.Cusorder">
+        select cd.*,cs.name,u.username from cusorder cd inner join  customers cs on cd.cus_id=cs.id
+        inner join users u on cd.u_id=u.id
+        <where>
+            <if test="cid!=null and cid!=''">
+                cd.id=#{cid}
+            </if>
+            <if test="stareTime!=null and stareTime!=''">
+              and  cd.ordertime>#{stareTime}
+            </if>
+
+            <if test="endTime!=null and endTime!=''">
+             and cd.ordertime &lt; #{endTime}
+            </if>
+
+            <if test="uId!=null and uId!=''">
+              and  cd.u_id=#{uId}
+            </if>
+            <if test="statu!=null and statu!=''">
+                and  cd.statu=#{statu}
+            </if>
+            <if test="busibess!=null and busibess!=''">
+                and  cd.busibess=#{busibess}
+            </if>
+
+        </where>
+    </select>
+
 </mapper>

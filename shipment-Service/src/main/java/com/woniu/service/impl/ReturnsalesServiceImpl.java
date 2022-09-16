@@ -1,6 +1,6 @@
 package com.woniu.service.impl;
 
-import com.woniu.po.Returnsales;
+import com.woniu.dao.po.Returnsales;
 import com.woniu.dao.ReturnsalesMapper;
 import com.woniu.service.ReturnsalesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -1,6 +1,6 @@
 package com.woniu.service.impl;
 
-import com.woniu.po.Shipment;
+import com.woniu.dao.po.Shipment;
 import com.woniu.dao.ShipmentMapper;
 import com.woniu.service.ShipmentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

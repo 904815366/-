@@ -1,8 +1,7 @@
-package com.woniu.po;
+package com.woniu.dao.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import lombok.Data;
@@ -18,27 +17,33 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("returnsales")
-public class Returnsales implements Serializable {
+@TableName("cus_order_detail")
+public class CusOrderDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private Long shipmentId;
+    private Long goodsId;
 
-    private String detailId;
+    private Integer num;
 
-    private Date returntime;
+    private Double originalMoney;
 
-    private Double returnMoney;
+    private Double discount;
+
+    private Double saleMoney;
+
+    private Double laterMoney;
+
+    private String remark;
 
     private String status;
 
-    private Long uid;
-
     private String version;
+
+    private Long orderId;
 
 
 }

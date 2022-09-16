@@ -1,6 +1,6 @@
 package com.woniu.service.impl;
 
-import com.woniu.po.CusOrderDetail;
+import com.woniu.dao.po.CusOrderDetail;
 import com.woniu.dao.CusOrderDetailMapper;
 import com.woniu.service.CusOrderDetailService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -1,8 +1,11 @@
 package com.woniu.dao;
 
-import com.woniu.po.Cusorder;
+import com.woniu.dao.po.Cusorder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.woniu.web.fo.CusorderFo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CusorderMapper extends BaseMapper<Cusorder> {
+
+    List<Cusorder> querypageByfo(CusorderFo cusorderFo);
 
 }

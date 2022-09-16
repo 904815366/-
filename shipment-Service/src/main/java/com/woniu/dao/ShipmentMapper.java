@@ -1,6 +1,6 @@
 package com.woniu.dao;
 
-import com.woniu.po.Shipment;
+import com.woniu.dao.po.Shipment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

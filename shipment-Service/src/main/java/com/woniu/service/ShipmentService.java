@@ -1,6 +1,6 @@
 package com.woniu.service;
 
-import com.woniu.po.Shipment;
+import com.woniu.dao.po.Shipment;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

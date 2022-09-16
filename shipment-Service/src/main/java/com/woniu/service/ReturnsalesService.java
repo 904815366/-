@@ -1,6 +1,6 @@
 package com.woniu.service;
 
-import com.woniu.po.Returnsales;
+import com.woniu.dao.po.Returnsales;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
