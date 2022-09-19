@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.woniu.dao.po.Cusorder;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.woniu.repository.dto.CusorderDto;
+import com.woniu.web.fo.AddCusAndDetailFo;
 import com.woniu.web.fo.CusorderFo;
 
 import java.util.List;
@@ -20,4 +21,5 @@ public interface CusorderService extends IService<Cusorder> {
 
     PageInfo<CusorderDto> qurAllPageByFo(CusorderFo cusorderFo);
 
+    void addCus(AddCusAndDetailFo addCusAndDetailFo);
 }

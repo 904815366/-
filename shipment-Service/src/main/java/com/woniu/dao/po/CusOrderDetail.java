@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import lombok.*;
 
 /**
  * <p>
@@ -18,6 +18,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("cus_order_detail")
+@AllArgsConstructor
+@NoArgsConstructor
 public class CusOrderDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,6 +46,5 @@ public class CusOrderDetail implements Serializable {
     private String version;
 
     private Long orderId;
-
 
 }

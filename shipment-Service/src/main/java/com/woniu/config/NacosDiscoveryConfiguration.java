@@ -16,13 +16,30 @@
  */
 package com.woniu.config;
 
+import com.woniu.filter.IdempotentTokenInterceptor;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import javax.annotation.Resource;
 
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
  */
 @EnableDiscoveryClient
 @Configuration
-public class NacosDiscoveryConfiguration {
+@EnableWebMvc
+public class NacosDiscoveryConfiguration implements WebMvcConfigurer {
+
+    @Resource
+    private IdempotentTokenInterceptor idempotentTokenInterceptor;
+
+
+    public void addInterceptors(InterceptorRegistry registry){
+        registry.addInterceptor(idempotentTokenInterceptor);
+    }
 }

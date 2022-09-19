@@ -20,8 +20,8 @@
             <if test="uId!=null and uId!=''">
               and  cd.u_id=#{uId}
             </if>
-            <if test="statu!=null and statu!=''">
-                and  cd.statu=#{statu}
+            <if test="status!=null and status!=''">
+                and  cd.status=#{status}
             </if>
             <if test="busibess!=null and busibess!=''">
                 and  cd.busibess=#{busibess}

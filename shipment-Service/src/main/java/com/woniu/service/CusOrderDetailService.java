@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CusOrderDetailService extends IService<CusOrderDetail> {
 
+    void deltODetailByOid(Long oid);
 }

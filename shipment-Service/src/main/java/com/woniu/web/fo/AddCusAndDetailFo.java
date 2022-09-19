@@ -1,15 +1,22 @@
-package com.woniu.repository.dto;
+package com.woniu.web.fo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.woniu.dao.po.CusOrderDetail;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
-@TableName("cusorder")
-public class CusorderDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class AddCusAndDetailFo {
+    private List<CusOrderDetail> cusOrderDetails;
 
     private Long id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -28,7 +35,7 @@ public class CusorderDto {
 
     private Long cusId;
 
-    private String statu;
+    private String status;
 
     private Long uId;
 
@@ -38,5 +45,9 @@ public class CusorderDto {
 
     private String version;
 
-    private String name;
+//    private String name;
+@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+private Date deliverytime;
+
 }
