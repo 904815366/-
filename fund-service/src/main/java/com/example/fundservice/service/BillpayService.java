@@ -1,9 +1,10 @@
 package com.example.fundservice.service;
 
+import com.example.fundservice.dao.mysql.BillmsgcgdDao;
 import com.example.fundservice.dao.mysql.BillpayDao;
+import com.example.fundservice.dao.mysql.po.BillmsgcgdPo;
 import com.example.fundservice.dao.mysql.po.BillpayPo;
 import com.example.fundservice.web.controller.dto.BillpayListDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,6 +15,8 @@ import java.util.List;
 public class BillpayService {
     @Resource
     private BillpayDao billpayDao;
+    @Resource
+    private BillmsgcgdDao billmsgcgdDao;
 
     public List<BillpayListDto> list() {
         List<BillpayListDto> billpayListDtos = new ArrayList<>();
@@ -29,5 +32,25 @@ public class BillpayService {
             billpayListDtos.add(billpayListDto);
         }
         return billpayListDtos;
+    }
+
+    public BillmsgcgdPo getCgd(Integer cgdid) {
+        return billmsgcgdDao.getCgd(cgdid);
+    }
+
+    public BillmsgcgdPo getCgdByStatus(Integer cgdid) {
+        return billmsgcgdDao.getCgdByStatus(cgdid);
+    }
+
+    public void updCgd(Integer cgdid) {
+        billmsgcgdDao.updCgd(cgdid);
+    }
+
+    public Integer add(BillpayPo billpayPo) {
+        return billpayDao.add(billpayPo);
+    }
+
+    public Integer addCgd(BillmsgcgdPo billmsgcgdPo) {
+        return billmsgcgdDao.addCgd(billmsgcgdPo);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.fundservice.util;
+package com.example.fundserviceapi.util;
 
 
 import java.util.Objects;

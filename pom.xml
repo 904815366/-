@@ -26,6 +26,7 @@
         <module>commons-util</module>
         <module>spring-gateway-gateway</module>
         <module>auth-service</module>
+        <module>fund-service-api</module>
 
     </modules>
 

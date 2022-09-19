@@ -1,10 +1,9 @@
 package com.example.fundservice.service;
 
-import com.example.fundservice.dao.mysql.BillpayDao;
+import com.example.fundservice.dao.mysql.BillmsgchdDao;
 import com.example.fundservice.dao.mysql.BillreceDao;
-import com.example.fundservice.dao.mysql.po.BillpayPo;
+import com.example.fundservice.dao.mysql.po.BillmsgchdPo;
 import com.example.fundservice.dao.mysql.po.BillrecePo;
-import com.example.fundservice.web.controller.dto.BillpayListDto;
 import com.example.fundservice.web.controller.dto.BillreceListDto;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +15,9 @@ import java.util.List;
 public class BillreceService {
     @Resource
     private BillreceDao billreceDao;
+    @Resource
+    private BillmsgchdDao billmsgchdDao;
+
     public List<BillreceListDto> list() {
         List<BillreceListDto> billreceListDtos = new ArrayList<>();
         List<BillrecePo> billrecePoList = billreceDao.list();
@@ -30,5 +32,25 @@ public class BillreceService {
             billreceListDtos.add(billreceListDto);
         }
         return billreceListDtos;
+    }
+
+    public BillmsgchdPo getChd(Integer chdid) {
+        return billmsgchdDao.getChd(chdid);
+    }
+
+    public BillmsgchdPo getChdByStatus(Integer chdid) {
+        return billmsgchdDao.getChdByStatus(chdid);
+    }
+
+    public void updChd(Integer chdid) {
+        billmsgchdDao.updChd(chdid);
+    }
+
+    public Integer add(BillrecePo billrecePo) {
+        return billreceDao.add(billrecePo);
+    }
+
+    public Integer addChd(BillmsgchdPo billmsgchdPo) {
+        return billmsgchdDao.addChd(billmsgchdPo);
     }
 }

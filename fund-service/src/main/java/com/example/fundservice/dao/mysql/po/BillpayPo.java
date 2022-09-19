@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.formatter.qual.Format;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +22,7 @@ public class BillpayPo implements Serializable {
 
     @TableId(value = "id",type = IdType.AUTO)
     private Integer fno;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ftime;
     private Integer cgdid;
     private Integer gysid;
