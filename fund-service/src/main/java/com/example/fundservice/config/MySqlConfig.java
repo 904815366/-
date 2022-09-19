@@ -1,9 +1,9 @@
 package com.example.fundservice.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.mybatis.spring.annotation.MapperScan;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "com.example.fundservice.dao.mysql")
+//@MapperScan(basePackages = "com.example.fundservice.dao.mysql")
 public class MySqlConfig {
 }
