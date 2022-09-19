@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.purchase.dao.mysql.PurchaseDetailsDao">
+    <resultMap id="findPurchaseDetail" type="com.woniuxy.purchase.entity.dto.Goods">
+        <id property="id" column="id"></id>
+        <result property="goodsName" column="goods_name"></result>
+        <result property="unit" column="unit"></result>
+        <result property="num" column="num"></result>
+        <result property="originalMoney" column="original_money"></result>
+        <result property="discount" column="discount"></result>
+        <result property="saleMoney" column="sale_money"></result>
+        <result property="laterMoney" column="later_money"></result>
+        <result property="remark" column="remark"></result>
+    </resultMap>
+    <select id="findPurchaseDetail" resultMap="findPurchaseDetail">
+        SELECT
+            b.id,
+            c.NAME AS goods_name,
+            c.unit,
+            b.num,
+            b.original_money,
+            b.discount,
+            b.sale_money,
+            b.later_money,
+            b.remark
+        FROM
+            purchase_details b
+                INNER JOIN goods c ON c.id = b.goods_id
+        WHERE
+            b.purchase_id = #{purchaseId}
+    </select>
+    <delete id="deleteByPurchaseId">
+        DELETE FROM purchase_details where purchase_id=#{purchaseId}
+    </delete>
+    <insert id="purchaseDetailsAdd">
+        INSERT INTO purchase_details(purchase_id, goods_id, num, original_money, discount, sale_money, later_money, remark, version, `status`)
+        VALUES
+        <foreach collection="detailsPoList" item="po" open="(" separator="," close=")">
+            #{po.purchaseId}, #{po.goodsId}, #{po.num}, #{po.originalMoney}, #{po.discount}, #{po.saleMoney}, #{po.laterMoney}, #{po.remark}, #{po.version}, #{po.status}
+        </foreach>
+    </insert>
+</mapper>

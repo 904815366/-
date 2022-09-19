@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.purchase.dao.mysql.PurchaseDao">
+    <resultMap id="practicalList" type="com.woniuxy.purchase.entity.dto.PurchaseList">
+        <id property="id" column="id"></id>
+        <result property="invoiceTime" column="invoice_time"></result>
+        <result property="invoiceNumber" column="invoice_number"></result>
+        <result property="supplierName" column="supplier_name"></result>
+        <result property="saleMoney" column="sale_money"></result>
+        <result property="laterMoney" column="later_money"></result>
+        <result property="practicalMoney" column="practical_money"></result>
+        <result property="username" column="username"></result>
+        <result property="auditName" column="audit_name"></result>
+    </resultMap>
+    <select id="findPracticalList" resultMap="practicalList">
+        SELECT
+        a.id,
+        a.invoice_time,
+        a.invoice_number,
+        b.name as supplier_name,
+        a.sale_money,
+        a.later_money,
+        a.practical_money,
+        c.username,
+        a.audit_name
+        FROM
+        purchase a
+        INNER JOIN supplier b on b.id=a.supplier_id
+        INNER JOIN users c on c.id=a.u_id
+    <where>
+        <if test="invoiceNumber !='' and invoiceNumber != null">
+            and a.invoice_number =#{invoiceNumber}
+        </if>
+        <if test="status != '' and status != null">
+            and a.status =#{status}
+        </if>
+        <if test="startDateTime != null">
+            and a.invoice_time
+            BETWEEN #{startDateTime}
+        </if>
+        <if test="lastDateTiem !=null">
+            and #{lastDateTiem}
+        </if>
+    </where>
+    </select>
+    <resultMap id="PracticalDetails" type="com.woniuxy.purchase.entity.dto.PurchaseDetail">
+        <id property="id" column="id"></id>
+        <result property="invoiceTime" column="invoice_time"></result>
+        <result property="invoiceNumber" column="invoice_number"></result>
+        <result property="supplierName" column="supplier_name"></result>
+        <result property="saleMoney" column="sale_money"></result>
+        <result property="laterMoney" column="later_money"></result>
+        <result property="practicalMoney" column="practical_money"></result>
+        <result property="username" column="username"></result>
+        <result property="auditName" column="audit_name"></result>
+        <collection property="goods" ofType="arraylist" fetchType="lazy"
+                    select="com.woniuxy.purchase.dao.mysql.PurchaseDetailsDao.findPurchaseDetail"
+                    column="id"></collection>
+    </resultMap>
+    <select id="findPracticalById" resultMap="PracticalDetails">
+        SELECT
+            a.id,
+            a.invoice_time,
+            a.invoice_number,
+            b.name as supplier_name,
+            a.sale_money,
+            a.later_money,
+            a.practical_money,
+            c.username,
+            a.audit_name
+        FROM
+            purchase a
+                INNER JOIN supplier b on b.id=a.supplier_id
+                INNER JOIN users c on c.id=a.u_id
+        WHERE
+            a.id=#{purchaseId}
+    </select>
+    <update id="ModifyById">
+        UPDATE purchase set status=#{status} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>
