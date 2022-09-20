@@ -34,15 +34,15 @@ public class BillreceService {
         return billreceListDtos;
     }
 
-    public BillmsgchdPo getChd(Integer chdid) {
+    public BillmsgchdPo getChd(Long chdid) {
         return billmsgchdDao.getChd(chdid);
     }
 
-    public BillmsgchdPo getChdByStatus(Integer chdid) {
+    public BillmsgchdPo getChdByStatus(Long chdid) {
         return billmsgchdDao.getChdByStatus(chdid);
     }
 
-    public void delChd(Integer chdid) {
+    public void delChd(Long chdid) {
         billmsgchdDao.delChd(chdid);
     }
 
@@ -57,7 +57,7 @@ public class BillreceService {
     public void delBillrece(String snos) {
         String[] snoArr = snos.split(",");
         for (String sno : snoArr) {
-            billreceDao.delBillrece(Integer.parseInt(sno));
+            billreceDao.delBillrece(Long.parseLong(sno));
         }
     }
 }

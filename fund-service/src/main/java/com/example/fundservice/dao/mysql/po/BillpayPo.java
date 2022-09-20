@@ -21,14 +21,14 @@ public class BillpayPo implements Serializable {
     private static final long seriaVersionUID = 1L;
 
     @TableId(value = "id",type = IdType.AUTO)
-    private Integer fno;
+    private Long fno;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ftime;
-    private Integer cgdid;
-    private Integer gysid;
-    private Integer accid;
+    private Long cgdid;
+    private Long gysid;
+    private Long accid;
     private Double faccount;
-    private Integer userid;
+    private Long userid;
     private String fdecr;
     private String fstatus;
 }

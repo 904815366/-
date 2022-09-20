@@ -24,15 +24,15 @@ public class BillreceController {
     //         客户cstid/结算账户accid/金额saccount
     //         制单人userid/描述sdecr/状态sstatus)
     @PostMapping("/billrece/addBillrece")
-    public ResponseResult<Void> addBillrece(@RequestParam("chdid")Integer chdid,
-                                            @RequestParam("userid")Integer userid,
+    public ResponseResult<Void> addBillrece(@RequestParam("chdid")Long chdid,
+                                            @RequestParam("userid")Long userid,
                                             @RequestParam("sdecr")String fdecr){
         BillmsgchdPo chd = billreceService.getChdByStatus(chdid);
         if (chd==null){
             return new ResponseResult<Void>(0, "出货单不存在" );
         }else {
-            Integer gysid = chd.getCstid();
-            Integer accid = chd.getAccid();
+            Long gysid = chd.getCstid();
+            Long accid = chd.getAccid();
             Double account = chd.getAccount();
 
             BillrecePo billrecePo = new BillrecePo();
@@ -59,16 +59,17 @@ public class BillreceController {
         billreceService.delBillrece(snos);
         return new ResponseResult<Void>(200, "OK" );
     }
-    //修改收款单
+    //查看收款单     sno
     @PostMapping("/billrece/updBillrece")
-    public ResponseResult<Void> updBillrece(){
+    public ResponseResult<Void> updBillrece(@RequestParam("sno")Long sno){
+
         return new ResponseResult<Void>(200, "OK" );
     }
     //出货单消息
     @PostMapping("/billrece/addBillreceMsg")
-    public ResponseResult<Void> getChdMsg(@RequestParam("chdid")Integer chdid,
-                                          @RequestParam("cstid")Integer cstid,
-                                          @RequestParam("accid")Integer accid,
+    public ResponseResult<Void> getChdMsg(@RequestParam("chdid")Long chdid,
+                                          @RequestParam("cstid")Long cstid,
+                                          @RequestParam("accid")Long accid,
                                           @RequestParam("account")Double account){
         BillmsgchdPo chd = billreceService.getChd(chdid);
         if (chd!=null){

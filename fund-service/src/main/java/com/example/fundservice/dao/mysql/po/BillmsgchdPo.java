@@ -18,9 +18,9 @@ public class BillmsgchdPo implements Serializable {
     private static final long seriaVersionUID = 1L;
 
     @TableId(value = "id",type = IdType.AUTO)
-    private Integer chdid;
-    private Integer cstid;
-    private Integer accid;
+    private Long chdid;
+    private Long cstid;
+    private Long accid;
     private Double account;
     private String status;
 }

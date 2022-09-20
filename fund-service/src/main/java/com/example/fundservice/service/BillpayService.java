@@ -4,6 +4,7 @@ import com.example.fundservice.dao.mysql.BillmsgcgdDao;
 import com.example.fundservice.dao.mysql.BillpayDao;
 import com.example.fundservice.dao.mysql.po.BillmsgcgdPo;
 import com.example.fundservice.dao.mysql.po.BillpayPo;
+import com.example.fundservice.web.controller.dto.BillpayDto;
 import com.example.fundservice.web.controller.dto.BillpayListDto;
 import org.springframework.stereotype.Service;
 
@@ -34,15 +35,15 @@ public class BillpayService {
         return billpayListDtos;
     }
 
-    public BillmsgcgdPo getCgd(Integer cgdid) {
+    public BillmsgcgdPo getCgd(Long cgdid) {
         return billmsgcgdDao.getCgd(cgdid);
     }
 
-    public BillmsgcgdPo getCgdByStatus(Integer cgdid) {
+    public BillmsgcgdPo getCgdByStatus(Long cgdid) {
         return billmsgcgdDao.getCgdByStatus(cgdid);
     }
 
-    public void delCgd(Integer cgdid) {
+    public void delCgd(Long cgdid) {
         billmsgcgdDao.delCgd(cgdid);
     }
 
@@ -57,7 +58,32 @@ public class BillpayService {
     public void delBillpay(String fnos) {
         String[] fnoArr = fnos.split(",");
         for (String fno : fnoArr) {
-            billpayDao.delBillpay(Integer.parseInt(fno));
+            billpayDao.delBillpay(Long.parseLong(fno));
+        }
+    }
+
+    public BillpayDto getBillpayByStatus(Long fno) {
+        BillpayPo billpayPo = billpayDao.getBillpayByStatus(fno);
+        if (billpayPo==null){
+            return null;
+        }else {
+            //供应商
+            Long gysid = billpayPo.getGysid();
+            //结算账户
+            Long accid = billpayPo.getAccid();
+            //制单人
+            Long userid = billpayPo.getUserid();
+            //dto
+            BillpayDto billpayDto = new BillpayDto();
+//            billpayDto.setGysname();
+            billpayDto.setFtime(billpayPo.getFtime());
+            billpayDto.setFno(billpayPo.getFno());
+//            billpayDto.setAccname();
+            billpayDto.setFaccount(billpayPo.getFaccount());
+            billpayDto.setPaytype("现金");
+            billpayDto.setFdecr(billpayPo.getFdecr());
+//            billpayDto.setUsername();
+            return billpayDto;
         }
     }
 }

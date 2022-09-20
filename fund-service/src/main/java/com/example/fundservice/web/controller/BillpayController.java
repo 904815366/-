@@ -4,6 +4,7 @@ import com.example.fundservice.dao.mysql.po.BillmsgcgdPo;
 import com.example.fundservice.dao.mysql.po.BillpayPo;
 import com.example.fundservice.service.BillpayService;
 import com.example.fundservice.util.ResponseResult;
+import com.example.fundservice.web.controller.dto.BillpayDto;
 import com.example.fundservice.web.controller.dto.BillpayListDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,15 +25,15 @@ public class BillpayController {
     //         供应商gysid/结算账户accid/金额faccount
     //         制单人userid/描述fdecr/状态fstatus)
     @PostMapping("/billpay/addBillpay")
-    public ResponseResult<Void> addBillpay(@RequestParam("cgdid")Integer cgdid,
-                                           @RequestParam("userid")Integer userid,
+    public ResponseResult<Void> addBillpay(@RequestParam("cgdid")Long cgdid,
+                                           @RequestParam("userid")Long userid,
                                            @RequestParam("fdecr")String fdecr){
         BillmsgcgdPo cgd = billpayService.getCgdByStatus(cgdid);
         if (cgd==null){
             return new ResponseResult<Void>(0, "采购单不存在" );
         }else {
-            Integer gysid = cgd.getGysid();
-            Integer accid = cgd.getAccid();
+            Long gysid = cgd.getGysid();
+            Long accid = cgd.getAccid();
             Double account = cgd.getAccount();
 
             BillpayPo billpayPo = new BillpayPo();
@@ -59,16 +60,20 @@ public class BillpayController {
         billpayService.delBillpay(fnos);
         return new ResponseResult<Void>(200, "OK" );
     }
-    //修改付款单     fno     accid
+    //查看付款单     fno
     @PostMapping("/billpay/updBillpay")
-    public ResponseResult<Void> updBillpay(){
-        return new ResponseResult<Void>(200, "OK" );
+    public ResponseResult<BillpayDto> updBillpay(@RequestParam("fno")Long fno){
+        BillpayDto billpayDto = billpayService.getBillpayByStatus(fno);
+        if (billpayDto==null){
+            return new ResponseResult<BillpayDto>(0, "付款单不存在" ,null);
+        }
+        return new ResponseResult<BillpayDto>(200, "OK" ,billpayDto);
     }
     //采购单消息
     @PostMapping("/billpay/addBillpayMsg")
-    public ResponseResult<Void> getCgdMsg(@RequestParam("cgdid")Integer cgdid,
-                                          @RequestParam("gysid")Integer gysid,
-                                          @RequestParam("accid")Integer accid,
+    public ResponseResult<Void> getCgdMsg(@RequestParam("cgdid")Long cgdid,
+                                          @RequestParam("gysid")Long gysid,
+                                          @RequestParam("accid")Long accid,
                                           @RequestParam("account")Double account){
         BillmsgcgdPo cgd = billpayService.getCgd(cgdid);
         if (cgd!=null){

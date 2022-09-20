@@ -16,5 +16,8 @@ public interface BillpayDao extends BaseMapper<BillpayPo> {
     Integer addBillpay(BillpayPo billpayPo);
 
     @Update("update billpay set fstatus='销毁' where fno=#{fno}")
-    Integer delBillpay(@Param("fno")Integer fno);
+    Integer delBillpay(@Param("fno")Long fno);
+
+    @Select("select * from billpay where fno=#{fno} and fstatus='正常'")
+    BillpayPo getBillpayByStatus(@Param("fno") Long fno);
 }

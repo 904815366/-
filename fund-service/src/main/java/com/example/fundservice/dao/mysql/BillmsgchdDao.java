@@ -7,13 +7,13 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface BillmsgchdDao extends BaseMapper<BillmsgchdPo> {
     @Select("select * from billmsgchd where chdid = #{chdid}")
-    BillmsgchdPo getChd(@Param("chdid") Integer chdid);
+    BillmsgchdPo getChd(@Param("chdid") Long chdid);
 
     @Select("select * from billmsgchd where chdid = #{chdid} and status = '未审核'")
-    BillmsgchdPo getChdByStatus(@Param("chdid") Integer chdid);
+    BillmsgchdPo getChdByStatus(@Param("chdid") Long chdid);
 
     @Update("update billmsgchd set status='已通过' where chdid = #{chdid}")
-    void delChd(@Param("chdid") Integer chdid);
+    void delChd(@Param("chdid") Long chdid);
 
     @Insert("insert into billmsgchd values (#{chdid},#{cstid},#{accid},#{account},#{status})")
     Integer addChd(BillmsgchdPo billmsgchdPo);

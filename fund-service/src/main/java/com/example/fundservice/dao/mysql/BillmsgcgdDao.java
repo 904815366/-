@@ -7,13 +7,13 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface BillmsgcgdDao extends BaseMapper<BillmsgcgdPo> {
     @Select("select * from billmsgcgd where cgdid = #{cgdid}")
-    BillmsgcgdPo getCgd(@Param("cgdid") Integer cgdid);
+    BillmsgcgdPo getCgd(@Param("cgdid") Long cgdid);
 
     @Select("select * from billmsgcgd where cgdid = #{cgdid} and status = '未审核'")
-    BillmsgcgdPo getCgdByStatus(@Param("cgdid") Integer cgdid);
+    BillmsgcgdPo getCgdByStatus(@Param("cgdid") Long cgdid);
 
     @Update("update billmsgcgd set status='已通过' where cgdid = #{cgdid}")
-    void delCgd(@Param("cgdid") Integer cgdid);
+    void delCgd(@Param("cgdid") Long cgdid);
 
     @Insert("insert into billmsgcgd values (#{cgdid},#{gysid},#{accid},#{account},#{status})")
     Integer addCgd(BillmsgcgdPo billmsgcgdPo);

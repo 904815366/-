@@ -19,14 +19,14 @@ public class BillrecePo implements Serializable {
     private static final long seriaVersionUID = 1L;
 
     @TableId(value = "id",type = IdType.AUTO)
-    private Integer sno;
+    private Long sno;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date stime;
-    private Integer chdid;
-    private Integer cstid;
-    private Integer accid;
+    private Long chdid;
+    private Long cstid;
+    private Long accid;
     private Double saccount;
-    private Integer userid;
+    private Long userid;
     private String sdecr;
     private String sstatus;
 }
