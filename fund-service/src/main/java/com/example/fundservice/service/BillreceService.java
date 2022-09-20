@@ -4,6 +4,7 @@ import com.example.fundservice.dao.mysql.BillmsgchdDao;
 import com.example.fundservice.dao.mysql.BillreceDao;
 import com.example.fundservice.dao.mysql.po.BillmsgchdPo;
 import com.example.fundservice.dao.mysql.po.BillrecePo;
+import com.example.fundservice.web.controller.dto.BillreceDto;
 import com.example.fundservice.web.controller.dto.BillreceListDto;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,8 @@ public class BillreceService {
             billreceListDto.setSno(billrecePo.getSno());
             billreceListDto.setSaccount(billrecePo.getSaccount());
             billreceListDto.setSdecr(billrecePo.getSdecr());
+            //出货单id
+            //Long chdid = billrecePo.getChdid();
             //billreceListDto.setCstname();
             //billreceListDto.setUsername();
             billreceListDtos.add(billreceListDto);
@@ -58,6 +61,31 @@ public class BillreceService {
         String[] snoArr = snos.split(",");
         for (String sno : snoArr) {
             billreceDao.delBillrece(Long.parseLong(sno));
+        }
+    }
+
+    public BillreceDto getBillreceByStatus(Long sno) {
+        BillrecePo billrecePo = billreceDao.getBillreceByStatus(sno);
+        if (billrecePo==null){
+            return null;
+        }else {
+            //客户
+            Long cstid = billrecePo.getCstid();
+            //结算账户
+            Long accid = billrecePo.getAccid();
+            //制单人
+            Long userid = billrecePo.getUserid();
+            //dto
+            BillreceDto billreceDto = new BillreceDto();
+//            billreceDto.setGysname();
+            billreceDto.setStime(billrecePo.getStime());
+            billreceDto.setSno(billrecePo.getSno());
+//            billreceDto.setAccname();
+            billreceDto.setSaccount(billrecePo.getSaccount());
+            billreceDto.setPaytype("现金");
+            billreceDto.setSdecr(billrecePo.getSdecr());
+//            billreceDto.setUsername();
+            return billreceDto;
         }
     }
 }

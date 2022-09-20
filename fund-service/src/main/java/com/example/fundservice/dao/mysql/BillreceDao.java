@@ -18,4 +18,7 @@ public interface BillreceDao extends BaseMapper<BillrecePo> {
 
     @Update("update billrece set sstatus='销毁' where sno=#{sno}")
     Integer delBillrece(@Param("sno")Long sno);
+
+    @Select("select * from billrece where sno=#{sno} and sstatus='正常'")
+    BillrecePo getBillreceByStatus(@Param("sno") Long sno);
 }

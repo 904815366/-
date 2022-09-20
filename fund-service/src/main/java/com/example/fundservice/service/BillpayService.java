@@ -28,6 +28,8 @@ public class BillpayService {
             billpayListDto.setFno(billpayPo.getFno());
             billpayListDto.setFaccount(billpayPo.getFaccount());
             billpayListDto.setFdecr(billpayPo.getFdecr());
+            //采购单id
+            //Long cgdid = billpayPo.getCgdid();
             //billpayListDto.setGysname();
             //billpayListDto.setUsername();
             billpayListDtos.add(billpayListDto);

@@ -4,6 +4,7 @@ import com.example.fundservice.dao.mysql.po.BillmsgchdPo;
 import com.example.fundservice.dao.mysql.po.BillrecePo;
 import com.example.fundservice.service.BillreceService;
 import com.example.fundservice.util.ResponseResult;
+import com.example.fundservice.web.controller.dto.BillreceDto;
 import com.example.fundservice.web.controller.dto.BillreceListDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class BillreceController {
     private BillreceService billreceService;
     //收款单列表
     @GetMapping("/billrece/list")
-    public ResponseResult BillreceList() {
+    public ResponseResult<List<BillreceListDto>> BillreceList() {
         List<BillreceListDto> billreceListDtoList = billreceService.billreceList();
         return new ResponseResult(200, "OK", billreceListDtoList);
     }
@@ -61,9 +62,12 @@ public class BillreceController {
     }
     //查看收款单     sno
     @PostMapping("/billrece/updBillrece")
-    public ResponseResult<Void> updBillrece(@RequestParam("sno")Long sno){
-
-        return new ResponseResult<Void>(200, "OK" );
+    public ResponseResult<BillreceDto> updBillrece(@RequestParam("sno")Long sno){
+        BillreceDto billreceDto = billreceService.getBillreceByStatus(sno);
+        if (billreceDto==null){
+            return new ResponseResult<BillreceDto>(0, "收款单不存在" ,null);
+        }
+        return new ResponseResult<BillreceDto>(200, "OK" ,billreceDto);
     }
     //出货单消息
     @PostMapping("/billrece/addBillreceMsg")
