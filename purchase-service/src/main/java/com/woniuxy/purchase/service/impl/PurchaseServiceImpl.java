@@ -2,11 +2,9 @@ package com.woniuxy.purchase.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.woniuxy.purchase.dao.mysql.MessageDao;
 import com.woniuxy.purchase.dao.mysql.PurchaseDao;
 import com.woniuxy.purchase.entity.dto.PurchaseDetail;
 import com.woniuxy.purchase.entity.dto.PurchaseList;
-import com.woniuxy.purchase.entity.po.MessagePo;
 import com.woniuxy.purchase.entity.po.PurchaseDetailsPo;
 import com.woniuxy.purchase.entity.po.PurchasePo;
 import com.woniuxy.purchase.repository.PurchaseRepository;
@@ -16,7 +14,6 @@ import com.woniuxy.purchase.web.fo.PurchaseListFo;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
