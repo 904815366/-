@@ -2,9 +2,12 @@ package com.woniu.service.impl;
 
 import com.woniu.dao.po.Shipment;
 import com.woniu.dao.ShipmentMapper;
+import com.woniu.repository.ShipmentRepository;
 import com.woniu.service.ShipmentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * <p>
@@ -17,4 +20,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ShipmentServiceImpl extends ServiceImpl<ShipmentMapper, Shipment> implements ShipmentService {
 
+    @Resource
+    private ShipmentRepository shipmentRepository;
 }

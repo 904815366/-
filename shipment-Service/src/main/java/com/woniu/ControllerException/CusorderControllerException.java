@@ -1,5 +1,6 @@
 package com.woniu.ControllerException;
 
+import com.example.util.ResponseResult;
 import com.woniu.web.CusorderController;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -8,11 +9,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CusorderControllerException {
 
     @ExceptionHandler(RuntimeException.class)
-    public String exc(RuntimeException e){
+    public ResponseResult<String> exc(RuntimeException e){
         if (e instanceof NullPointerException){
-            return "空指针异常："+e.getMessage();
+            return new ResponseResult<>(200,"ERRO","空指针异常");
         }
-        return "错误操作请重新操作";
+        return new ResponseResult<>(200,"ERRO","错误");
     }
 
 }

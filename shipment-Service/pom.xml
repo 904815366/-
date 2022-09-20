@@ -24,6 +24,25 @@
     </properties>
 
     <dependencies>
+<!--        项目内jar包-->
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>fund-service-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>commons-util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+<!--   分布式事务，同时调用两个openfeign -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+        </dependency>
+
 <!--        分页-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>

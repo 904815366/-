@@ -3,6 +3,7 @@ package com.woniu.repository;
 import com.woniu.dao.CusorderMapper;
 import com.woniu.dao.po.Cusorder;
 import com.woniu.web.fo.CusorderFo;
+import com.woniu.web.fo.UpSiteFo;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -25,5 +26,10 @@ public class CusorderRepository {
     public void AddCus(Cusorder cusorder) {
     cusorderMapper.insert(cusorder);
     }
+
+//    修改地址操作
+       public void upSite(UpSiteFo siteFo){
+           cusorderMapper.upSite(siteFo);
+       };
 
 }

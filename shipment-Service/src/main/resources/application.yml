@@ -17,6 +17,7 @@ spring:
         url: jdbc:mysql://192.172.0.201:3307/erp?serverTimezone=UTC
         username: root
 
+
 logging:
     level:
         com:

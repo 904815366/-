@@ -30,4 +30,8 @@
         </where>
     </select>
 
+    <update id="upSite">
+        update cusorder  set site=#{site},phone=#{phone}, sitename=#{sitename} where id=#{id}
+    </update>
+
 </mapper>

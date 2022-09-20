@@ -18,12 +18,11 @@ package com.woniu.config;
 
 import com.woniu.filter.IdempotentTokenInterceptor;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.annotation.Resource;
 
@@ -33,6 +32,7 @@ import javax.annotation.Resource;
 @EnableDiscoveryClient
 @Configuration
 @EnableWebMvc
+@EnableFeignClients(basePackages = "com.example.fundserviceapi.client")
 public class NacosDiscoveryConfiguration implements WebMvcConfigurer {
 
     @Resource
