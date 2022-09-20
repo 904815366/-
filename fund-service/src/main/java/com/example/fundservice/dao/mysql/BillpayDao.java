@@ -8,11 +8,13 @@ import java.util.List;
 @Mapper
 public interface BillpayDao extends BaseMapper<BillpayPo> {
 
-    @Select("select * from billpay")
+    @Select("select * from billpay where fstatus = '正常'")
     List<BillpayPo> billpayList();
 
     @Insert("insert into billpay values (null,now(),#{cgdid},#{gysid},#{accid}," +
             "#{faccount},#{userid},#{fdecr},#{fstatus})")
     Integer addBillpay(BillpayPo billpayPo);
 
+    @Update("update billpay set fstatus='销毁' where fno=#{fno}")
+    Integer delBillpay(@Param("fno")Integer fno);
 }

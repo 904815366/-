@@ -13,7 +13,7 @@ public interface BillmsgcgdDao extends BaseMapper<BillmsgcgdPo> {
     BillmsgcgdPo getCgdByStatus(@Param("cgdid") Integer cgdid);
 
     @Update("update billmsgcgd set status='已通过' where cgdid = #{cgdid}")
-    void updCgd(@Param("cgdid") Integer cgdid);
+    void delCgd(@Param("cgdid") Integer cgdid);
 
     @Insert("insert into billmsgcgd values (#{cgdid},#{gysid},#{accid},#{account},#{status})")
     Integer addCgd(BillmsgcgdPo billmsgcgdPo);

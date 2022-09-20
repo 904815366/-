@@ -26,8 +26,7 @@ public class BillpayController {
     @PostMapping("/billpay/addBillpay")
     public ResponseResult<Void> addBillpay(@RequestParam("cgdid")Integer cgdid,
                                            @RequestParam("userid")Integer userid,
-                                           @RequestParam("fdecr")String fdecr,
-                                           @RequestParam("fstatus")String fstatus){
+                                           @RequestParam("fdecr")String fdecr){
         BillmsgcgdPo cgd = billpayService.getCgdByStatus(cgdid);
         if (cgd==null){
             return new ResponseResult<Void>(0, "采购单不存在" );
@@ -40,22 +39,31 @@ public class BillpayController {
             billpayPo.setCgdid(cgdid);
             billpayPo.setUserid(userid);
             billpayPo.setFdecr(fdecr);
-            billpayPo.setFstatus(fstatus);
+            billpayPo.setFstatus("正常");
             billpayPo.setGysid(gysid);
             billpayPo.setAccid(accid);
             billpayPo.setFaccount(account);
 
             Integer add = billpayService.addBillpay(billpayPo);
             if (add==1){
-                billpayService.updCgd(cgdid);
+                billpayService.delCgd(cgdid);
                 return new ResponseResult<Void>(200, "OK" );
             }else {
                 return new ResponseResult<Void>(00, "系统维护中" );
             }
         }
     }
-    //删除付款单
-    //修改付款单
+    //删除付款单(批量)     fnos
+    @PostMapping("/billpay/delBillpay")
+    public ResponseResult<Void> delBillpay(@RequestParam("fnos")String fnos){
+        billpayService.delBillpay(fnos);
+        return new ResponseResult<Void>(200, "OK" );
+    }
+    //修改付款单     fno     accid
+    @PostMapping("/billpay/updBillpay")
+    public ResponseResult<Void> updBillpay(){
+        return new ResponseResult<Void>(200, "OK" );
+    }
     //采购单消息
     @PostMapping("/billpay/addBillpayMsg")
     public ResponseResult<Void> getCgdMsg(@RequestParam("cgdid")Integer cgdid,

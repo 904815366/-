@@ -42,8 +42,8 @@ public class BillreceService {
         return billmsgchdDao.getChdByStatus(chdid);
     }
 
-    public void updChd(Integer chdid) {
-        billmsgchdDao.updChd(chdid);
+    public void delChd(Integer chdid) {
+        billmsgchdDao.delChd(chdid);
     }
 
     public Integer addBillrece(BillrecePo billrecePo) {
@@ -52,5 +52,12 @@ public class BillreceService {
 
     public Integer addChd(BillmsgchdPo billmsgchdPo) {
         return billmsgchdDao.addChd(billmsgchdPo);
+    }
+
+    public void delBillrece(String snos) {
+        String[] snoArr = snos.split(",");
+        for (String sno : snoArr) {
+            billreceDao.delBillrece(Integer.parseInt(sno));
+        }
     }
 }

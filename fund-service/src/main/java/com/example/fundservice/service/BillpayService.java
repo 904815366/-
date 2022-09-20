@@ -42,8 +42,8 @@ public class BillpayService {
         return billmsgcgdDao.getCgdByStatus(cgdid);
     }
 
-    public void updCgd(Integer cgdid) {
-        billmsgcgdDao.updCgd(cgdid);
+    public void delCgd(Integer cgdid) {
+        billmsgcgdDao.delCgd(cgdid);
     }
 
     public Integer addBillpay(BillpayPo billpayPo) {
@@ -52,5 +52,12 @@ public class BillpayService {
 
     public Integer addCgd(BillmsgcgdPo billmsgcgdPo) {
         return billmsgcgdDao.addCgd(billmsgcgdPo);
+    }
+
+    public void delBillpay(String fnos) {
+        String[] fnoArr = fnos.split(",");
+        for (String fno : fnoArr) {
+            billpayDao.delBillpay(Integer.parseInt(fno));
+        }
     }
 }

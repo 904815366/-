@@ -26,8 +26,7 @@ public class BillreceController {
     @PostMapping("/billrece/addBillrece")
     public ResponseResult<Void> addBillrece(@RequestParam("chdid")Integer chdid,
                                             @RequestParam("userid")Integer userid,
-                                            @RequestParam("sdecr")String fdecr,
-                                            @RequestParam("sstatus")String fstatus){
+                                            @RequestParam("sdecr")String fdecr){
         BillmsgchdPo chd = billreceService.getChdByStatus(chdid);
         if (chd==null){
             return new ResponseResult<Void>(0, "出货单不存在" );
@@ -40,24 +39,33 @@ public class BillreceController {
             billrecePo.setChdid(chdid);
             billrecePo.setUserid(userid);
             billrecePo.setSdecr(fdecr);
-            billrecePo.setSstatus(fstatus);
+            billrecePo.setSstatus("正常");
             billrecePo.setCstid(gysid);
             billrecePo.setAccid(accid);
             billrecePo.setSaccount(account);
 
             Integer add = billreceService.addBillrece(billrecePo);
             if (add==1){
-                billreceService.updChd(chdid);
+                billreceService.delChd(chdid);
                 return new ResponseResult<Void>(200, "OK" );
             }else {
                 return new ResponseResult<Void>(00, "系统维护中" );
             }
         }
     }
-    //删除收款单
+    //删除收款单(批量)     snos
+    @PostMapping("/billrece/delBillrece")
+    public ResponseResult<Void> delBillrece(@RequestParam("snos")String snos){
+        billreceService.delBillrece(snos);
+        return new ResponseResult<Void>(200, "OK" );
+    }
     //修改收款单
+    @PostMapping("/billrece/updBillrece")
+    public ResponseResult<Void> updBillrece(){
+        return new ResponseResult<Void>(200, "OK" );
+    }
     //出货单消息
-    @PostMapping("/billpay/addBillreceMsg")
+    @PostMapping("/billrece/addBillreceMsg")
     public ResponseResult<Void> getChdMsg(@RequestParam("chdid")Integer chdid,
                                           @RequestParam("cstid")Integer cstid,
                                           @RequestParam("accid")Integer accid,

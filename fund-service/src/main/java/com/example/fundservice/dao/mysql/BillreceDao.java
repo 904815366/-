@@ -9,12 +9,13 @@ import java.util.List;
 
 @Mapper
 public interface BillreceDao extends BaseMapper<BillrecePo> {
-    @Select("select * from billrece")
+    @Select("select * from billrece where sstatus = '正常'")
     List<BillrecePo> billreceList();
-
-
 
     @Insert("insert into billrece values (null,now(),#{chdid},#{cstid},#{accid}," +
             "#{saccount},#{userid},#{sdecr},#{sstatus})")
     Integer addBillrece(BillrecePo billrecePo);
+
+    @Update("update billrece set sstatus='销毁' where sno=#{sno}")
+    Integer delBillrece(@Param("sno")Integer sno);
 }

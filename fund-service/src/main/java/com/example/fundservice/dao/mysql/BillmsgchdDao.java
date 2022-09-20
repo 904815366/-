@@ -13,7 +13,7 @@ public interface BillmsgchdDao extends BaseMapper<BillmsgchdPo> {
     BillmsgchdPo getChdByStatus(@Param("chdid") Integer chdid);
 
     @Update("update billmsgchd set status='已通过' where chdid = #{chdid}")
-    void updChd(@Param("chdid") Integer chdid);
+    void delChd(@Param("chdid") Integer chdid);
 
     @Insert("insert into billmsgchd values (#{chdid},#{cstid},#{accid},#{account},#{status})")
     Integer addChd(BillmsgchdPo billmsgchdPo);
