@@ -32,23 +32,21 @@ public class RabbtiMqConfig {
         rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
             @Override
             public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-                //System.out.println("无论是否存在程序始终会执行此处");
+                System.out.println("无论是否存在程序始终会执行此处");
                 String str = correlationData.getId();
                 long id = Long.parseLong(str);
                 MessagePo messagePo = messageDao.selectById(id);
-                if (ObjectUtils.isEmpty(messagePo)){
+                if (!ObjectUtils.isEmpty(messagePo)){
                     //确认交换机收到后将状态改为B
                     messagePo.setStatus("B");
-                    messageDao.insert(messagePo);
-
-                    //每发一次消息次数减一
-                    int retryCount = messagePo.getRetryCount();
-                    messagePo.setRetryCount(retryCount - 1);
-                    log.info("消息发送次数剩余:{}" + messagePo.getRetryCount());
-                    messageDao.insert(messagePo);
+                    System.out.println(messagePo);
+                    messageDao.updateById(messagePo);
                 }
-
-
+                //每发一次消息次数减一
+                int retryCount = messagePo.getRetryCount();
+                messagePo.setRetryCount(retryCount - 1);
+                log.info("消息发送次数剩余:{}" + messagePo.getRetryCount());
+                messageDao.updateById(messagePo);
             }
         });
         return rabbitTemplate;

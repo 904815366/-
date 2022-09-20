@@ -13,6 +13,8 @@ import com.woniuxy.purchase.repository.PurchaseRepository;
 import com.woniuxy.purchase.service.PurchaseService;
 import com.woniuxy.purchase.utils.UuidUtils;
 import com.woniuxy.purchase.web.fo.PurchaseListFo;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -30,6 +32,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Resource
     private UuidUtils utils;
+
+    @Resource
+    private RedissonClient redissonClient;
 
     @Override
     public PageInfo<PurchaseList> getPurchaseList(PurchaseListFo fo) {
@@ -51,7 +56,10 @@ public class PurchaseServiceImpl implements PurchaseService {
         // 根据 Token 和与用户相关的信息到 Redis 验证是否存在对应的信息
         boolean result = utils.validToken(validToken, userInfo);
         if(result){
+            RLock client = this.redissonClient.getLock("redissonClient");
+            client.lock();
             purchaseRepository.modifyStatus(ids, status);
+            client.unlock();
             return true;
         }else {
             return false;
@@ -65,7 +73,10 @@ public class PurchaseServiceImpl implements PurchaseService {
         // 根据 Token 和与用户相关的信息到 Redis 验证是否存在对应的信息
         boolean result = utils.validToken(validToken, userInfo);
         if (result){
+            RLock client = this.redissonClient.getLock("redissonClient");
+            client.lock();
             purchaseRepository.deleteById(id);
+            client.unlock();
             return true;
         }else {
             return false;
@@ -75,5 +86,13 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public void addPurchase(PurchasePo po, List<PurchaseDetailsPo> detailsPoList) {
         purchaseRepository.addPurchase(po, detailsPoList);
+    }
+
+    @Override
+    public void modifyById(PurchasePo po, List<PurchaseDetailsPo> detailsPoList) {
+        RLock client = this.redissonClient.getLock("redissonClient");
+        client.lock();
+        purchaseRepository.modifyPurchase(po, detailsPoList);
+        client.unlock();
     }
 }

@@ -19,4 +19,6 @@ public interface PurchaseService {
     boolean deleteById(Long id,String validToken);
 
     void addPurchase(PurchasePo po, List<PurchaseDetailsPo> detailsPoList);
+
+    void modifyById(PurchasePo po, List<PurchaseDetailsPo> detailsPoList);
 }

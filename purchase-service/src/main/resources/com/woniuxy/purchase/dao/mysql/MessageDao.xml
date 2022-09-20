@@ -12,6 +12,6 @@
         <result property="status" column="status"></result>
     </resultMap>
     <select id="selectMessageAll" resultMap="message">
-        select * from message where status !='C' and retry_count !=0
+        select * from message where status !="C" and retry_count !=0
     </select>
 </mapper>

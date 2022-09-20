@@ -1,7 +1,9 @@
 logging:
     level:
-        com.example.fundserviceapi.client: DEBUG
         com:
+            example:
+                fundserviceapi:
+                    client: DEBUG
             woniuxy:
                 purchase: DEBUG
         root: INFO

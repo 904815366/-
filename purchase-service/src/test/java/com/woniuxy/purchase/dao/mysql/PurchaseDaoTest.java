@@ -1,6 +1,8 @@
 package com.woniuxy.purchase.dao.mysql;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woniuxy.purchase.entity.dto.Goods;
 import com.woniuxy.purchase.entity.dto.PurchaseDetail;
 import com.woniuxy.purchase.entity.dto.PurchaseList;
@@ -23,11 +25,12 @@ class PurchaseDaoTest {
     @Resource
     private PurchaseDao purchaseDao;
     @Test
-    void demo(){
+    void demo() throws JsonProcessingException {
         PurchaseDetail practicalById = purchaseDao.findPracticalById(1L);
-        practicalById.getInvoiceNumber();
-        practicalById.getInvoiceTime();
+        String invoiceNumber = practicalById.getInvoiceNumber();
+        String invoiceTime = practicalById.getInvoiceTime();
         List<Integer> collect = practicalById.getGoods().stream().map(Goods::getId).collect(Collectors.toList());
-        System.out.println(collect);
+        String json="{\"invoiceNumber\":\""+invoiceNumber+"\",\"invoiceTime\":\""+invoiceTime+"\",\"goodsId\":\""+collect+"\"}";
+        System.out.println(json);
     }
 }
