@@ -1,9 +1,12 @@
 package com.woniuxy.purchase.repository;
 
+import com.example.fundserviceapi.client.FundClient;
+import com.woniuxy.purchase.dao.mysql.MessageDao;
 import com.woniuxy.purchase.dao.mysql.PurchaseDao;
 import com.woniuxy.purchase.dao.mysql.PurchaseDetailsDao;
 import com.woniuxy.purchase.dao.redis.PurchaseRedisDao;
 import com.woniuxy.purchase.entity.dto.PurchaseDetail;
+import com.woniuxy.purchase.entity.po.MessagePo;
 import com.woniuxy.purchase.entity.po.PurchaseDetailsPo;
 import com.woniuxy.purchase.entity.po.PurchasePo;
 import lombok.RequiredArgsConstructor;
@@ -17,16 +20,13 @@ import java.util.function.Consumer;
 
 @Repository
 @Transactional
+@RequiredArgsConstructor
 public class PurchaseRepository {
+    private final FundClient fundClient;
+    private final MessageDao messageDao;
     private final PurchaseRedisDao purchaseRedisDao;
     private final PurchaseDao purchaseDao;
     private final PurchaseDetailsDao purchaseDetailsDao;
-
-    public PurchaseRepository(PurchaseRedisDao purchaseRedisDao, PurchaseDao purchaseDao,PurchaseDetailsDao purchaseDetailsDao) {
-        this.purchaseRedisDao = purchaseRedisDao;
-        this.purchaseDao = purchaseDao;
-        this.purchaseDetailsDao = purchaseDetailsDao;
-    }
 
     public PurchaseDetail findByPurchaseId(Long purchaseId) {
         PurchaseDetail purchaseDetail = null;
@@ -54,6 +54,22 @@ public class PurchaseRepository {
             });
         }
         purchaseDao.ModifyById(ids, status);
+        if(status==1){
+            for (int i = ids.length - 1; i >= 0; i--) {
+                PurchasePo purchasePo = purchaseDao.selectById(ids[i]);
+                purchasePo.getInvoiceTime();
+                String invoiceNumber = purchasePo.getInvoiceNumber();
+                List<PurchaseDetail> detail = purchaseDetailsDao.findPurchaseDetail(Integer.parseInt(ids[i]));
+                //发openfeign生成付款单
+                Long supplierId = purchasePo.getSupplierId();
+                Long settlementAccountId = purchasePo.getSettlementAccountId();
+//                purchasePo.get
+//                fundClient.getCgdMsg(invoiceNumber,supplierId,settlementAccountId,);
+            }
+            //发消息给仓库入库
+            MessagePo messagePo = new MessagePo(null, "", "add-storage","" , 5, "A");
+            messageDao.insert(messagePo);
+        }
     }
 
     public void deleteById(Long id){

@@ -2,9 +2,11 @@ package com.woniuxy.purchase.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.woniuxy.purchase.dao.mysql.MessageDao;
 import com.woniuxy.purchase.dao.mysql.PurchaseDao;
 import com.woniuxy.purchase.entity.dto.PurchaseDetail;
 import com.woniuxy.purchase.entity.dto.PurchaseList;
+import com.woniuxy.purchase.entity.po.MessagePo;
 import com.woniuxy.purchase.entity.po.PurchaseDetailsPo;
 import com.woniuxy.purchase.entity.po.PurchasePo;
 import com.woniuxy.purchase.repository.PurchaseRepository;
@@ -50,9 +52,6 @@ public class PurchaseServiceImpl implements PurchaseService {
         boolean result = utils.validToken(validToken, userInfo);
         if(result){
             purchaseRepository.modifyStatus(ids, status);
-            if(status==1){
-                //发消息生成付款单
-            }
             return true;
         }else {
             return false;
