@@ -18,9 +18,9 @@ public class BillreceService {
     @Resource
     private BillmsgchdDao billmsgchdDao;
 
-    public List<BillreceListDto> list() {
+    public List<BillreceListDto> billreceList() {
         List<BillreceListDto> billreceListDtos = new ArrayList<>();
-        List<BillrecePo> billrecePoList = billreceDao.list();
+        List<BillrecePo> billrecePoList = billreceDao.billreceList();
         for (BillrecePo billrecePo : billrecePoList) {
             BillreceListDto billreceListDto = new BillreceListDto();
             billreceListDto.setStime(billrecePo.getStime());
@@ -46,8 +46,8 @@ public class BillreceService {
         billmsgchdDao.updChd(chdid);
     }
 
-    public Integer add(BillrecePo billrecePo) {
-        return billreceDao.add(billrecePo);
+    public Integer addBillrece(BillrecePo billrecePo) {
+        return billreceDao.addBillrece(billrecePo);
     }
 
     public Integer addChd(BillmsgchdPo billmsgchdPo) {

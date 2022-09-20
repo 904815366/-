@@ -10,11 +10,11 @@ import java.util.List;
 @Mapper
 public interface BillreceDao extends BaseMapper<BillrecePo> {
     @Select("select * from billrece")
-    List<BillrecePo> list();
+    List<BillrecePo> billreceList();
 
 
 
     @Insert("insert into billrece values (null,now(),#{chdid},#{cstid},#{accid}," +
             "#{saccount},#{userid},#{sdecr},#{sstatus})")
-    Integer add(BillrecePo billrecePo);
+    Integer addBillrece(BillrecePo billrecePo);
 }

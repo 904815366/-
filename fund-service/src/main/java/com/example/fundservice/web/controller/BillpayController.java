@@ -5,10 +5,8 @@ import com.example.fundservice.dao.mysql.po.BillpayPo;
 import com.example.fundservice.service.BillpayService;
 import com.example.fundservice.util.ResponseResult;
 import com.example.fundservice.web.controller.dto.BillpayListDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -19,17 +17,17 @@ public class BillpayController {
     //付款单列表
     @GetMapping("/billpay/list")
     public ResponseResult<List<BillpayListDto>> billpayList() {
-        List<BillpayListDto> billpayListDtoList = billpayService.list();
+        List<BillpayListDto> billpayListDtoList = billpayService.billpayList();
         return new ResponseResult(200, "OK", billpayListDtoList);
     }
     //新增付款单(编号fno/日期ftime/采购单编号cgdid
     //         供应商gysid/结算账户accid/金额faccount
     //         制单人userid/描述fdecr/状态fstatus)
-    @PostMapping("/billpay/addBillpay/{cgdid}/{userid}/{fdecr}/{fstatus}")
-    public ResponseResult<Void> addBillpay(@PathVariable("cgdid")Integer cgdid,
-                                           @PathVariable("userid")Integer userid,
-                                           @PathVariable("fdecr")String fdecr,
-                                           @PathVariable("fstatus")String fstatus){
+    @PostMapping("/billpay/addBillpay")
+    public ResponseResult<Void> addBillpay(@RequestParam("cgdid")Integer cgdid,
+                                           @RequestParam("userid")Integer userid,
+                                           @RequestParam("fdecr")String fdecr,
+                                           @RequestParam("fstatus")String fstatus){
         BillmsgcgdPo cgd = billpayService.getCgdByStatus(cgdid);
         if (cgd==null){
             return new ResponseResult<Void>(0, "采购单不存在" );
@@ -47,7 +45,7 @@ public class BillpayController {
             billpayPo.setAccid(accid);
             billpayPo.setFaccount(account);
 
-            Integer add = billpayService.add(billpayPo);
+            Integer add = billpayService.addBillpay(billpayPo);
             if (add==1){
                 billpayService.updCgd(cgdid);
                 return new ResponseResult<Void>(200, "OK" );
@@ -59,11 +57,11 @@ public class BillpayController {
     //删除付款单
     //修改付款单
     //采购单消息
-    @PostMapping("/billpay/addBillpayMsg/{cgdid}/{gysid}/{accid}/{account}")
-    public ResponseResult<Void> getCgdMsg(@PathVariable("cgdid")Integer cgdid,
-                                          @PathVariable("gysid")Integer gysid,
-                                          @PathVariable("accid")Integer accid,
-                                          @PathVariable("account")Double account){
+    @PostMapping("/billpay/addBillpayMsg")
+    public ResponseResult<Void> getCgdMsg(@RequestParam("cgdid")Integer cgdid,
+                                          @RequestParam("gysid")Integer gysid,
+                                          @RequestParam("accid")Integer accid,
+                                          @RequestParam("account")Double account){
         BillmsgcgdPo cgd = billpayService.getCgd(cgdid);
         if (cgd!=null){
             return new ResponseResult<>(0, "重复发送");

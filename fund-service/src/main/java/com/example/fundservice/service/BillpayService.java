@@ -18,9 +18,9 @@ public class BillpayService {
     @Resource
     private BillmsgcgdDao billmsgcgdDao;
 
-    public List<BillpayListDto> list() {
+    public List<BillpayListDto> billpayList() {
         List<BillpayListDto> billpayListDtos = new ArrayList<>();
-        List<BillpayPo> billpayPoList = billpayDao.list();
+        List<BillpayPo> billpayPoList = billpayDao.billpayList();
         for (BillpayPo billpayPo : billpayPoList) {
             BillpayListDto billpayListDto = new BillpayListDto();
             billpayListDto.setFtime(billpayPo.getFtime());
@@ -46,8 +46,8 @@ public class BillpayService {
         billmsgcgdDao.updCgd(cgdid);
     }
 
-    public Integer add(BillpayPo billpayPo) {
-        return billpayDao.add(billpayPo);
+    public Integer addBillpay(BillpayPo billpayPo) {
+        return billpayDao.addBillpay(billpayPo);
     }
 
     public Integer addCgd(BillmsgcgdPo billmsgcgdPo) {
