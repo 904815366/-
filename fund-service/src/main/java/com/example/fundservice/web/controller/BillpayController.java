@@ -75,6 +75,7 @@ public class BillpayController {
                                           @RequestParam("gysid")Long gysid,
                                           @RequestParam("accid")Long accid,
                                           @RequestParam("account")Double account){
+
         BillmsgcgdPo cgd = billpayService.getCgd(cgdid);
         if (cgd!=null){
             return new ResponseResult<>(0, "重复发送");

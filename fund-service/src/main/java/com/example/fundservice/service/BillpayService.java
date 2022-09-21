@@ -6,24 +6,26 @@ import com.example.fundservice.dao.mysql.po.BillmsgcgdPo;
 import com.example.fundservice.dao.mysql.po.BillpayPo;
 import com.example.fundservice.web.controller.dto.BillpayDto;
 import com.example.fundservice.web.controller.dto.BillpayListDto;
-import com.example.homeserviceapi.http.CustomersServiceClient;
 import com.example.homeserviceapi.http.SettlementServiceClient;
 import com.example.homeserviceapi.http.SupplierServiceClient;
+import com.example.homeserviceapi.http.UsersServiceClient;
 import com.example.homeserviceapi.utils.ResponseResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class BillpayService {
     @Resource
     private BillpayDao billpayDao;
     @Resource
     private BillmsgcgdDao billmsgcgdDao;
-//    @Resource
-//    private CustomersServiceClient customersServiceClient;//用户
+    @Resource
+    private UsersServiceClient usersServiceClient;//用户
     @Resource
     private SettlementServiceClient settlementServiceClient;//结算账户
     @Resource
@@ -42,8 +44,8 @@ public class BillpayService {
             ResponseResult<String> gysNameRes = supplierServiceClient.queryNameById(billmsgcgdDao.getGysid(billpayPo.getCgdid()));
             billpayListDto.setGysname(gysNameRes.getData());
             //通过auth-service-api获取username
-            Long userid = billpayPo.getUserid();
-            //billpayListDto.setUsername();
+            ResponseResult<String> userNameRes = usersServiceClient.queryNameById(billpayPo.getUserid());
+            billpayListDto.setUsername(userNameRes.getData());
             billpayListDtos.add(billpayListDto);
         }
         return billpayListDtos;
@@ -81,22 +83,15 @@ public class BillpayService {
         if (billpayPo==null){
             return null;
         }else {
-            //供应商
-            Long gysid = billpayPo.getGysid();
-            //结算账户
-            Long accid = billpayPo.getAccid();
-            //制单人
-            Long userid = billpayPo.getUserid();
-            //dto
             BillpayDto billpayDto = new BillpayDto();
-//            billpayDto.setGysname();
+            billpayDto.setGysname(supplierServiceClient.queryNameById(billpayPo.getGysid()).getData());
             billpayDto.setFtime(billpayPo.getFtime());
             billpayDto.setFno(billpayPo.getFno());
-//            billpayDto.setAccname();
+            billpayDto.setAccname(settlementServiceClient.queryAccountById(billpayPo.getAccid()).getData());
             billpayDto.setFaccount(billpayPo.getFaccount());
             billpayDto.setPaytype("现金");
             billpayDto.setFdecr(billpayPo.getFdecr());
-//            billpayDto.setUsername();
+            billpayDto.setUsername(usersServiceClient.queryNameById(billpayPo.getUserid()).getData());
             return billpayDto;
         }
     }

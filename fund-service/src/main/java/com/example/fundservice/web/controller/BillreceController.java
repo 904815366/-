@@ -28,6 +28,7 @@ public class BillreceController {
     public ResponseResult<Void> addBillrece(@RequestParam("chdid")Long chdid,
                                             @RequestParam("userid")Long userid,
                                             @RequestParam("sdecr")String fdecr){
+
         BillmsgchdPo chd = billreceService.getChdByStatus(chdid);
         if (chd==null){
             return new ResponseResult<Void>(0, "出货单不存在" );
