@@ -3,6 +3,8 @@ package com.woniu.web;
 import com.example.util.ResponseResult;
 import com.github.pagehelper.PageInfo;
 import com.woniu.anon.IdempotentToken;
+import com.woniu.dao.CusorderMapper;
+import com.woniu.dao.po.Cusorder;
 import com.woniu.repository.dto.CusorderDto;
 import com.woniu.service.CusOrderDetailService;
 import com.woniu.service.CusorderService;
@@ -28,44 +30,52 @@ public class CusorderController {
     @Resource
     private CusOrderDetailService detailService;
 
+    @Resource
+    private CusorderMapper cusorderMapper;
+
     @GetMapping("/getAllpage")//分页带条件查询
-    public ResponseResult<PageInfo<CusorderDto>> getAllPage(CusorderFo cusorderFo){
+    public ResponseResult<PageInfo<CusorderDto>> getAllPage(CusorderFo cusorderFo) {
 //        如果页码为空
-        if (ObjectUtils.isEmpty(cusorderFo.getPageNum())){
+        if (ObjectUtils.isEmpty(cusorderFo.getPageNum())) {
             cusorderFo.setPageNum(1);
         }
 //        如果页大小为空
-        if (ObjectUtils.isEmpty(cusorderFo.getPageSize())){
+        if (ObjectUtils.isEmpty(cusorderFo.getPageSize())) {
             cusorderFo.setPageSize(5);
         }
         try {
             PageInfo<CusorderDto> cusorderDtoPageInfo = cusorderService.qurAllPageByFo(cusorderFo);
-            return new ResponseResult<PageInfo<CusorderDto>>(200,"OK",cusorderDtoPageInfo);
+            return new ResponseResult<PageInfo<CusorderDto>>(200, "OK", cusorderDtoPageInfo);
         } catch (Exception e) {
-            return new ResponseResult<PageInfo<CusorderDto>>(400,"ERRO",null);
+            return new ResponseResult<PageInfo<CusorderDto>>(400, "ERRO", null);
         }
 
     }
 
-//    新增订单项目和订单详情
+    //    新增订单项目和订单详情
     @PostMapping("/addCus")
     @IdempotentToken
-    public ResponseResult<String> addCus(@RequestBody AddCusAndDetailFo addCusAndDetailFo){
+    public ResponseResult<String> addCus(@RequestBody AddCusAndDetailFo addCusAndDetailFo) {
         try {
             cusorderService.addCus(addCusAndDetailFo);
-            return new ResponseResult<>(200,"OK","新增成功");
+            return new ResponseResult<>(200, "OK", "新增成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult<>(400,"ERRO","新增失败");
+            return new ResponseResult<>(400, "ERRO", "新增失败");
         }
     }
 
-//    修改方法
+    //    修改方法
     @PostMapping("/upCus")
     @IdempotentToken
     @Transactional
-    public ResponseResult<String> setCusAndDetail(@RequestBody AddCusAndDetailFo addCusAndDetailFo){
+    public ResponseResult<String> setCusAndDetail(@RequestBody AddCusAndDetailFo addCusAndDetailFo) {
 //        已经生成出货单的不可做修改 跟前端约定  status=2
+        Cusorder cusorder = cusorderMapper.selectById(addCusAndDetailFo.getId());
+
+        if (ObjectUtils.isEmpty(cusorder)) {
+            return new ResponseResult<>(500, "erro", "订单Id不存在");
+        }
 
         try {
 //        先做删除操作
@@ -73,36 +83,40 @@ public class CusorderController {
             detailService.deltODetailByOid(addCusAndDetailFo.getId());
 //        在做新增操作
             cusorderService.addCus(addCusAndDetailFo);
-            return new ResponseResult<>(200,"OK","修改成功");
+            return new ResponseResult<>(200, "OK", "修改成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult<>(400,"ERRO","修改失败");
+            return new ResponseResult<>(400, "ERRO", "修改失败");
         }
     }
 
-    
-//    删除方法
+
+    //    删除方法
     @GetMapping("/deltCus")
-    public ResponseResult<String> deltCusDetail(Long oid){
+    public ResponseResult<String> deltCusDetail(Long oid) {
+        if (ObjectUtils.isEmpty(oid)) {
+            return new ResponseResult<>(500, "ERRO", "ID不可为空");
+        }
+
         try {
             cusorderService.removeById(oid);
             detailService.deltODetailByOid(oid);
-            return new ResponseResult<>(200,"OK","删除成功");
+            return new ResponseResult<>(200, "OK", "删除成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult<>(400,"ERRO","删除失败");
+            return new ResponseResult<>(400, "ERRO", "删除失败");
         }
     }
-    
-//修改收货地址的接口
+
+    //修改收货地址的接口
     @PostMapping("/setSite")
-    public ResponseResult<String> setSite(UpSiteFo upSiteFo){
+    public ResponseResult<String> setSite(UpSiteFo upSiteFo) {
         try {
             cusorderService.upSite(upSiteFo);
-            return new ResponseResult<>(200,"OK","修改成功");
+            return new ResponseResult<>(200, "OK", "修改成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult<>(400,"ERRO","修改失败");
+            return new ResponseResult<>(400, "ERRO", "修改失败");
         }
     }
 

@@ -6,6 +6,7 @@ import com.woniu.repository.ShipmentRepository;
 import com.woniu.service.ShipmentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.woniu.web.fo.AddShipmentFo;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -48,12 +48,12 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
-            <exclusions>
-                <exclusion><!-- 排除掉自动依赖进来的 seata 包 -->
-                    <groupId>io.seata</groupId>
-                    <artifactId>seata-spring-boot-starter</artifactId>
-                </exclusion>
-            </exclusions>
+<!--            <exclusions>-->
+<!--                <exclusion>&lt;!&ndash; 排除掉自动依赖进来的 seata 包 &ndash;&gt;-->
+<!--                    <groupId>io.seata</groupId>-->
+<!--                    <artifactId>seata-spring-boot-starter</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
         </dependency>
         <dependency>  <!-- 重新引入 seata 包 -->
             <groupId>io.seata</groupId>

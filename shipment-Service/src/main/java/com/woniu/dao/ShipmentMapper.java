@@ -16,6 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ShipmentMapper extends BaseMapper<Shipment> {
 
+//    修改订单状态
     void upCusorderStatus(Long cid);
 
 //    void addShioment(Shipment shipment);

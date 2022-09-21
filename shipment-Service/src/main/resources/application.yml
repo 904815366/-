@@ -22,11 +22,14 @@ spring:
     port: 5672
     username: guest
     password: guest
+  redis:
+    host: 192.172.0.201
 
 logging:
   level:
     com:
       woniu: DEBUG
+      example: DEBUG
     root: INFO
   pattern:
     console: ${CONSOLE_LOG_PATTERN:%clr(${LOG_LEVEL_PATTERN:%5p}) %clr(|){faint}
