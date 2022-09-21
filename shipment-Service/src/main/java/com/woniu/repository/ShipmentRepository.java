@@ -32,8 +32,8 @@ public class ShipmentRepository {
 //    新增出货订单
     @GlobalTransactional
     public void addShipment(AddShipmentFo addShipmentFo){
+//        通过转换器将fo转换成po
         Shipment po = shipmentConverter.from(addShipmentFo);
-//        shipmentMapper.addShioment(po);
         shipmentMapper.insert(po);
 //        给资金发openfei                           订单编号,客户id,结账账户id,本次收款
         fundClient.getChdMsg(po.getId(),po.getClorderId(),po.getUmoneyId(),po.getPayeemoney());

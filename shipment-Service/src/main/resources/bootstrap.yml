@@ -3,7 +3,7 @@ seata:
   tx-service-group: my_test_tx_group
   service:
     vgroup-mapping:
-      my_0test_tx_group: default
+      my_test_tx_group: default
   registry:
     type: nacos
     nacos:
@@ -11,4 +11,7 @@ seata:
       group: DEFAULT_GROUP
       application: seata-server
       cluster: default
+
+
+
 
