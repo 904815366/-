@@ -6,6 +6,10 @@ import com.example.fundservice.dao.mysql.po.BillmsgcgdPo;
 import com.example.fundservice.dao.mysql.po.BillpayPo;
 import com.example.fundservice.web.controller.dto.BillpayDto;
 import com.example.fundservice.web.controller.dto.BillpayListDto;
+import com.example.homeserviceapi.http.CustomersServiceClient;
+import com.example.homeserviceapi.http.SettlementServiceClient;
+import com.example.homeserviceapi.http.SupplierServiceClient;
+import com.example.homeserviceapi.utils.ResponseResult;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,6 +22,12 @@ public class BillpayService {
     private BillpayDao billpayDao;
     @Resource
     private BillmsgcgdDao billmsgcgdDao;
+//    @Resource
+//    private CustomersServiceClient customersServiceClient;//用户
+    @Resource
+    private SettlementServiceClient settlementServiceClient;//结算账户
+    @Resource
+    private SupplierServiceClient supplierServiceClient;//供应商
 
     public List<BillpayListDto> billpayList() {
         List<BillpayListDto> billpayListDtos = new ArrayList<>();
@@ -29,9 +39,8 @@ public class BillpayService {
             billpayListDto.setFaccount(billpayPo.getFaccount());
             billpayListDto.setFdecr(billpayPo.getFdecr());
             //通过采购单id获取gysid,通过auth-service-api获取gysname
-            Long gysid = billmsgcgdDao.getGysid(billpayPo.getCgdid());
-            //billpayListDto.setGysname();
-
+            ResponseResult<String> gysNameRes = supplierServiceClient.queryNameById(billmsgcgdDao.getGysid(billpayPo.getCgdid()));
+            billpayListDto.setGysname(gysNameRes.getData());
             //通过auth-service-api获取username
             Long userid = billpayPo.getUserid();
             //billpayListDto.setUsername();

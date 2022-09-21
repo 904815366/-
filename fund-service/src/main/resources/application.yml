@@ -5,6 +5,7 @@ spring:
         host: 192.172.0.201
     main:
         banner-mode: off
+        allow-bean-definition-overriding: true
     application:
         name: fund-service
     cloud:
@@ -34,3 +35,8 @@ spring:
 logging:
     pattern:
         console: '%clr(%5level) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx'
+    level:
+        com.woniu.outlet.client: DEBUG
+feign:
+    httpclient:
+        enabled: true # 激活 httpclient 的使用

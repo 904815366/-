@@ -18,6 +18,6 @@ public interface BillmsgchdDao extends BaseMapper<BillmsgchdPo> {
     @Insert("insert into billmsgchd values (#{chdid},#{cstid},#{accid},#{account},#{status})")
     Integer addChd(BillmsgchdPo billmsgchdPo);
 
-    @Select("select cstid from billmsgchd where cstid=#{cstid}")
-    Long getCstid(@Param("cstid") Long cstid);
+    @Select("select cstid from billmsgchd where chdid=#{chdid}")
+    Long getCstid(@Param("chdid") Long chdid);
 }

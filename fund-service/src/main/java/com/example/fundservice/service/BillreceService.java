@@ -6,6 +6,10 @@ import com.example.fundservice.dao.mysql.po.BillmsgchdPo;
 import com.example.fundservice.dao.mysql.po.BillrecePo;
 import com.example.fundservice.web.controller.dto.BillreceDto;
 import com.example.fundservice.web.controller.dto.BillreceListDto;
+import com.example.homeserviceapi.http.CustomersServiceClient;
+import com.example.homeserviceapi.http.SettlementServiceClient;
+import com.example.homeserviceapi.http.SupplierServiceClient;
+import com.example.homeserviceapi.utils.ResponseResult;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,6 +22,12 @@ public class BillreceService {
     private BillreceDao billreceDao;
     @Resource
     private BillmsgchdDao billmsgchdDao;
+    @Resource
+    private CustomersServiceClient customersServiceClient;//客人
+    @Resource
+    private SettlementServiceClient settlementServiceClient;//结算账户
+//    @Resource
+//    private SupplierServiceClient supplierServiceClient;用户
 
     public List<BillreceListDto> billreceList() {
         List<BillreceListDto> billreceListDtos = new ArrayList<>();
@@ -28,10 +38,9 @@ public class BillreceService {
             billreceListDto.setSno(billrecePo.getSno());
             billreceListDto.setSaccount(billrecePo.getSaccount());
             billreceListDto.setSdecr(billrecePo.getSdecr());
-            //通过出货单id获取cstid,通过auth-service-api获取gysname
-            Long cstid = billmsgchdDao.getCstid(billrecePo.getCstid());
-            //billreceListDto.setCstname();
-
+            //通过出货单id获取cstid,通过auth-service-api获取cstname
+            ResponseResult<String> cstNameRes = customersServiceClient.queryNameById(billmsgchdDao.getCstid(billrecePo.getChdid()));
+            billreceListDto.setCstname(cstNameRes.getData());
             //通过auth-service-api获取username
             Long userid = billrecePo.getUserid();
             //billreceListDto.setUsername();
