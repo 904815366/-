@@ -25,6 +25,7 @@ spring:
     show-sql: true
   main:
     banner-mode: off
+#    allow-bean-definition-overriding: true
   rabbitmq:
     host: 192.172.0.201
     password: guest

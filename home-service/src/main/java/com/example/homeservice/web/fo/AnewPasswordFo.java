@@ -1,7 +1,7 @@
 package com.example.homeservice.web.fo;
 
 import com.example.homeservice.dao.mysql.UsersDao;
-import com.example.homeservice.dao.po.UsersPo;
+import com.example.homeservice.dao.mysql.po.UsersPo;
 import com.example.homeservice.service.UsersService;
 import com.example.homeservice.utils.ApplicationContextHolder;
 import com.example.homeservice.utils.ResponseResult;

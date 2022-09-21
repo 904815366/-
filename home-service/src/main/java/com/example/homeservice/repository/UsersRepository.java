@@ -1,7 +1,7 @@
 package com.example.homeservice.repository;
 
 import com.example.homeservice.dao.mysql.UsersDao;
-import com.example.homeservice.dao.po.UsersPo;
+import com.example.homeservice.dao.mysql.po.UsersPo;
 import com.example.homeservice.utils.SimpleFormatUtil;
 import com.example.homeservice.web.fo.QueryUsersFo;
 import lombok.extern.slf4j.Slf4j;

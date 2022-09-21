@@ -1,8 +1,10 @@
-package com.example.homeservice.dao.po;
+package com.example.homeservice.dao.mysql.po;
 
 import lombok.*;
+import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -13,7 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 @Table(name = "supplier", schema = "erp")
-public class SupplierPo {
+public class SupplierPo{
     @Id
     private Long id;
     private String name;

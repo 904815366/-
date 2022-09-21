@@ -1,14 +1,11 @@
 package com.example.homeservice.web.dto;
 
-import com.example.homeservice.dao.po.RolePo;
+import com.example.homeservice.dao.mysql.po.RolePo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
 
 @Data
 @AllArgsConstructor

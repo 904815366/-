@@ -1,6 +1,5 @@
 package com.example.homeservice.dao.mysql;
 
-import com.example.homeservice.dao.po.LoginlogPo;
 import com.example.homeservice.web.dto.LoginlogDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

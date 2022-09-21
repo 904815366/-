@@ -1,6 +1,6 @@
 package com.example.homeservice.web.converter;
 
-import com.example.homeservice.dao.po.SignPo;
+import com.example.homeservice.dao.mysql.po.SignPo;
 import com.example.homeservice.web.dto.SignsDto;
 import org.mapstruct.Mapper;
 

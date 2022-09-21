@@ -1,10 +1,8 @@
 package com.example.homeservice.web.controller;
 
 import com.example.homeservice.config.IdempotentToken;
-import com.example.homeservice.dao.mysql.UsersDao;
-import com.example.homeservice.dao.po.RolePo;
-import com.example.homeservice.dao.po.SettlementAccountPo;
-import com.example.homeservice.dao.po.UsersPo;
+import com.example.homeservice.dao.mysql.po.RolePo;
+import com.example.homeservice.dao.mysql.po.UsersPo;
 import com.example.homeservice.repository.UsersRepository;
 import com.example.homeservice.service.UsersService;
 import com.example.homeservice.utils.MinioUtils;
@@ -17,14 +15,12 @@ import com.example.homeservice.web.fo.AnewPasswordFo;
 import com.example.homeservice.web.fo.QueryUsersFo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -40,6 +36,7 @@ public class UsersController {
     private UsersService usersService;
     @Resource
     private MinioUtils minioUtils;
+
 
 
     /**
@@ -96,8 +93,9 @@ public class UsersController {
 
     /**
      * 修改user
+     *
      * @param files 头像
-     * @param fo 基本信息
+     * @param fo    基本信息
      * @return
      */
     @PutMapping("/users")
@@ -166,29 +164,33 @@ public class UsersController {
 
     /**
      * 传入ID 和 状态[2 - 已注销]  逻辑删除用户
+     *
      * @param id
      * @param status 默认传入2
      * @return
      */
     @DeleteMapping("/users")
-    public ResponseResult<Void> removeUser(Long id,String status){
-        UsersPo po = usersRepository.findByIdAndStatusNot(id,status).orElseThrow(() -> new NullPointerException("删除失败"));
-        po.setStatus("2");
+    public ResponseResult<Void> removeUser(Long id, String status) {
+        UsersPo po = usersRepository.findByIdAndStatusNot(id, status).orElseThrow(() -> new NullPointerException("删除失败"));
+        po.setStatus(status);
         usersService.modifyStatus(po);
-        return new ResponseResult<>(200,"删除成功",null);
+
+        return new ResponseResult<>(200, "删除成功", null);
     }
 
 
     /**
      * 根据ID获取用户姓名   给资产微服务调用
+     *
      * @param id
      * @return
      */
     @GetMapping("/users/{id}")
-    public ResponseResult<String> queryNameById(@PathVariable("id") Long id){
+    public ResponseResult<String> queryNameById(@PathVariable("id") Long id) {
         log.info("usersController : queryNameById 方法");
-        UsersPo po = usersRepository.findById(id).orElseThrow(() -> new RuntimeException("根据ID未查询到用户名字"));
-        return new ResponseResult<String>(200,"success",po.getName());
+        System.out.println(id);
+        UsersPo po = usersService.queryNameById(id);
+        return new ResponseResult<>(200, "success", po.getName());
     }
 
 }

@@ -1,9 +1,8 @@
-package com.example.homeservice.dao.po;
+package com.example.homeservice.dao.mysql.po;
 
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Getter

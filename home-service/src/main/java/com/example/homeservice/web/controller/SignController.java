@@ -1,39 +1,24 @@
 package com.example.homeservice.web.controller;
 
-import com.example.homeservice.dao.mysql.LoginLogDao;
-import com.example.homeservice.dao.mysql.LoginLogDtoDao;
-import com.example.homeservice.dao.po.SignPo;
+import com.example.homeservice.dao.mysql.po.SignPo;
 import com.example.homeservice.repository.SignRepository;
 import com.example.homeservice.service.SignService;
 import com.example.homeservice.utils.IpUtil;
 import com.example.homeservice.utils.ResponseResult;
 import com.example.homeservice.utils.SimpleFormatUtil;
 import com.example.homeservice.web.converter.SignConverter;
-import com.example.homeservice.web.dto.LoginlogDto;
 import com.example.homeservice.web.dto.PageDto;
 import com.example.homeservice.web.dto.SignsCountDto;
-import com.example.homeservice.web.dto.SignsDto;
 import com.example.homeservice.web.fo.QuerySignListFo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @Slf4j

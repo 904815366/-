@@ -1,6 +1,6 @@
 package com.example.homeservice.dao.mysql;
 
-import com.example.homeservice.dao.po.LoginlogPo;
+import com.example.homeservice.dao.mysql.po.LoginlogPo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

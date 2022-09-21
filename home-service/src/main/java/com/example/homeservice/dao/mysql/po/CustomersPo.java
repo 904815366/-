@@ -1,10 +1,8 @@
-package com.example.homeservice.dao.po;
+package com.example.homeservice.dao.mysql.po;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -14,7 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 @Table(name = "customers", schema = "erp")
-public class CustomersPo {
+public class CustomersPo  {
     @Id
     private Long id;
     private String name;

@@ -1,11 +1,9 @@
-package com.example.homeservice.dao.po;
+package com.example.homeservice.dao.mysql.po;
 
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Objects;
 
 @Entity

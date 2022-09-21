@@ -1,8 +1,9 @@
 package com.example.homeservice.web.converter;
 
-import com.example.homeservice.dao.po.SignPo;
-import com.example.homeservice.dao.po.UsersPo;
-import com.example.homeservice.web.dto.SignsDto;
+import com.example.homeservice.dao.mysql.po.SupplierPo;
+import com.example.homeservice.dao.mysql.po.UsersPo;
+import com.example.homeservice.dao.redis.po.SupplierRedisPo;
+import com.example.homeservice.dao.redis.po.UsersRedisPo;
 import com.example.homeservice.web.dto.UsersDto;
 import org.mapstruct.Mapper;
 
@@ -14,5 +15,8 @@ public interface UsersConverter {
 
     List<UsersDto> from (List<UsersPo> usersPos);
 
+    UsersRedisPo fromRedisPo (UsersPo po);
+
+    UsersPo from (UsersRedisPo po);
 
 }

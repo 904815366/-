@@ -1,21 +1,18 @@
-package com.example.homeservice.dao.po;
+package com.example.homeservice.dao.redis.po;
 
 import lombok.*;
+import org.springframework.data.redis.core.RedisHash;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "settlement_account", schema = "erp")
-public class SettlementAccountPo {
-    @Id
+@RedisHash("settlement_account")
+public class SettlementAccountRedisPo {
+    @org.springframework.data.annotation.Id
     private Long id;
     private String account;
     private Integer balance;
@@ -30,7 +27,7 @@ public class SettlementAccountPo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SettlementAccountPo that = (SettlementAccountPo) o;
+        SettlementAccountRedisPo that = (SettlementAccountRedisPo) o;
         return id == that.id && Objects.equals(account, that.account) && Objects.equals(balance, that.balance) && Objects.equals(openingBalance, that.openingBalance) && Objects.equals(accountTypeId, that.accountTypeId) && Objects.equals(creationTime, that.creationTime) && Objects.equals(status, that.status) && Objects.equals(version, that.version);
     }
 
