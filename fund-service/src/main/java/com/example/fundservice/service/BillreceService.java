@@ -28,9 +28,12 @@ public class BillreceService {
             billreceListDto.setSno(billrecePo.getSno());
             billreceListDto.setSaccount(billrecePo.getSaccount());
             billreceListDto.setSdecr(billrecePo.getSdecr());
-            //出货单id
-            //Long chdid = billrecePo.getChdid();
+            //通过出货单id获取cstid,通过auth-service-api获取gysname
+            Long cstid = billmsgchdDao.getCstid(billrecePo.getCstid());
             //billreceListDto.setCstname();
+
+            //通过auth-service-api获取username
+            Long userid = billrecePo.getUserid();
             //billreceListDto.setUsername();
             billreceListDtos.add(billreceListDto);
         }

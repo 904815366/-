@@ -1,6 +1,8 @@
 server:
     port: 8080
 spring:
+    redis:
+        host: 192.172.0.201
     main:
         banner-mode: off
     application:
@@ -9,6 +11,10 @@ spring:
         nacos:
             discovery:
                 server-addr: 192.172.0.201:8848
+                namespace: public
+                username: nacos
+                password: nacos
+                group: erp
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
         name: defaultDataSource
