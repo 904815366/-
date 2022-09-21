@@ -44,6 +44,7 @@ public class CusorderController {
         } catch (Exception e) {
             return new ResponseResult<PageInfo<CusorderDto>>(400,"ERRO",null);
         }
+
     }
 
 //    新增订单项目和订单详情
@@ -68,7 +69,7 @@ public class CusorderController {
 
         try {
 //        先做删除操作
-            cusorderService.removeById(addCusAndDetailFo.getId());
+//            cusorderService.removeById(addCusAndDetailFo.getId());
             detailService.deltODetailByOid(addCusAndDetailFo.getId());
 //        在做新增操作
             cusorderService.addCus(addCusAndDetailFo);

@@ -2,6 +2,7 @@ package com.woniu.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,7 @@ public class UtilController {
      * 生成UUID,存入redis中,uuid返回给页面
      * @return
      */
-    @RequestMapping("/getIdempotentToken")
+    @GetMapping("/getIdempotentToken")
     public String getuuidToken(){
         String uuid = UUID.randomUUID().toString();
         template.opsForValue().set(uuid,uuid,10, TimeUnit.MINUTES);

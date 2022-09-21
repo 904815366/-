@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class AddShipmentFo {
@@ -30,4 +31,6 @@ public class AddShipmentFo {
     private Double saleMoney;
 
     private Double laterMoney;
+
+    private List<GoodsFo> goodsFos;
 }

@@ -2,11 +2,13 @@ seata:
   application-id: ${spring.application.name}
   tx-service-group: my_test_tx_group
   service:
-    #    grouplist:
-    #      default: 127.0.0.1:8091
     vgroup-mapping:
-      my_test_tx_group: default
+      my_0test_tx_group: default
   registry:
     type: nacos
     nacos:
       server-addr: 192.172.0.201:8848
+      group: DEFAULT_GROUP
+      application: seata-server
+      cluster: default
+

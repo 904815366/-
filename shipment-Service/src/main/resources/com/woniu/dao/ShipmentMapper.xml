@@ -5,8 +5,4 @@
         update cusorder set status="2" where id=#{cid}
     </update>
 
-    <insert id="addShioment">
-
-    </insert>
-
 </mapper>

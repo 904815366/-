@@ -31,5 +31,8 @@ public class CusorderRepository {
        public void upSite(UpSiteFo siteFo){
            cusorderMapper.upSite(siteFo);
        };
-
+//  修改订单的办法
+    public void upcus(Cusorder cusorder){
+    cusorderMapper.updateById(cusorder);
+    };
 }

@@ -18,6 +18,6 @@ public interface ShipmentMapper extends BaseMapper<Shipment> {
 
     void upCusorderStatus(Long cid);
 
-    void addShioment(AddShipmentFo addShipmentFo);
+//    void addShioment(Shipment shipment);
 
 }

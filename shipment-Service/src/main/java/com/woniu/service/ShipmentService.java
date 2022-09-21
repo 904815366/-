@@ -2,6 +2,7 @@ package com.woniu.service;
 
 import com.woniu.dao.po.Shipment;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.woniu.web.fo.AddShipmentFo;
 
 /**
  * <p>
@@ -12,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-09-15
  */
 public interface ShipmentService extends IService<Shipment> {
+
+    void insertShipment(AddShipmentFo addShipmentFo);
 
 }

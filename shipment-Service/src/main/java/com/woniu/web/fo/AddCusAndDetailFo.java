@@ -19,6 +19,7 @@ public class AddCusAndDetailFo {
     private List<CusOrderDetail> cusOrderDetails;
 
     private Long id;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ordertime;

@@ -16,6 +16,7 @@ import com.woniu.web.fo.CusorderFo;
 import com.woniu.web.fo.UpSiteFo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -58,10 +59,13 @@ public class CusorderServiceImpl extends ServiceImpl<CusorderMapper, Cusorder> i
     }
 
 //    新增方法
-    @Transactional
+//    @Transactional
     public void addCus(AddCusAndDetailFo addCusAndDetailFo) {
         Cusorder cusorder = cusorderAndDetailFoConverter.from(addCusAndDetailFo);
-        cusorderRepository.AddCus(cusorder);
+        if (ObjectUtils.isEmpty(addCusAndDetailFo.getId())){
+            cusorderRepository.AddCus(cusorder);
+        }
+       cusorderRepository.upcus(cusorder);
         addCusAndDetailFo.getCusOrderDetails().forEach(e->{
             cusorderDetailRepository.AddCusDetail(e);
         });
