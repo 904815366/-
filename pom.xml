@@ -26,9 +26,9 @@
         <module>commons-util</module>
         <module>repository-service-api</module>
         <module>fund-service-api</module>
+        <module>home-service-api</module>
 
         <module>auth-service</module>
-        <module>commons-util</module>
         <module>fund-service</module>
         <module>home-service</module>
         <module>purchase-service</module>

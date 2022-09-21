@@ -44,7 +44,7 @@ public class MyUserDetailsService implements UserDetailsService {
         UsersPo userPo = userDao.findByUsername(username).orElse(null);
         if (Objects.isNull(userPo)){
             log.info("登录的用户名不存在");
-            accountNonExpired = false;
+            credentialsNonExpired = false;
             return new User("null", "null",
                     enabled, accountNonExpired, credentialsNonExpired, accountNonLocked,authorities);
         }

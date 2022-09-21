@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -39,11 +40,11 @@ public class UsersRepository {
         Pageable pageable = PageRequest.of(num, size);
 
         UsersPo po = new UsersPo();
-        Date date = SimpleFormatUtil.stringForDate(queryUsersFo.getCreatetime());
+//        Date date = SimpleFormatUtil.stringForDate(queryUsersFo.getCreatetime());
 
         po.setUsername((queryUsersFo.getUsername() == null || queryUsersFo.getUsername().equals("")) ? null : queryUsersFo.getUsername());
         po.setStatus((queryUsersFo.getStatus() == null || queryUsersFo.getStatus().equals("")) ? null : queryUsersFo.getStatus());
-        po.setCreatetime(date);
+        po.setCreatetime((queryUsersFo.getCreatetime() == null || queryUsersFo.getCreatetime().equals("")) ? null : queryUsersFo.getCreatetime());
         System.out.println(po);
 
         Example<UsersPo> example = Example.of(po);

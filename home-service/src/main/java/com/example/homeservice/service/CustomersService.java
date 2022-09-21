@@ -28,7 +28,11 @@ public class CustomersService {
         if (!ObjectUtils.isEmpty(redisPo)){
             return customersConverter.from(redisPo);
         }
+<<<<<<< master
         CustomersPo po = customersDao.findById(id).orElseThrow(() -> new RuntimeException("根据ID未查询到客户名字"));
+=======
+      CustomersPo po = customersDao.findById(id).orElseThrow(() -> new RuntimeException("根据ID未查询到客户名字"));
+>>>>>>> [09/21 16:48 罗虎]  添加了modifySettlement
         customersRedis.save(customersConverter.from(po));
         return po;
     }

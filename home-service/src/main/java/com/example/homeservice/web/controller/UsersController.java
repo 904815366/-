@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -61,7 +63,9 @@ public class UsersController {
     public ResponseResult<PageDto<UsersDto>> findUsers(QueryUsersFo queryUsersFo) {
         System.out.println(queryUsersFo);
         Page<UsersPo> page = usersRepository.findUsersByUsernameAndStatusAndCreatetime(queryUsersFo);
-        List<UsersDto> dtos = usersConverter.from(page.getContent());
+        List<UsersPo> collect = page.getContent().stream().filter(usersPo -> !usersPo.getUsername().equals("admin")).collect(Collectors.toList());
+//        collect.forEach(System.out::println);
+        List<UsersDto> dtos = usersConverter.from(collect);
         PageDto<UsersDto> pageDto = new PageDto<UsersDto>().getPageDto(page, dtos);
         return new ResponseResult<>(200, "success", pageDto);
     }
@@ -78,16 +82,22 @@ public class UsersController {
     @PostMapping("/users")
     @IdempotentToken
     public ResponseResult<Void> addUser(@RequestParam("uploadFile") List<MultipartFile> files,
-                                        AddUsersFo addUsersFo) {
-        log.info("进入addUsers方法");
-        UsersPo exist = usersRepository.findByUsername(addUsersFo.getUsername()).orElse(null);
-        if (!ObjectUtils.isEmpty(exist)) {
-            throw new RuntimeException("添加用户失败,用户名已存在.");
+                                        AddUsersFo addUsersFo, HttpServletRequest request) {
+        try {
+            log.info("进入addUsers方法");
+            UsersPo exist = usersRepository.findByUsername(addUsersFo.getUsername()).orElse(null);
+            if (!ObjectUtils.isEmpty(exist)) {
+                throw new RuntimeException("添加用户失败,用户名已存在.");
+            }
+            upfile(files, addUsersFo);
+            usersService.addUser(addUsersFo, request);
+            log.info("usersService.addUser执行成功");
+            return new ResponseResult<>(200, "职员添加成功", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult<>(200, "职员添加失败", null);
         }
-        upfile(files, addUsersFo);
-        usersService.addUser(addUsersFo);
-        log.info("usersService.addUser执行成功");
-        return new ResponseResult<>(200, "职员添加成功", null);
+
     }
 
 
@@ -103,12 +113,22 @@ public class UsersController {
                                            AddUsersFo fo) {
         log.info("进入modifyUser方法");
         System.out.println(fo);
+        if ("admin".equals(fo.getUsername())){
+            return new ResponseResult<>(403, "修改失败,不允许修改该账户", null);
+        }
+        UsersPo po = usersRepository.findById(fo.getId()).orElseThrow(() -> new NullPointerException("不能修改ID"));
         upfile(files, fo);
-        UsersPo usersPo = UsersPo.builder().id(fo.getId()).username(fo.getUsername())
-                .password(fo.getPassword()).name(fo.getName()).tel(fo.getTel())
-                .email(fo.getEmail()).role(RolePo.builder().id(fo.getRoleid()).build())
-                .status(fo.getStatus()).avatar(fo.getAvatar()).version(fo.getVersion()).build();
-        boolean modifyResult = usersService.modifyUser(usersPo);
+        po.setUsername(fo.getUsername());
+        po.setPassword(fo.getPassword());
+        po.setName(fo.getName());
+        po.setTel(fo.getTel());
+        po.setEmail(fo.getEmail());
+        po.setRole(RolePo.builder().id(fo.getRoleid()).build());
+        po.setStatus(fo.getStatus());
+        po.setAvatar(fo.getAvatar());
+        po.setVersion(fo.getVersion());
+        System.out.println(po);
+        boolean modifyResult = usersService.modifyUser(po);
         if (modifyResult) return new ResponseResult<>(200, "修改成功", null);
         else return new ResponseResult<>(200, "修改失败,请稍后再试", null);
     }
@@ -166,13 +186,22 @@ public class UsersController {
      * 传入ID 和 状态[2 - 已注销]  逻辑删除用户
      *
      * @param id
-     * @param status 默认传入2
      * @return
      */
+<<<<<<< master
     @DeleteMapping("/users")
     public ResponseResult<Void> removeUser(Long id, String status) {
         UsersPo po = usersRepository.findByIdAndStatusNot(id, status).orElseThrow(() -> new NullPointerException("删除失败"));
         po.setStatus(status);
+=======
+    @DeleteMapping("/users/{id}")
+    public ResponseResult<Void> removeUser(@PathVariable("id") Long id) {
+        UsersPo po = usersService.findById(id);
+        if ("admin".equals(po.getUsername())) return new ResponseResult<>(403, "删除失败,不允许删除该账户", null);
+        if (!po.getStatus().equals("0")&&!po.getStatus().equals("1")&&!po.getStatus().equals("2")) return new ResponseResult<>(403, "状态输入有误", null);
+        if (po.getStatus().equals("2"))  return new ResponseResult<>(403, "用户已注销", null);
+        po.setStatus("2");
+>>>>>>> [09/21 16:48 罗虎]  添加了modifySettlement
         usersService.modifyStatus(po);
 
         return new ResponseResult<>(200, "删除成功", null);

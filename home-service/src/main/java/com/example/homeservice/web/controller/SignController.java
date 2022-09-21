@@ -54,14 +54,12 @@ public class SignController {
         try {
             //获取当前时间 yyyy-MM-dd
             String todaytime = SimpleFormatUtil.dateForString(System.currentTimeMillis());
-//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            String todaytime = simpleDateFormat.format(System.currentTimeMillis());
             String yyyy_MM_dd = todaytime.substring(0, 10);
 
-            SignPo po = SignPo.builder().username(username).status(status).todaytime(yyyy_MM_dd).build();
+            SignPo po = SignPo.builder().username(username).todaytime(yyyy_MM_dd).build();
             SignPo signPo = signRepository.findByUsername(po).orElseThrow(() -> new NullPointerException("根据用户名,未查询到职员"));
+            if (signPo.getStatus().equals("1")) throw new RuntimeException("今日已经签到过了,无需再签到");
             log.info("查询到当前用户未签到,开始签到业务逻辑");
-            String ip = IpUtil.getIpAddress(request);
             signPo.setStatus("1");
             signPo.setSignip(IpUtil.getIpAddress(request));
             signPo.setSigntime(LocalDateTime.now());
@@ -70,7 +68,7 @@ public class SignController {
             return new ResponseResult<>(200, "签到成功", null);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult<>(400, "今日已经签到过了,无需再签到", null);
+            return new ResponseResult<>(400, e.getMessage(), null);
         }
     }
 

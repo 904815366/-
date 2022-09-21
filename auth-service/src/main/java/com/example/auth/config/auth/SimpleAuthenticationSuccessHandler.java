@@ -71,7 +71,7 @@ public class SimpleAuthenticationSuccessHandler implements AuthenticationSuccess
         Collection<GrantedAuthority> authorities = user.getAuthorities();
         String strAuthorities = StringUtils.collectionToCommaDelimitedString(authorities);
         String jwtStr = JwtUtils.createJWT(user.getUsername(),strAuthorities);
-        template.opsForValue().set(jwtStr,jwtStr,1, TimeUnit.HOURS);
+        template.opsForValue().set(user.getUsername(),jwtStr,1, TimeUnit.HOURS);
         Map<String, String> map = MapUtils.of(
                 "code", "10000",
                 "msg", "success",

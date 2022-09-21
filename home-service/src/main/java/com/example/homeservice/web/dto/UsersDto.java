@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+<<<<<<< master
+=======
+import java.time.LocalDateTime;
+>>>>>>> [09/21 16:48 罗虎]  添加了modifySettlement
 import java.util.Date;
 
 @Data
@@ -22,7 +26,7 @@ public class UsersDto {
     private String status;
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createtime;
+    private LocalDateTime createtime;
     private String avatar;
     private Integer version;
 

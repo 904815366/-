@@ -100,17 +100,17 @@ public class JwtGlobalFilter implements GlobalFilter {
                 System.out.println("x-jwt-token是校验失败,拦截");
                 return responseErorr("401", "请重新登录", response);
             }
-
-            Mono<String> monoJwtToken = reactiveStringRedisTemplate.opsForValue().get(jwtToken);
+            //当前登录的用户名
+            String username = JwtUtils.getUsernameFromJWT(jwtToken);
+            Mono<Boolean> monoJwtToken = reactiveStringRedisTemplate.hasKey(username);
 
             return monoJwtToken.flatMap(s -> {
-                if (ObjectUtils.isEmpty(s) || "".equals(s)) {
+                if (s == false) {
                     System.out.println("x-jwt-token过期");
                     return responseErorr("401", "请重新登录", response);
                 }
 
-                //当前登录的用户名
-                String usernameFromJWT = JwtUtils.getUsernameFromJWT(jwtToken);
+
                 //当前用户的权限
                 String authoritiesFromJwt = JwtUtils.getAuthoritiesFromJwt(jwtToken);
                 Set<String> authoritiesFromJwtSet = StringUtils.commaDelimitedListToSet(authoritiesFromJwt);

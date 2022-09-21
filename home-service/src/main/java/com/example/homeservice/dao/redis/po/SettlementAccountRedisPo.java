@@ -4,6 +4,10 @@ import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.sql.Timestamp;
+<<<<<<< master
+=======
+import java.time.LocalDateTime;
+>>>>>>> [09/21 16:48 罗虎]  添加了modifySettlement
 import java.util.Objects;
 
 @Data
@@ -15,10 +19,17 @@ public class SettlementAccountRedisPo {
     @org.springframework.data.annotation.Id
     private Long id;
     private String account;
+<<<<<<< master
     private Integer balance;
     private Integer openingBalance;
     private Long accountTypeId;
     private Timestamp creationTime;
+=======
+    private Double balance;
+    private Integer openingBalance;
+    private Long accountTypeId;
+    private LocalDateTime creationTime;
+>>>>>>> [09/21 16:48 罗虎]  添加了modifySettlement
     private String status;
     private Integer version;
 

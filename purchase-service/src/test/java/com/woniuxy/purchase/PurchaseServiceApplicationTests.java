@@ -38,8 +38,6 @@ class PurchaseServiceApplicationTests {
     }
     @Test
     void demo2(){
-//        ResponseResult<Void> cgdMsg = fundClient.getCgdMsg(6, 1, 1, 3.0);
-//        System.out.println(cgdMsg);
     }
 
 }

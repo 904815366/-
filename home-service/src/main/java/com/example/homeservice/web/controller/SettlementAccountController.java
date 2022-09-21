@@ -3,9 +3,11 @@ package com.example.homeservice.web.controller;
 import com.example.homeservice.dao.mysql.po.SettlementAccountPo;
 import com.example.homeservice.service.SettlementAccountService;
 import com.example.homeservice.utils.ResponseResult;
+import com.example.homeserviceapi.fo.SettlementAccountFo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -25,5 +27,22 @@ public class SettlementAccountController {
         log.info("SettlementAccountController : queryAccountById 方法");
         SettlementAccountPo po = settlementAccountService.queryNameById(id);
         return new ResponseResult<>(200,"success",po.getAccount());
+<<<<<<< master
+=======
     }
+
+    /**
+     * 修改settlement
+     * @param settlementAccountFo
+     * @return
+     */
+    @PutMapping("/settlement")
+    public ResponseEntity<Void> modifySettlement(SettlementAccountFo settlementAccountFo){
+        log.info("进入modifySettlement方法");
+        settlementAccountService.modifySettlement(settlementAccountFo);
+        return ResponseEntity.status(HttpStatus.OK).build();
+>>>>>>> [09/21 16:48 罗虎]  添加了modifySettlement
+    }
+
+
 }

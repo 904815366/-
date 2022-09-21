@@ -4,16 +4,25 @@ import com.example.homeservice.dao.mysql.po.SignPo;
 import com.example.homeservice.dao.mysql.po.UsersPo;
 import com.example.homeservice.repository.SignRepository;
 import com.example.homeservice.repository.UsersRepository;
+import com.example.homeservice.utils.IpUtil;
+import com.example.homeservice.utils.SimpleFormatUtil;
 import com.example.homeservice.utils.SnowflakeIdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+<<<<<<< master
+=======
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+>>>>>>> [09/21 16:48 罗虎]  添加了modifySettlement
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +39,7 @@ public class SignService {
     @Resource
     private SignRepository signRepository;
 
+    private SnowflakeIdGenerator snowflakeIdGenerator = new SnowflakeIdGenerator(1, 1);
 
     /**
      * 签到业务逻辑
@@ -46,9 +56,6 @@ public class SignService {
     @RabbitListener(queues = "add_sign")
     public void addSigns() {
         log.info("进入了addSigns方法");
-
-        //雪花ID
-        SnowflakeIdGenerator snowflakeIdGenerator = new SnowflakeIdGenerator(1, 1);
 
         //获取当前时间 yyyy-MM-dd
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -81,6 +88,13 @@ public class SignService {
         }
 
         rabbitTemplate.convertAndSend("add_sign_delayed", "add_sign_delayed");
+    }
+
+    public void addSign(String username, HttpServletRequest request) throws IOException {
+        SignPo po = SignPo.builder().id(snowflakeIdGenerator.nextId()).username(username)
+                .status("0").signtime(LocalDateTime.now()).signip(IpUtil.getIpAddress(request))
+                .todaytime(SimpleFormatUtil.dateForString(System.currentTimeMillis())).build();
+        signRepository.addSign(po);
     }
 
     public void modifyStatus(SignPo signPo) {

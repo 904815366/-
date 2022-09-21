@@ -52,4 +52,8 @@ public class SignRepository {
         return pageDto.getPageDto(poPage, dtos);
 
     }
+
+    public void addSign(SignPo po) {
+        signDao.save(po);
+    }
 }

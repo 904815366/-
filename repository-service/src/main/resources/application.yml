@@ -16,7 +16,7 @@ mybatis-plus:
     mapper-locations: classpath:mappers/*xml
     type-aliases-package: com.example.employee.mybatis.entity
 server:
-    port: 1230
+    port: 8080
 spring:
     application:
         name: repository-service
