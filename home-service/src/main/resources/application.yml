@@ -7,6 +7,7 @@ spring:
     nacos:
       discovery:
         server-addr: 192.172.0.201:8848
+        group: erp
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     name: defaultDataSource

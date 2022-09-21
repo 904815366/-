@@ -77,4 +77,8 @@ public class UsersRepository {
     public void modifyStatus(UsersPo po) {
         usersDao.save(po);
     }
+
+    public Optional<UsersPo> findById(Long id){
+        return usersDao.findById(id);
+    }
 }
