@@ -38,7 +38,7 @@ public class ShipmentRepository {
             //  通过转换器将fo转换成po
         Shipment po = shipmentConverter.from(addShipmentFo);
         shipmentMapper.insert(po);
-        //  给资金发openfei                     订单编号,客户id,结账账户id,本次收款
+        //  给资金发openfei                     出货单编号,客户id,结账账户id,本次收款
         fundClient.getChdMsg(po.getId(), po.getClorderId(), po.getUmoneyId(), po.getPayeemoney());
         //        生成出货单后修改订单的状态
         shipmentMapper.upCusorderStatus(po.getClorderId());

@@ -28,7 +28,7 @@ public class CusorderDto {
 
     private Long cusId;
 
-    private String statu;
+    private String status;
 
     private Long uId;
 
@@ -38,5 +38,5 @@ public class CusorderDto {
 
     private String version;
 
-    private String name;
+//    private String name;
 }
