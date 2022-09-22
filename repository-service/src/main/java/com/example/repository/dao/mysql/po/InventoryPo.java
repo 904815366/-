@@ -1,9 +1,9 @@
-package com.example.repository.entity.po;
+package com.example.repository.dao.mysql.po;
 
 import lombok.*;
 
 import javax.persistence.*;
-
+@Builder
 @Entity
 @Getter
 @Setter
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "inventory", schema = "erp")
 public class InventoryPo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(nullable = false)
     private Long id;
     @ManyToOne

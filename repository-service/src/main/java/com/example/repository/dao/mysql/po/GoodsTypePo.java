@@ -1,9 +1,9 @@
-package com.example.repository.entity.po;
+package com.example.repository.dao.mysql.po;
 
 import lombok.*;
 
 import javax.persistence.*;
-
+@Builder
 @Entity
 @Getter
 @Setter

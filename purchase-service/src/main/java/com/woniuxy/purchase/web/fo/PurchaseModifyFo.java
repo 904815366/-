@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class PurchaseModifyFo implements Serializable {
+public class    PurchaseModifyFo implements Serializable {
     @NotNull(message = "不能为空")
     private Long id;
     @NotNull(message = "不能为空")

@@ -1,7 +1,7 @@
 package com.example.repository.repository;
 
 import com.example.repository.dao.mysql.GoodsDao;
-import com.example.repository.entity.po.GoodsPo;
+import com.example.repository.dao.mysql.po.GoodsPo;
 import com.example.repository.exception.NotEnoughStockException;
 import org.springframework.stereotype.Repository;
 
