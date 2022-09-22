@@ -7,6 +7,7 @@ import com.example.repository.dao.mysql.po.InventoryEditPo;
 import com.example.repository.dao.mysql.po.InventoryPo;
 import com.example.repository.repository.InventoryRepository;
 import com.example.repository.web.controller.dto.InventoryDto;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@GlobalTransactional
 public class InventoryService {
     @Resource
     private InventoryRepository inventoryRepository;

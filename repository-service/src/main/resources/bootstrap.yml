@@ -21,7 +21,18 @@ spring:
                 username: nacos
                 password: nacos
                 server-addr: 192.172.0.201:8848
-#                group: erp
+                group: erp
+    rabbitmq:
+        publisher-confirm-type: CORRELATED #确认消息到达交换机
+        host: 192.172.0.201
+        listener:
+            direct:
+                acknowledge-mode: manual
+            simple:
+                acknowledge-mode: manual
+        password: guest
+        port: 5672
+        username: guest
 
 logging:
     pattern:
