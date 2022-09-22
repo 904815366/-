@@ -47,37 +47,20 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public boolean modifyStatus(String[] ids, Integer status,String validToken) {
-        // 获取用户信息（这里使用模拟数据）
-        String userInfo = "myuser";
-        // 根据 Token 和与用户相关的信息到 Redis 验证是否存在对应的信息
-        boolean result = utils.validToken(validToken, userInfo);
-        if(result){
-            RLock client = this.redissonClient.getLock("redissonClient");
-            client.lock();
-            purchaseRepository.modifyStatus(ids, status);
-            client.unlock();
-            return true;
-        }else {
-            return false;
-        }
+    public void modifyStatus(String[] ids, Integer status, String validToken) {
+        RLock client = this.redissonClient.getLock("modifyStatus");
+        client.lock();
+        purchaseRepository.modifyStatus(ids, status);
+        client.unlock();
     }
 
     @Override
-    public boolean deleteById(Long id,String validToken) {
-        // 获取用户信息（这里使用模拟数据）
-        String userInfo = "myuser";
-        // 根据 Token 和与用户相关的信息到 Redis 验证是否存在对应的信息
-        boolean result = utils.validToken(validToken, userInfo);
-        if (result){
-            RLock client = this.redissonClient.getLock("redissonClient");
-            client.lock();
-            purchaseRepository.deleteById(id);
-            client.unlock();
-            return true;
-        }else {
-            return false;
-        }
+    public boolean deleteById(Long id, String validToken) {
+        RLock client = this.redissonClient.getLock("deleteById");
+        client.lock();
+        boolean result = purchaseRepository.deleteById(id);
+        client.unlock();
+        return result;
     }
 
     @Override
@@ -87,8 +70,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public void modifyById(PurchasePo po, List<PurchaseDetailsPo> detailsPoList) {
-        RLock client = this.redissonClient.getLock("redissonClient");
+        System.out.println("锁住了吗 ?");
+        RLock client = this.redissonClient.getLock("modifyById");
         client.lock();
+        System.out.println("输出啊你");
         purchaseRepository.modifyPurchase(po, detailsPoList);
         client.unlock();
     }

@@ -23,7 +23,7 @@
         a.sale_money,
         a.later_money,
         a.practical_money,
-        c.username,
+        c.name as username,
         a.audit_name
         FROM
         purchase a
@@ -55,7 +55,7 @@
         <result property="practicalMoney" column="practical_money"></result>
         <result property="username" column="username"></result>
         <result property="auditName" column="audit_name"></result>
-        <collection property="goods" ofType="arraylist" fetchType="lazy"
+        <collection property="goods" ofType="arraylist" fetchType="eager"
                     select="com.woniuxy.purchase.dao.mysql.PurchaseDetailsDao.findPurchaseDetail"
                     column="id"></collection>
     </resultMap>

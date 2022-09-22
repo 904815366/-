@@ -14,7 +14,7 @@ public interface PurchaseService {
 
     PurchaseDetail findByPurchaseId(Long purchaseId);
 
-    boolean modifyStatus(String[] ids,Integer status,String validToken);
+    void modifyStatus(String[] ids,Integer status,String validToken);
 
     boolean deleteById(Long id,String validToken);
 

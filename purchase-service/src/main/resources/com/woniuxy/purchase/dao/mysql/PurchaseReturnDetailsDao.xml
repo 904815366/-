@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.purchase.dao.mysql.PurchaseReturnDetailsDao">
+    <resultMap id="goodsInfo" type= "com.woniuxy.purchase.entity.dto.ReturnGoods">
+        <id property="id" column="id"></id>
+        <result property="goodsName" column="name"></result>
+        <result property="unit" column="unit"></result>
+        <result property="num" column="num"></result>
+        <result property="originalMoney" column="original_money"></result>
+        <result property="discount" column="discount"></result>
+        <result property="saleMoney" column="sale_money"></result>
+        <result property="laterMoney" column="later_money"></result>
+        <result property="purchaseNumber" column="purchase_number"></result>
+        <result property="remark" column="remark"></result>
+    </resultMap>
+    <select id="findDetailsByReturnId" resultMap="goodsInfo">
+        SELECT
+            a.id,
+            b.NAME,
+            b.unit,
+            a.num,
+            a.original_money,
+            a.discount,
+            a.sale_money,
+            a.later_money,
+            a.purchase_number,
+            a.remark
+        FROM
+            purchase_return_details a
+                INNER JOIN goods b ON a.goods_id = b.id
+        WHERE
+            a.purchase_return_id=#{purchaseReturnId}
+    </select>
+    <delete id="deleteByReturnId">
+        delete from purchase_return_details where purchase_return_id=#{purchaseReturnId}
+    </delete>
+</mapper>

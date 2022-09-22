@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.purchase.dao.mysql.PurchaseReturnDao">
+    <resultMap id="returnList" type="com.woniuxy.purchase.entity.dto.PurchaseReturnList">
+        <id property="id" column="id"></id>
+        <result property="invoiceTime" column="invoice_time"></result>
+        <result property="invoiceNumber" column="invoice_number"></result>
+        <result property="supplierName" column="supplier_name"></result>
+        <result property="saleMoney" column="sale_money"></result>
+        <result property="laterMoney" column="later_money"></result>
+        <result property="refundAmount" column="refund_amount"></result>
+        <result property="username" column="username"></result>
+        <result property="auditName" column="audit_name"></result>
+    </resultMap>
+    <select id="findAllPurchaseReturn" resultMap="returnList">
+        SELECT
+            a.id,
+            a.invoice_time,
+            a.invoice_number,
+            b.name as supplier_name,
+            a.sale_money,
+            a.later_money,
+            a.refund_amount,
+            c.name as username,
+            a.audit_name
+        FROM
+            purchase_return a
+                INNER JOIN supplier b ON a.supplier_id = b.id
+                INNER JOIN users c ON c.id=a.u_id
+        <where>
+            <if test="invoiceNumber !='' and invoiceNumber != null">
+                and a.invoice_number =#{invoiceNumber}
+            </if>
+            <if test="status != '' and status != null">
+                and a.status =#{status}
+            </if>
+            <if test="startDateTime != null">
+                and a.invoice_time
+                BETWEEN #{startDateTime}
+            </if>
+            <if test="lastDateTiem !=null">
+                and #{lastDateTiem}
+            </if>
+        </where>
+    </select>
+    <resultMap id="return" type="com.woniuxy.purchase.entity.dto.PurchaseReturnDto">
+        <id property="id" column="id"></id>
+        <result property="invoiceTime" column="invoice_time"></result>
+        <result property="invoiceNumber" column="invoice_number"></result>
+        <result property="supplierName" column="supplier_name"></result>
+        <result property="discount" column="discount"></result>
+        <result property="saleMoney" column="sale_money"></result>
+        <result property="laterMoney" column="later_money"></result>
+        <result property="account" column="account"></result>
+        <result property="debtMoney" column="debt_money"></result>
+        <result property="refundAmount" column="refund_amount"></result>
+        <result property="username" column="username"></result>
+        <result property="auditName" column="audit_name"></result>
+        <collection property="goodsList" ofType="arraylist" fetchType="eager" column="id"
+                    select="com.woniuxy.purchase.dao.mysql.PurchaseReturnDetailsDao.findDetailsByReturnId">
+        </collection>
+    </resultMap>
+    <select id="findPurchaseReturnById" resultMap="return">
+        SELECT
+            a.id,
+            a.invoice_time,
+            a.invoice_number,
+            b.NAME AS supplier_name,
+            a.discount,
+            a.sale_money,
+            a.later_money,
+            a.refund_amount,
+            d.account,
+            a.debt_money,
+            c.NAME AS username,
+            a.audit_name
+        FROM
+            purchase_return a
+                INNER JOIN supplier b ON a.supplier_id = b.id
+                INNER JOIN users c ON c.id = a.u_id
+                INNER JOIN settlement_account d on a.settlement_account_id=d.id
+        where
+            a.active=1 and
+            a.id=#{id}
+    </select>
+    <update id="deleteById">
+        UPDATE purchase_return set active=0 where id=#{id} and active=1
+    </update>
+</mapper>

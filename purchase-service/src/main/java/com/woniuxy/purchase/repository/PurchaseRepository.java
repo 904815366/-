@@ -35,19 +35,18 @@ public class PurchaseRepository {
     public PurchaseDetail findByPurchaseId(Long purchaseId) {
         PurchaseDetail purchaseDetail = null;
         try {
-            purchaseDetail = purchaseRedisDao.findById(purchaseId).orElseThrow(NullPointerException::new);
+            purchaseDetail = purchaseRedisDao.findById(purchaseId).get();
             System.out.println("从redis查的!");
 
         } catch (Exception e) {
             e.printStackTrace();
             purchaseDetail = purchaseDao.findPracticalById(purchaseId);
-            System.out.println(purchaseDetail);
             purchaseRedisDao.save(purchaseDetail);
         }
         return purchaseDetail;
     }
 
-    public void modifyStatus(String[] ids,Integer status){
+    public void modifyStatus(String[] ids, Integer status) {
         for (String id : ids) {
             Long pid = Long.parseLong(id);
             purchaseRedisDao.findById(pid).ifPresent(new Consumer<PurchaseDetail>() {
@@ -56,45 +55,54 @@ public class PurchaseRepository {
                     purchaseRedisDao.deleteById(pid);
                 }
             });
-        }
-        purchaseDao.ModifyById(ids, status);
-        if(status==1){
-            for (int i = ids.length - 1; i >= 0; i--) {
-                PurchasePo purchasePo = purchaseDao.selectById(ids[i]);
-                purchasePo.getInvoiceTime();
-                List<PurchaseDetail> detail = purchaseDetailsDao.findPurchaseDetail(Integer.parseInt(ids[i]));
-                //发openfeign生成付款单
-                int suppilerId = purchasePo.getSupplierId().intValue();
-                int settlementAccountId = purchasePo.getSettlementAccountId().intValue();
-                double laterMoney = purchasePo.getLaterMoney().doubleValue();
-                int id = purchasePo.getId().intValue();
-                ResponseResult<Void> cgdMsg = fundClient.getCgdMsg(id, suppilerId, settlementAccountId, laterMoney);
-                if(cgdMsg.getCode()==200){
-                    //发消息给仓库入库
-                    PurchaseDetail practicalById = purchaseDao.findPracticalById(Long.parseLong(ids[i]));
-                    String invoiceNumber = practicalById.getInvoiceNumber();
-                    String invoiceTime = practicalById.getInvoiceTime();
-                    List<Integer> collect = practicalById.getGoods().stream().map(Goods::getId).collect(Collectors.toList());
-                    String json="{\"invoiceNumber\":\""+invoiceNumber+"\",\"invoiceTime\":\""+invoiceTime+"\",\"goodsId\":\""+collect+"\"}";
-                    MessagePo messagePo = new MessagePo(null, "", "add-storage",json , 5, "A");
-                    messageDao.insert(messagePo);
+            PurchasePo po = purchaseDao.selectById(pid);
+            if (po != null) {
+                purchaseDao.ModifyById(ids, status);
+                if (status == 1) {
+                    for (int i = ids.length - 1; i >= 0; i--) {
+                        PurchasePo purchasePo = purchaseDao.selectById(ids[i]);
+                        purchasePo.getInvoiceTime();
+                        List<PurchaseDetail> detail = purchaseDetailsDao.findPurchaseDetail(Integer.parseInt(ids[i]));
+                        //发openfeign生成付款单
+                        Long suppilerId = purchasePo.getSupplierId();
+                        Long settlementAccountId = purchasePo.getSettlementAccountId();
+                        double laterMoney = purchasePo.getLaterMoney().doubleValue();
+                        Long poId = purchasePo.getId();
+                        ResponseResult<Void> cgdMsg = fundClient.getCgdMsg(poId, suppilerId, settlementAccountId, laterMoney);
+                        if (cgdMsg.getCode() == 200) {
+                            //发消息给仓库入库
+                            PurchaseDetail practicalById = purchaseDao.findPracticalById(Long.parseLong(ids[i]));
+                            String invoiceNumber = practicalById.getInvoiceNumber();
+                            String invoiceTime = practicalById.getInvoiceTime();
+                            List<Integer> collect = practicalById.getGoods().stream().map(Goods::getId).collect(Collectors.toList());
+                            List<Integer> nums = practicalById.getGoods().stream().map(Goods::getNum).collect(Collectors.toList());
+                            String json = "{\" \":\"" + invoiceNumber + "\",\"invoiceTime\":\"" + invoiceTime + "\",\"goodsId\":\"" + collect +"\",\"num\":"+nums+ "\"}";
+                            MessagePo messagePo = new MessagePo(null, "", "add-storage", json, 5, "A");
+                            messageDao.insert(messagePo);
+                        }
+                    }
                 }
             }
         }
     }
 
-    public void deleteById(Long id){
+    public boolean deleteById(Long id) {
         purchaseRedisDao.findById(id).ifPresent(new Consumer<PurchaseDetail>() {
             @Override
             public void accept(PurchaseDetail purchaseDetail) {
                 purchaseRedisDao.deleteById(id);
             }
         });
-        purchaseDao.deleteById(id);
-        purchaseDetailsDao.deleteByPurchaseId(id);
+        int row = purchaseDao.deleteById(id);
+        if (row == 0) {
+            return false;
+        } else {
+            purchaseDetailsDao.deleteByPurchaseId(id);
+            return true;
+        }
     }
 
-    public void addPurchase(PurchasePo po, List<PurchaseDetailsPo> detailsPo){
+    public void addPurchase(PurchasePo po, List<PurchaseDetailsPo> detailsPo) {
         purchaseDao.insert(po);
         for (int i = 0; i < detailsPo.size(); i++) {
             detailsPo.get(i).setPurchaseId(po.getId());
@@ -102,14 +110,12 @@ public class PurchaseRepository {
         purchaseDetailsDao.purchaseDetailsAdd(detailsPo);
     }
 
-    public void modifyPurchase(PurchasePo po, List<PurchaseDetailsPo> detailsPo){
-        System.out.println(po);
+    public void modifyPurchase(PurchasePo po, List<PurchaseDetailsPo> detailsPo) {
         PurchasePo purchasePo = purchaseDao.selectById(po.getId());
-        System.out.println(purchasePo);
         //对比入参版本号和出参版本号是否一致
-        if(po.getVersion()==purchasePo.getVersion()){
+        if (po.getVersion() == purchasePo.getVersion()) {
             //修改版本号
-            po.setVersion(po.getVersion()+1);
+            po.setVersion(po.getVersion() + 1);
             //修改内容
             purchaseDao.updateById(po);
             //修改订单详情
