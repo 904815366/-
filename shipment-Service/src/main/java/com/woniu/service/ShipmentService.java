@@ -16,4 +16,7 @@ public interface ShipmentService extends IService<Shipment> {
 
     void insertShipment(AddShipmentFo addShipmentFo);
 
+    //    修改出货状态
+    void upShipmentStatus(Long id);
+
 }

@@ -9,11 +9,11 @@
             <if test="cid!=null and cid!=''">
                 cd.id=#{cid}
             </if>
-            <if test="stareTime!=null and stareTime!=''">
+            <if test="stareTime!=null">
               and  cd.ordertime>#{stareTime}
             </if>
 
-            <if test="endTime!=null and endTime!=''">
+            <if test="endTime!=null">
              and cd.ordertime &lt; #{endTime}
             </if>
 

@@ -3,16 +3,21 @@ package com.woniu.repository;
 import com.example.fundserviceapi.client.FundClient;
 import com.example.repository.api.client.RepositoryClient;
 import com.example.util.ResponseResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.MyException;
 import com.woniu.dao.ShipmentMapper;
 import com.woniu.dao.po.Shipment;
 import com.woniu.repository.converter.ShipmentConverter;
+import com.woniu.repository.dto.ShipmentDto;
 import com.woniu.web.fo.AddShipmentFo;
+import com.woniu.web.fo.ShpimentFo;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Repository
 public class ShipmentRepository {
@@ -51,4 +56,18 @@ public class ShipmentRepository {
             }
         });
     }
+
+//    修改出货单的状态，是否交钱了
+    public void upShoipnmentStatus(Long id){
+        shipmentMapper.upShipmentStatus(id);
+    }
+
+//    分页待条件查询出货列表
+    public PageInfo<ShipmentDto> getShipments(ShpimentFo shpimentFo){
+        PageHelper.startPage(shpimentFo.getPageNum(),shpimentFo.getPageSize());
+        List<ShipmentDto> shipmentDtos = shipmentMapper.selShipments(shpimentFo);
+        PageInfo<ShipmentDto> shipmentDtoPageInfo = new PageInfo<>(shipmentDtos);
+        return shipmentDtoPageInfo;
+    }
+
 }
