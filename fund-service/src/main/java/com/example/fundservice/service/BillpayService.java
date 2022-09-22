@@ -6,10 +6,12 @@ import com.example.fundservice.dao.mysql.po.BillmsgcgdPo;
 import com.example.fundservice.dao.mysql.po.BillpayPo;
 import com.example.fundservice.web.controller.dto.BillpayDto;
 import com.example.fundservice.web.controller.dto.BillpayListDto;
+import com.example.homeserviceapi.fo.SettlementAccountFo;
 import com.example.homeserviceapi.http.SettlementServiceClient;
 import com.example.homeserviceapi.http.SupplierServiceClient;
 import com.example.homeserviceapi.http.UsersServiceClient;
 import com.example.homeserviceapi.utils.ResponseResult;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@GlobalTransactional
 public class BillpayService {
     @Resource
     private BillpayDao billpayDao;
@@ -64,7 +67,16 @@ public class BillpayService {
     }
 
     public Integer addBillpay(BillpayPo billpayPo) {
-        return billpayDao.addBillpay(billpayPo);
+        SettlementAccountFo saFo = new SettlementAccountFo();
+        saFo.setId(billpayPo.getAccid());
+        saFo.setBalance(-billpayPo.getFaccount());
+        try {
+            settlementServiceClient.modifySettlement(saFo);
+            billpayDao.addBillpay(billpayPo);
+            return 1;
+        } catch (Exception e){
+            return 000;
+        }
     }
 
     public Integer addCgd(BillmsgcgdPo billmsgcgdPo) {

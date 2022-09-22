@@ -6,11 +6,12 @@ import com.example.fundservice.dao.mysql.po.BillmsgchdPo;
 import com.example.fundservice.dao.mysql.po.BillrecePo;
 import com.example.fundservice.web.controller.dto.BillreceDto;
 import com.example.fundservice.web.controller.dto.BillreceListDto;
+import com.example.homeserviceapi.fo.SettlementAccountFo;
 import com.example.homeserviceapi.http.CustomersServiceClient;
 import com.example.homeserviceapi.http.SettlementServiceClient;
-import com.example.homeserviceapi.http.SupplierServiceClient;
 import com.example.homeserviceapi.http.UsersServiceClient;
 import com.example.homeserviceapi.utils.ResponseResult;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@GlobalTransactional
 public class BillreceService {
     @Resource
     private BillreceDao billreceDao;
@@ -65,9 +67,17 @@ public class BillreceService {
     }
 
     public Integer addBillrece(BillrecePo billrecePo) {
-        return billreceDao.addBillrece(billrecePo);
+        SettlementAccountFo saFo = new SettlementAccountFo();
+        saFo.setId(billrecePo.getAccid());
+        saFo.setBalance(billrecePo.getSaccount());
+        try {
+            settlementServiceClient.modifySettlement(saFo);
+            billreceDao.addBillrece(billrecePo);
+            return 1;
+        } catch (Exception e){
+            return 000;
+        }
     }
-
     public Integer addChd(BillmsgchdPo billmsgchdPo) {
         return billmsgchdDao.addChd(billmsgchdPo);
     }
