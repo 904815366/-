@@ -1,11 +1,11 @@
 package com.example.repository.web.controller;
 import com.example.homeservice.web.dto.PageDto;
 import com.example.repository.dao.mysql.po.InventoryEditPo;
-import com.example.repository.dao.mysql.po.InventoryPo;
 import com.example.repository.service.InventoryService;
 import com.example.repository.util.ResponseResult;
 import com.example.repository.web.controller.dto.InventoryDto;
 import com.example.repository.web.fo.InventoryEditFo;
+import com.example.repository.web.fo.AddShipFo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,5 +35,13 @@ public class InventoryController {
         inventoryService.edit(editFoPoList);
         return new ResponseResult<Void>(200,"success",null);
     }
-
+    @PostMapping("/inventory/addship")
+    public ResponseResult<Void> addShip(AddShipFo addShipFo){
+        String id = addShipFo.getId();
+        Long goodsid = addShipFo.getGoodsid();
+        Integer num = addShipFo.getNum();
+        String time = addShipFo.getTime();
+        inventoryService.addShip(id,num,goodsid,time);
+        return new ResponseResult<>(200,"success",null);
+    }
 }

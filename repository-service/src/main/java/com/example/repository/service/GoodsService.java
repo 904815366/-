@@ -15,10 +15,8 @@ public class GoodsService {
     private GoodsRepository goodsRepository;
 
 
-    public void releaseStock(Long id, Integer num) {
-        goodsRepository.releaseStock(id,num);
+    public void releaseStock(Long goodsid, Integer num) {
+        goodsRepository.releaseStock(goodsid,num);
     }
-    public void getByTypeidAndName(){
 
-    }
 }

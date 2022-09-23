@@ -25,6 +25,10 @@ public class InventoryService {
     private InventoryRepository inventoryRepository;
     @Resource
     private GoodsTypeService goodsTypeService;
+    @Resource
+    private GoodsService goodsService;
+    @Resource
+    private StockDetailService stockDetailService;
 
     public PageDto<InventoryDto> getInventoryList(Integer pageNum, Integer pageSize, Long typeid, String searchName) {
         GoodsTypePo type = new GoodsTypePo();
@@ -43,5 +47,10 @@ public class InventoryService {
     public void edit(List<InventoryEditPo> poList) {
             inventoryRepository.edit(poList);
 
+    }
+
+    public void addShip(String id, Integer num, Long goodsid, String time) {
+        goodsService.releaseStock(goodsid, num);
+        stockDetailService.addShip(id,num,goodsid,time);
     }
 }
