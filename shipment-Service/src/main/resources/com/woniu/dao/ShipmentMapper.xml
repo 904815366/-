@@ -5,4 +5,30 @@
         update cusorder set status="2" where id=#{cid}
     </update>
 
+    <update id="upShipmentStatus">
+        update shipment set status="2" where id=#{id}
+    </update>
+
+    <select id="selShipments" resultType="com.woniu.repository.dto.ShipmentDto">
+        select sh.*,cu.u_id,u.name from shipment sh inner join cusorder cu on sh.clorder_id=cu.id
+                inner join users u on u.id=cu.u_id
+            <where>
+                <if test="id!=null and id!=''">
+                    sh.id=#{id}
+                </if>
+                <if test="stareTime!=null">
+                    and attime >#{stareTime}
+                </if>
+                <if test="endTime=null">
+                    and attime &lt; #{endTime}
+                </if>
+                <if test="uid=null and uid!=''">
+                    and cu.u_id=#{uid}
+                </if>
+                <if test="status=null and status!=''">
+                    and sh.status=#{status}
+                </if>
+            </where>
+    </select>
+
 </mapper>

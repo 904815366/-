@@ -29,4 +29,9 @@ public class ShipmentServiceImpl extends ServiceImpl<ShipmentMapper, Shipment> i
     public void insertShipment(AddShipmentFo addShipmentFo) {
         shipmentRepository.addShipment(addShipmentFo);
     }
+
+    @Override
+    public void upShipmentStatus(Long id) {
+        shipmentRepository.upShoipnmentStatus(id);
+    }
 }

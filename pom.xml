@@ -35,6 +35,7 @@
         <module>repository-service</module>
         <module>shipment-Service</module>
         <module>spring-gateway-gateway</module>
+        <module>shipment-service-api</module>
 
     </modules>
 

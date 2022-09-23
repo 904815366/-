@@ -62,11 +62,15 @@ public class CusorderServiceImpl extends ServiceImpl<CusorderMapper, Cusorder> i
 //    @Transactional
     public void addCus(AddCusAndDetailFo addCusAndDetailFo) {
         Cusorder cusorder = cusorderAndDetailFoConverter.from(addCusAndDetailFo);
+//        如果Id为空就是新增
         if (ObjectUtils.isEmpty(addCusAndDetailFo.getId())){
             cusorderRepository.AddCus(cusorder);
+        }else {
+            cusorderRepository.upcus(cusorder);
         }
-       cusorderRepository.upcus(cusorder);
+
         addCusAndDetailFo.getCusOrderDetails().forEach(e->{
+            e.setOrderId(cusorder.getId());
             cusorderDetailRepository.AddCusDetail(e);
         });
     }

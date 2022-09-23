@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -28,7 +29,7 @@ public class CusorderDto {
 
     private Long cusId;
 
-    private String statu;
+    private String status;
 
     private Long uId;
 
@@ -38,5 +39,5 @@ public class CusorderDto {
 
     private String version;
 
-    private String name;
+//    private String name;
 }
