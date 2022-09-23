@@ -2,6 +2,7 @@ package com.woniu;
 
 import com.example.fundserviceapi.client.FundClient;
 import com.example.repository.api.client.RepositoryClient;
+import com.example.util.ResponseResult;
 import com.woniu.dao.CusorderMapper;
 import com.woniu.dao.ShipmentMapper;
 import com.woniu.web.fo.CusorderFo;
@@ -14,8 +15,6 @@ import java.time.LocalDateTime;
 
 @SpringBootTest
 class ShipmentServiceApplicationTests {
-
-
 
 
     @Test

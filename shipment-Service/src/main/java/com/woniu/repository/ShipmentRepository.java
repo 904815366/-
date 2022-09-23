@@ -49,7 +49,7 @@ public class ShipmentRepository {
         shipmentMapper.upCusorderStatus(po.getClorderId());
         //        给仓库减库存
         addShipmentFo.getGoodsFos().forEach(e->{
-            ResponseResult<Void> msg = repositoryClient.releaseStock(e.getId(), e.getNum(),"CH-"+po.getId().toString(),po.getAttime().toString());
+            ResponseResult<Void> msg = repositoryClient.addShip(e.getId(), e.getNum(),"CH-"+po.getId().toString(),po.getAttime().toString());
             int code = msg.getCode();
             if (code!=200){
                 throw new MyException("库存不足");
