@@ -5,16 +5,18 @@
         update cusorder set status="2" where id=#{cid}
     </update>
 
+<!--    修改出货单的状态-->
     <update id="upShipmentStatus">
-        update shipment set status="2" where id=#{id}
+        update shipment set status=#{status} where id=#{id}
     </update>
 
     <select id="selShipments" resultType="com.woniu.repository.dto.ShipmentDto">
         select sh.*,cu.u_id,u.name from shipment sh inner join cusorder cu on sh.clorder_id=cu.id
                 inner join users u on u.id=cu.u_id
             <where>
+                       sh.status !='3'
                 <if test="id!=null and id!=''">
-                    sh.id=#{id}
+                  and sh.id=#{id}
                 </if>
                 <if test="stareTime!=null">
                     and attime >#{stareTime}
@@ -30,5 +32,4 @@
                 </if>
             </where>
     </select>
-
 </mapper>

@@ -48,7 +48,7 @@ public class ShipmentController {
             if (ObjectUtils.isEmpty(byId)) {
                 return new ResponseResult<>(500, "ERRO", "id不存在");
             }
-            service.upShipmentStatus(id);
+            service.upShipmentStatus(id,"2");
             return new ResponseResult<>(200, "OK", "修改成功");
         } catch (Exception e) {
             e.printStackTrace();

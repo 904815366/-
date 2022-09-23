@@ -49,7 +49,7 @@ public class ShipmentRepository {
         shipmentMapper.upCusorderStatus(po.getClorderId());
         //        给仓库减库存
         addShipmentFo.getGoodsFos().forEach(e->{
-            ResponseResult<Void> msg = repositoryClient.releaseStock(e.getId(), e.getNum());
+            ResponseResult<Void> msg = repositoryClient.releaseStock(e.getId(), e.getNum(),"CH-"+po.getId().toString(),po.getAttime().toString());
             int code = msg.getCode();
             if (code!=200){
                 throw new MyException("库存不足");
@@ -58,8 +58,8 @@ public class ShipmentRepository {
     }
 
 //    修改出货单的状态，是否交钱了
-    public void upShoipnmentStatus(Long id){
-        shipmentMapper.upShipmentStatus(id);
+    public void upShoipnmentStatus(Long id,String status){
+        shipmentMapper.upShipmentStatus(id,status);
     }
 
 //    分页待条件查询出货列表

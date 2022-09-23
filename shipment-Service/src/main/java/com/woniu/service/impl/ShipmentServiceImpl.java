@@ -25,13 +25,13 @@ public class ShipmentServiceImpl extends ServiceImpl<ShipmentMapper, Shipment> i
     @Resource
     private ShipmentRepository shipmentRepository;
 
-    @Override
+    @Override//新增出货单
     public void insertShipment(AddShipmentFo addShipmentFo) {
         shipmentRepository.addShipment(addShipmentFo);
     }
 
     @Override
-    public void upShipmentStatus(Long id) {
-        shipmentRepository.upShoipnmentStatus(id);
+    public void upShipmentStatus(Long id,String status) {
+        shipmentRepository.upShoipnmentStatus(id,status);
     }
 }
