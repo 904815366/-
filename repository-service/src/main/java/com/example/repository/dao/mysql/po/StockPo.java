@@ -10,13 +10,15 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "inventory", schema = "stock")
+@Table(name = "stock", schema = "erp")
 public class StockPo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
-    private Long goodsid;   //商品id
+    @ManyToOne
+    @JoinColumn(name = "goodsid")
+    private GoodsPo goods;
     private Integer innum;  //入库数量
     private Integer outnum; //出库数量
     private Integer status; //状态

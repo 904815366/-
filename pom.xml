@@ -29,7 +29,6 @@
         <module>home-service-api</module>
         <module>shipment-service-api</module>
         <module>purchase-service-api</module>
-
         <module>auth-service</module>
         <module>fund-service</module>
         <module>home-service</module>

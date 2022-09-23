@@ -22,7 +22,7 @@ public class StockDetailRepository {
                 .num(num)
                 .type(1)
                 .status(0)
-                .time(LocalDateTime.parse(time))
+                .time(LocalDateTime.parse(time,df))
                 .build();
         stockDetailDao.save(detailPo);
     }
