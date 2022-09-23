@@ -34,6 +34,6 @@ public interface ShipmentMapper extends BaseMapper<Shipment> {
 //    修改出货状态
     void upShipmentStatus(Long id);
 
-    List<ShipmentDto> selShipments(ShpimentFo shpimentFo);
+
 
 }

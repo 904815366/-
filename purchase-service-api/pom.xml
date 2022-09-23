@@ -7,7 +7,6 @@
   <groupId>com.woniuxy</groupId>
   <artifactId>purchase-service-api</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
 
   <name>purchase-service-api Maven Webapp</name>
   <!-- FIXME change it to the project's website -->

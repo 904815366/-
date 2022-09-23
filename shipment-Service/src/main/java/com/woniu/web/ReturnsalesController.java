@@ -1,5 +1,7 @@
 package com.woniu.web;
 
+import com.example.util.ResponseResult;
+import com.woniu.anon.IdempotentToken;
 import com.woniu.service.ReturnsalesService;
 import com.woniu.service.ShipmentService;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,5 +18,8 @@ public class ReturnsalesController {
     private ShipmentService shipmentService;
 
 //    新增退货单
-//    public respos
+    @IdempotentToken
+    public ResponseResult<String> addReturnSales(){
+        return null;
+    }
 }
