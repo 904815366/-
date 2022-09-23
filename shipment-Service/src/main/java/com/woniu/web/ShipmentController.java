@@ -10,10 +10,7 @@ import com.woniu.service.ShipmentService;
 import com.woniu.web.fo.AddShipmentFo;
 import com.woniu.web.fo.ShpimentFo;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -42,7 +39,7 @@ public class ShipmentController {
 
 //    修改出货订单的状态查看是否收到款
     @PostMapping("/upShipmentStatus")
-    public ResponseResult<String> setShiStatus(Long id){
+    public ResponseResult<String> setShiStatus(@RequestParam("chdid")Long id){
         try {
             Shipment byId = service.getById(id);
             if (ObjectUtils.isEmpty(byId)) {

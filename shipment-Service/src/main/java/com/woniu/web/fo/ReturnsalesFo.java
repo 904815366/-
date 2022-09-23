@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 public class ReturnsalesFo {
     private Long id;
-
+// 出货单编号
     private Long shipmentId;
 
     private String detailId;
