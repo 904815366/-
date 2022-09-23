@@ -3,16 +3,21 @@ package com.woniu.repository;
 import com.example.fundserviceapi.client.FundClient;
 import com.example.repository.api.client.RepositoryClient;
 import com.example.util.ResponseResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.MyException;
 import com.woniu.dao.ShipmentMapper;
 import com.woniu.dao.po.Shipment;
 import com.woniu.repository.converter.ShipmentConverter;
+import com.woniu.repository.dto.ShipmentDto;
 import com.woniu.web.fo.AddShipmentFo;
+import com.woniu.web.fo.ShpimentFo;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Repository
 public class ShipmentRepository {
@@ -38,7 +43,7 @@ public class ShipmentRepository {
             //  通过转换器将fo转换成po
         Shipment po = shipmentConverter.from(addShipmentFo);
         shipmentMapper.insert(po);
-        //  给资金发openfei                     订单编号,客户id,结账账户id,本次收款
+        //  给资金发openfei                     出货单编号,客户id,结账账户id,本次收款
         fundClient.getChdMsg(po.getId(), po.getClorderId(), po.getUmoneyId(), po.getPayeemoney());
         //        生成出货单后修改订单的状态
         shipmentMapper.upCusorderStatus(po.getClorderId());
@@ -51,4 +56,18 @@ public class ShipmentRepository {
             }
         });
     }
+
+//    修改出货单的状态，是否交钱了
+    public void upShoipnmentStatus(Long id){
+        shipmentMapper.upShipmentStatus(id);
+    }
+
+//    分页待条件查询出货列表
+    public PageInfo<ShipmentDto> getShipments(ShpimentFo shpimentFo){
+        PageHelper.startPage(shpimentFo.getPageNum(),shpimentFo.getPageSize());
+        List<ShipmentDto> shipmentDtos = shipmentMapper.selShipments(shpimentFo);
+        PageInfo<ShipmentDto> shipmentDtoPageInfo = new PageInfo<>(shipmentDtos);
+        return shipmentDtoPageInfo;
+    }
+
 }

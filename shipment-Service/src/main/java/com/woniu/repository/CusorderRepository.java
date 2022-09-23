@@ -24,7 +24,7 @@ public class CusorderRepository {
 
 //    新增订单方法
     public void AddCus(Cusorder cusorder) {
-    cusorderMapper.insert(cusorder);
+        cusorderMapper.insert(cusorder);
     }
 
 //    修改地址操作
