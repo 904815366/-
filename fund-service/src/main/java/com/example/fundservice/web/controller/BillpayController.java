@@ -74,13 +74,14 @@ public class BillpayController {
     public ResponseResult<Void> getCgdMsg(@RequestParam("cgdid")Long cgdid,
                                           @RequestParam("gysid")Long gysid,
                                           @RequestParam("accid")Long accid,
-                                          @RequestParam("account")Double account){
+                                          @RequestParam("account")Double account,
+                                          @RequestParam("type")String type){
 
         BillmsgcgdPo cgd = billpayService.getCgd(cgdid);
         if (cgd!=null){
             return new ResponseResult<>(0, "重复发送");
         }
-        BillmsgcgdPo billmsgcgdPo = new BillmsgcgdPo(cgdid, gysid, accid, account,"未审核");
+        BillmsgcgdPo billmsgcgdPo = new BillmsgcgdPo(cgdid, gysid, accid, account,"未审核",type);
         Integer addCgd = billpayService.addCgd(billmsgcgdPo);
         if (addCgd==1){
             return new ResponseResult<>(200,"已保存");

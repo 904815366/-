@@ -15,7 +15,7 @@ public interface BillmsgchdDao extends BaseMapper<BillmsgchdPo> {
     @Update("update billmsgchd set status='已通过' where chdid = #{chdid}")
     void delChd(@Param("chdid") Long chdid);
 
-    @Insert("insert into billmsgchd values (#{chdid},#{cstid},#{accid},#{account},#{status})")
+    @Insert("insert into billmsgchd values (#{chdid},#{cstid},#{accid},#{account},#{status},#{type})")
     Integer addChd(BillmsgchdPo billmsgchdPo);
 
     @Select("select cstid from billmsgchd where chdid=#{chdid}")

@@ -76,12 +76,13 @@ public class BillreceController {
     public ResponseResult<Void> getChdMsg(@RequestParam("chdid")Long chdid,
                                           @RequestParam("cstid")Long cstid,
                                           @RequestParam("accid")Long accid,
-                                          @RequestParam("account")Double account){
+                                          @RequestParam("account")Double account,
+                                          @RequestParam("type")String type){
         BillmsgchdPo chd = billreceService.getChd(chdid);
         if (chd!=null){
             return new ResponseResult<>(0, "重复发送");
         }
-        BillmsgchdPo billmsgchdPo = new BillmsgchdPo(chdid, cstid, accid, account,"未审核");
+        BillmsgchdPo billmsgchdPo = new BillmsgchdPo(chdid, cstid, accid, account,"未审核",type);
         Integer addChd = billreceService.addChd(billmsgchdPo);
         if (addChd==1){
             return new ResponseResult<>(200,"已保存");
