@@ -48,10 +48,11 @@ public class BillreceController {
 
             Integer add = billreceService.addBillrece(billrecePo);
             if (add==1){
+                billreceService.updShip(chdid);
                 billreceService.delChd(chdid);
                 return new ResponseResult<Void>(200, "OK" );
             }else {
-                return new ResponseResult<Void>(00, "系统维护中" );
+                return new ResponseResult<Void>(900, "系统维护中" );
             }
         }
     }

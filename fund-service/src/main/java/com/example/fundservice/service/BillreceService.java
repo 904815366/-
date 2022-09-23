@@ -11,6 +11,7 @@ import com.example.homeserviceapi.http.CustomersServiceClient;
 import com.example.homeserviceapi.http.SettlementServiceClient;
 import com.example.homeserviceapi.http.UsersServiceClient;
 import com.example.homeserviceapi.utils.ResponseResult;
+import com.example.shipment.api.ShipmentClient;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,8 @@ public class BillreceService {
     private SettlementServiceClient settlementServiceClient;//结算账户
     @Resource
     private UsersServiceClient usersServiceClient;//用户
+    @Resource
+    private ShipmentClient shipmentClient;//出货
 
     public List<BillreceListDto> billreceList() {
         List<BillreceListDto> billreceListDtos = new ArrayList<>();
@@ -106,4 +109,9 @@ public class BillreceService {
             return billreceDto;
         }
     }
+
+    public void updShip(Long chdid) {
+        com.example.util.ResponseResult<String> updShipRes = shipmentClient.setShiStatus(chdid);
+    }
+
 }

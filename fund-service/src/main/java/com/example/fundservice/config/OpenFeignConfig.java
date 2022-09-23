@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableFeignClients(basePackages = {"com.example.homeserviceapi.http"})
+@EnableFeignClients(basePackages = {"com.example.homeserviceapi.http","com.example.shipment.api"})
 public class OpenFeignConfig {
     @Bean
     public Logger.Level feignLoggerLevel() {
