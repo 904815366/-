@@ -19,6 +19,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SpringBootTest
 class PurchaseDaoTest {
@@ -26,11 +27,13 @@ class PurchaseDaoTest {
     private PurchaseDao purchaseDao;
     @Test
     void demo() throws JsonProcessingException {
-        PurchaseDetail practicalById = purchaseDao.findPracticalById(1L);
+        PurchaseDetail practicalById = purchaseDao.findPracticalById(8L);
         String invoiceNumber = practicalById.getInvoiceNumber();
         String invoiceTime = practicalById.getInvoiceTime();
-        List<Integer> collect = practicalById.getGoods().stream().map(Goods::getId).collect(Collectors.toList());
-        String json="{\"invoiceNumber\":\""+invoiceNumber+"\",\"invoiceTime\":\""+invoiceTime+"\",\"goodsId\":\""+collect+"\"}";
+        List<String> collect = practicalById.getGoods().stream().filter(goods -> goods.getId() != null && goods.getNum() != null)
+                .map(goods -> String.format("%s-%s", goods.getId(), goods.getNum()))
+                .collect(Collectors.toList());
+        String json="{\"invoiceNumber\":\""+invoiceNumber+"\",\"invoiceTime\":\""+invoiceTime+"\",\"goods\":\""+collect+"\"}";
         System.out.println(json);
     }
 }

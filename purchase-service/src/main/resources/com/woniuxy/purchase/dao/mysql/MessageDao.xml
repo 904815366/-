@@ -14,4 +14,7 @@
     <select id="selectMessageAll" resultMap="message">
         select * from message where status !="C" and retry_count !=0
     </select>
+    <update id="modifyByIdStatus">
+        UPDATE message set status=#{status} where id=#{id}
+    </update>
 </mapper>

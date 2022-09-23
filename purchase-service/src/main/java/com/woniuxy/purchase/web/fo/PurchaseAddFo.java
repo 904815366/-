@@ -17,7 +17,6 @@ public class PurchaseAddFo implements Serializable {
     @NotNull(message = "不能为空")
     private Integer supplierId;
     private LocalDateTime invoiceTime;
-    @NotNull(message = "不能为空")
     private String invoiceNumber;
     @NotNull(message = "不能为空")
     private List<PurchaseDetailFo> purchaseDetailFoList;

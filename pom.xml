@@ -36,6 +36,7 @@
         <module>shipment-Service</module>
         <module>spring-gateway-gateway</module>
         <module>shipment-service-api</module>
+        <module>purchase-service-api</module>
 
     </modules>
 

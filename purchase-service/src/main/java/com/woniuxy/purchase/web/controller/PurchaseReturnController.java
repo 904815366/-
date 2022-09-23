@@ -87,4 +87,9 @@ public class PurchaseReturnController {
             return new ResponseResult<>(400,"erro","参数不对!");
         }
     }
+
+    public ResponseResult<String> modifySatuas(){
+        return null;
+    }
+
 }

@@ -74,9 +74,10 @@ public class PurchaseRepository {
                             PurchaseDetail practicalById = purchaseDao.findPracticalById(Long.parseLong(ids[i]));
                             String invoiceNumber = practicalById.getInvoiceNumber();
                             String invoiceTime = practicalById.getInvoiceTime();
-                            List<Integer> collect = practicalById.getGoods().stream().map(Goods::getId).collect(Collectors.toList());
-                            List<Integer> nums = practicalById.getGoods().stream().map(Goods::getNum).collect(Collectors.toList());
-                            String json = "{\" \":\"" + invoiceNumber + "\",\"invoiceTime\":\"" + invoiceTime + "\",\"goodsId\":\"" + collect +"\",\"num\":"+nums+ "\"}";
+                            List<String> collect = practicalById.getGoods().stream().filter(goods -> goods.getId() != null && goods.getNum() != null)
+                                    .map(goods -> String.format("%s-%s", goods.getId(), goods.getNum()))
+                                    .collect(Collectors.toList());
+                            String json = "{\" \":\"" + invoiceNumber + "\",\"invoiceTime\":\"" + invoiceTime + "\",\"goodsId\":\"" + collect + "\"}";
                             MessagePo messagePo = new MessagePo(null, "", "add-storage", json, 5, "A");
                             messageDao.insert(messagePo);
                         }

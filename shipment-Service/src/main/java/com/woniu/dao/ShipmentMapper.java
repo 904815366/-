@@ -10,6 +10,8 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -26,6 +28,11 @@ public interface ShipmentMapper extends BaseMapper<Shipment> {
 
     //    修改出货状态
     void upShipmentStatus(@Param("id") Long id,@Param("status") String status);
+
+    List<ShipmentDto> selShipments(ShpimentFo shpimentFo);
+
+//    修改出货状态
+    void upShipmentStatus(Long id);
 
     List<ShipmentDto> selShipments(ShpimentFo shpimentFo);
 
