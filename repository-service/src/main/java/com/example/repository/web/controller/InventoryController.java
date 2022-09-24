@@ -39,6 +39,7 @@ public class InventoryController {
     public ResponseResult<Void> addShip(AddShipFo addShipFo){
         String id = addShipFo.getId();
         Long goodsid = addShipFo.getGoodsid();
+        System.out.println(goodsid);
         Integer num = addShipFo.getNum();
         String time = addShipFo.getTime();
         inventoryService.addShip(id,num,goodsid,time);

@@ -1,7 +1,12 @@
 package com.example.repository.web.controller;
 
+import com.example.homeservice.web.dto.PageDto;
 import com.example.repository.repository.StockDetailRepository;
 import com.example.repository.service.StockDetailService;
+import com.example.repository.util.ResponseResult;
+import com.example.repository.web.controller.dto.StockDto;
+import com.example.repository.web.fo.StockListFo;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -10,4 +15,13 @@ import javax.annotation.Resource;
 public class StockDetailController {
     @Resource
     private StockDetailService stockDetailService;
+//    @GetMapping("/stock/listbygoodsid")
+//    public ResponseResult<PageDto<StockDetailDto>> getStockList(StockListFo stockListFo){
+//        Integer pageNum = stockListFo.getPageNum();
+//        Integer pageSize = stockListFo.getPageSize();
+//        Long typeid = stockListFo.getTypeid();
+//        String searchName = stockListFo.getSearchName();
+//        PageDto<StockDto> stockPage =stockService.getStockList(pageNum,pageSize,typeid,searchName);
+//        return new ResponseResult<PageDto<StockDto>>(200,"success",stockPage);
+//    }
 }
