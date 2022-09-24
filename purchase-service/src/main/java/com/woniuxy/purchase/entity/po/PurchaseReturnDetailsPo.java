@@ -23,7 +23,8 @@ public class PurchaseReturnDetailsPo implements Serializable {
     private BigDecimal originalMoney;
     private Double discount;
     private BigDecimal laterMoney;
-    private String purchase_number;
+    private String purchaseNumber;
     private String remark;
     private Integer status;
+    private BigDecimal saleMoney;
 }

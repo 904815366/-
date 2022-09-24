@@ -22,7 +22,9 @@ class PurchaseReturnDaoTest {
 //        }
 //        PurchaseReturnDto purchaseReturnById = purchaseReturnDao.findPurchaseReturnById(1L);
 //        System.out.println(purchaseReturnById);
-        Integer integer = purchaseReturnDao.deleteById(1L);
-        System.out.println(integer);
+//        Integer integer = purchaseReturnDao.deleteById(1L);
+//        System.out.println(integer);
+//        Integer integer = purchaseReturnDao.modifyPaymentStatus(1L);
+//        System.out.println(integer);
     }
 }

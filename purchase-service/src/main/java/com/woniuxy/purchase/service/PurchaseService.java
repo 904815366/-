@@ -21,4 +21,6 @@ public interface PurchaseService {
     void addPurchase(PurchasePo po, List<PurchaseDetailsPo> detailsPoList);
 
     void modifyById(PurchasePo po, List<PurchaseDetailsPo> detailsPoList);
+
+    boolean modifyPaymentStatus(Long id,Integer paymentStatus);
 }

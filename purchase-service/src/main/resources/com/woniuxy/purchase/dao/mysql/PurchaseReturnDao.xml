@@ -24,7 +24,8 @@
             a.later_money,
             a.refund_amount,
             c.name as username,
-            a.audit_name
+            a.audit_name,
+            a.payment_status
         FROM
             purchase_return a
                 INNER JOIN supplier b ON a.supplier_id = b.id
@@ -87,5 +88,11 @@
     </select>
     <update id="deleteById">
         UPDATE purchase_return set active=0 where id=#{id} and active=1
+    </update>
+    <update id="modifyStatus">
+        update purchase_return set status=#{status} where id=#{id}
+    </update>
+    <update id="modifyPaymentStatus">
+        update purchase_return set payment_status=#{status} where id=#{id}
     </update>
 </mapper>

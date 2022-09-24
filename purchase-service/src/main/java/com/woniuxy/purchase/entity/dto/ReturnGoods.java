@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ReturnGoods implements Serializable {
     private Integer id;
+    private Integer goodsId;
     private String goodsName;
     private String unit;
     private Integer num;

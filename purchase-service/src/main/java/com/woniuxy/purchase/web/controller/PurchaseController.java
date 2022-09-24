@@ -3,6 +3,7 @@ package com.woniuxy.purchase.web.controller;
 import com.example.util.ResponseResult;
 import com.github.pagehelper.PageInfo;
 import com.woniuxy.purchase.annotation.IdempotentToken;
+import com.woniuxy.purchase.dao.mysql.PurchaseDao;
 import com.woniuxy.purchase.entity.dto.PurchaseDetail;
 import com.woniuxy.purchase.entity.dto.PurchaseList;
 import com.woniuxy.purchase.entity.po.PurchaseDetailsPo;
@@ -28,6 +29,8 @@ import java.util.List;
 public class PurchaseController {
     @Resource
     private PurchaseService purchaseService;
+    @Resource
+    private PurchaseDao purchaseDao;
 
     @PostMapping("/purchase/list")
     public ResponseResult<PageInfo<PurchaseList>> findPurchaseList(@Validated @RequestBody PurchaseListFo fo) {
@@ -74,6 +77,8 @@ public class PurchaseController {
         SnowflakeIdGenerator snowflakeIdGenerator = new SnowflakeIdGenerator();
         String num = "CG-" + snowflakeIdGenerator.nextId();
         purchasePo.setInvoiceNumber(num);
+        purchasePo.setVersion(1);
+        purchasePo.setPaymentStatus(0);
         //填充订单生成时间
         purchasePo.setInvoiceTime(LocalDateTime.now());
         List<PurchaseDetailFo> foList = fo.getPurchaseDetailFoList();
@@ -94,6 +99,21 @@ public class PurchaseController {
         List<PurchaseDetailsPo> detailsPoList = converter2.from(purchaseDetailFoList);
         purchaseService.modifyById(purchasePo, detailsPoList);
         return new ResponseResult<>(200, "ok", "修改成功!");
+    }
+
+    @PostMapping("/purchase/modify/payment")
+    public ResponseResult<String> modifyInPay(@RequestParam("id") Long id,@RequestParam("paymentStatus") Integer paymentStatus){
+        boolean result = purchaseService.modifyPaymentStatus(id, paymentStatus);
+        if(result){
+            return new ResponseResult<>(200,"ok","修改成功!");
+        }
+        return new ResponseResult<>(500,"erro","id可能传错了哦!");
+    }
+
+    @GetMapping("/purchase/invoiceNumber/{id}")
+    public ResponseResult<String> getInvoiceNumber(@PathVariable("id") Long id){
+        String invoiceNumber = purchaseDao.findByPractical(id).getInvoiceNumber();
+        return new ResponseResult<>(200,"ok",invoiceNumber);
     }
 
 }

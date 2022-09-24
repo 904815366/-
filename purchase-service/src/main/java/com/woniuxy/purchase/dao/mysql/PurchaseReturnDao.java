@@ -18,4 +18,8 @@ public interface PurchaseReturnDao extends BaseMapper<PurchaseReturnPo> {
     PurchaseReturnDto findPurchaseReturnById(Long id);
 
     Integer deleteById(Long id);
+
+    Integer modifyStatus(@Param("id") Long id,@Param("status") Integer status);
+
+    Integer modifyPaymentStatus(@Param("id") Long id,@Param("status") Integer status);
 }

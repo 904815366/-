@@ -3,9 +3,7 @@ package com.woniuxy.purchase.dao.mysql;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woniuxy.purchase.entity.dto.Goods;
-import com.woniuxy.purchase.entity.dto.PurchaseDetail;
-import com.woniuxy.purchase.entity.dto.PurchaseList;
+import com.woniuxy.purchase.entity.dto.*;
 import com.woniuxy.purchase.entity.po.PurchasePo;
 import com.woniuxy.purchase.web.fo.PurchaseListFo;
 import org.junit.jupiter.api.Test;
@@ -27,13 +25,15 @@ class PurchaseDaoTest {
     private PurchaseDao purchaseDao;
     @Test
     void demo() throws JsonProcessingException {
-        PurchaseDetail practicalById = purchaseDao.findPracticalById(8L);
-        String invoiceNumber = practicalById.getInvoiceNumber();
-        String invoiceTime = practicalById.getInvoiceTime();
-        List<String> collect = practicalById.getGoods().stream().filter(goods -> goods.getId() != null && goods.getNum() != null)
-                .map(goods -> String.format("%s-%s", goods.getId(), goods.getNum()))
-                .collect(Collectors.toList());
-        String json="{\"invoiceNumber\":\""+invoiceNumber+"\",\"invoiceTime\":\""+invoiceTime+"\",\"goods\":\""+collect+"\"}";
-        System.out.println(json);
+        GetInvoiceNumber byPractical = purchaseDao.findByPractical(7L);
+        System.out.println(byPractical.getInvoiceNumber());
+//        PurchaseDetail practicalById = purchaseDao.findPracticalById(8L);
+//        String invoiceNumber = practicalById.getInvoiceNumber();
+//        String invoiceTime = practicalById.getInvoiceTime();
+//        List<String> collect = practicalById.getGoods().stream().filter(goods -> goods.getId() != null && goods.getNum() != null)
+//                .map(goods -> String.format("%s-%s", goods.getId(), goods.getNum()))
+//                .collect(Collectors.toList());
+//        String json="{\"invoiceNumber\":\""+invoiceNumber+"\",\"invoiceTime\":\""+invoiceTime+"\",\"goods\":\""+collect+"\"}";
+//        System.out.println(json);
     }
 }

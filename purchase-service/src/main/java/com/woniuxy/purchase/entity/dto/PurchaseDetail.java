@@ -42,4 +42,6 @@ public class PurchaseDetail implements Serializable {
     private String username;
     //审核人
     private String auditName;
+    //付款状态
+    private String paymentStatus;
 }

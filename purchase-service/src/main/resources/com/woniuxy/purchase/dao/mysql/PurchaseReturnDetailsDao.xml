@@ -5,6 +5,7 @@
 <mapper namespace="com.woniuxy.purchase.dao.mysql.PurchaseReturnDetailsDao">
     <resultMap id="goodsInfo" type= "com.woniuxy.purchase.entity.dto.ReturnGoods">
         <id property="id" column="id"></id>
+        <result property="goodsId" column="goods_id"></result>
         <result property="goodsName" column="name"></result>
         <result property="unit" column="unit"></result>
         <result property="num" column="num"></result>
@@ -26,7 +27,8 @@
             a.sale_money,
             a.later_money,
             a.purchase_number,
-            a.remark
+            a.remark,
+            a.goods_id
         FROM
             purchase_return_details a
                 INNER JOIN goods b ON a.goods_id = b.id

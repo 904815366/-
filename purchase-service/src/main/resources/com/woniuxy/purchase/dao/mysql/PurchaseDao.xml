@@ -13,6 +13,7 @@
         <result property="practicalMoney" column="practical_money"></result>
         <result property="username" column="username"></result>
         <result property="auditName" column="audit_name"></result>
+        <result property="paymentStatus" column="payment_status"></result>
     </resultMap>
     <select id="findPracticalList" resultMap="practicalList">
         SELECT
@@ -24,7 +25,8 @@
         a.later_money,
         a.practical_money,
         c.name as username,
-        a.audit_name
+        a.audit_name,
+        a.payment_status
         FROM
         purchase a
         INNER JOIN supplier b on b.id=a.supplier_id
@@ -83,4 +85,19 @@
             #{id}
         </foreach>
     </update>
+    <update id="modifyPaymentStatus">
+        update purchase set payment_status=#{paymentStatus} where id=#{id}
+    </update>
+    <resultMap id="idDto" type="com.woniuxy.purchase.entity.dto.UserDto">
+        <result column="id" property="id"></result>
+    </resultMap>
+    <select id="findByNumber" resultMap="idDto">
+        select id from purchase where invoice_number=#{num}
+    </select>
+    <resultMap id="InvoiceNumber" type="com.woniuxy.purchase.entity.dto.GetInvoiceNumber">
+        <result property="invoiceNumber" column="invoice_number"></result>
+    </resultMap>
+    <select id="findByPractical" resultMap="InvoiceNumber">
+        SELECT invoice_number FROM purchase where id=#{id}
+    </select>
 </mapper>

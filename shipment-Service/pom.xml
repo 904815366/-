@@ -25,7 +25,6 @@
 
     <dependencies>
 <!--        项目内jar包-->
-
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>commons-util</artifactId>

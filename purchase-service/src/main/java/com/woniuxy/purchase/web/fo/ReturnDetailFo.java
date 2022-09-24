@@ -5,19 +5,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReturnDetailFo implements Serializable {
-    private Long purchaseId;
+    private Long purchaseReturnId;
     private Long goodsId;
-    private double num;
-    private double originalMoney;
-    private double discount;
-    private double saleMoney;
-    private double laterMoney;
+    private Integer num;
+    private BigDecimal originalMoney;
+    private Double discount;
+    private BigDecimal laterMoney;
+    private String purchaseNumber;
     private String remark;
-    private String version;
-    private String status;
+    private Integer status;
+    private BigDecimal saleMoney;
 }

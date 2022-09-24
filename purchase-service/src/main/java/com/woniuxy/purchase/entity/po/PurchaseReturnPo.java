@@ -40,4 +40,5 @@ public class PurchaseReturnPo implements Serializable {
     private Integer version;
     private Integer status;
     private Integer active;
+    private Integer paymentStatus;
 }

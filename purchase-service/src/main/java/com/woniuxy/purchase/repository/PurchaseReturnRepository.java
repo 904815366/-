@@ -91,4 +91,28 @@ public class PurchaseReturnRepository {
         return false;
     }
 
+
+    public boolean modifyReturnStatus(Long id, Integer status){
+        Integer integer = purchaseReturnDao.modifyStatus(id, status);
+        if (integer>0){
+            //删除缓存
+            purchaseReturnRedisDao.findById(id).ifPresent(new Consumer<PurchaseReturnDto>() {
+                @Override
+                public void accept(PurchaseReturnDto purchaseReturnDto) {
+                    purchaseReturnRedisDao.deleteById(id);
+                }
+            });
+            return true;
+        }
+        return false;
+    }
+
+    public boolean modifyPaymentStatus(Long id,Integer status){
+        Integer rows = purchaseReturnDao.modifyPaymentStatus(id,status);
+        if(rows>0){
+            return true;
+        }
+        return false;
+    }
+
 }

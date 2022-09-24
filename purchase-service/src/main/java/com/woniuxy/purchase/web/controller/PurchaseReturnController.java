@@ -62,6 +62,7 @@ public class PurchaseReturnController {
         po.setActive(1);
         po.setStatus(0);
         po.setVersion(1);
+        po.setPaymentStatus(0);
         SnowflakeIdGenerator idGenerator = new SnowflakeIdGenerator();
         String num="CGTH-"+idGenerator.nextId();
         po.setInvoiceNumber(num);
@@ -69,11 +70,13 @@ public class PurchaseReturnController {
         List<ReturnDetailFo> returnDetailFoList = fo.getReturnDetailFoList();
         ReturnDetailFoConverter converter = Mappers.getMapper(ReturnDetailFoConverter.class);
         List<PurchaseReturnDetailsPo> detailsPos = converter.from(returnDetailFoList);
+        System.out.println(detailsPos);
         purchaseReturnService.addReturn(po,detailsPos);
         return new ResponseResult<>(200,"ok","添加成功!");
     }
 
     @PostMapping("/return/modify")
+    @IdempotentToken
     public ResponseResult<String> updateReturn(@Validated @RequestBody PurchaseReturnModifyFo fo){
         ReturnFoConverter mapper = Mappers.getMapper(ReturnFoConverter.class);
         PurchaseReturnPo purchaseReturnPo = mapper.from(fo);
@@ -88,8 +91,25 @@ public class PurchaseReturnController {
         }
     }
 
-    public ResponseResult<String> modifySatuas(){
-        return null;
+    @PostMapping("/return/modify/satuas")
+    @IdempotentToken
+    public ResponseResult<String> modifySatuas(@Validated @RequestBody PurchaseReturnModifyStatus fo){
+        String ids = fo.getIds();
+        String[] split = ids.split(",");
+        for (String str : split) {
+            Long id= Long.parseLong(str);
+            purchaseReturnService.modifyReturnStatus(id,fo.getStatus());
+        }
+        return new ResponseResult<>(200,"ok","更新成功!");
+    }
+
+    @PostMapping("/return/modify/inpay")
+    public ResponseResult<String> modifyPaymentStatus(Long id,Integer status){
+        boolean result = purchaseReturnService.modifyPaymentStatus(id,status);
+        if (result){
+            return new ResponseResult<>(200,"ok","更新成功!");
+        }
+        return new ResponseResult<>(500,"erro","失败了");
     }
 
 }

@@ -19,4 +19,8 @@ public interface PurchaseReturnService {
     void addReturn(PurchaseReturnPo po, List<PurchaseReturnDetailsPo> detailsPoList);
 
     boolean modifyReturn(PurchaseReturnPo po, List<PurchaseReturnDetailsPo> detailsPoList);
+
+    void modifyReturnStatus(Long id,Integer status);
+
+    public boolean modifyPaymentStatus(Long id,Integer status);
 }

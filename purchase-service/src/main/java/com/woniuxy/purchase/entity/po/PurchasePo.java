@@ -35,6 +35,7 @@ public class PurchasePo implements Serializable {
     private BigDecimal practicalMoney;
     private BigDecimal debtMoney;
     private Long settlementAccountId;
+    private Integer paymentStatus;
     private Integer status;
     private Long uId;
     private String auditName;

@@ -128,4 +128,20 @@ public class PurchaseRepository {
             }
         }
     }
+
+    public boolean modifyPaymentStatus(Long id,Integer paymentStatus){
+        Integer integer = purchaseDao.modifyPaymentStatus(id, paymentStatus);
+        if(integer>0){
+            purchaseRedisDao.findById(id).ifPresent(new Consumer<PurchaseDetail>() {
+                @Override
+                public void accept(PurchaseDetail purchaseDetail) {
+                    purchaseRedisDao.deleteById(id);
+                }
+            });
+            return true;
+        }
+        return false;
+    }
+
+
 }

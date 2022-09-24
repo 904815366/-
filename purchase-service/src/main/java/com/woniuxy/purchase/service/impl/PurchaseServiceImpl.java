@@ -70,11 +70,18 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public void modifyById(PurchasePo po, List<PurchaseDetailsPo> detailsPoList) {
-        System.out.println("锁住了吗 ?");
         RLock client = this.redissonClient.getLock("modifyById");
         client.lock();
-        System.out.println("输出啊你");
         purchaseRepository.modifyPurchase(po, detailsPoList);
         client.unlock();
+    }
+
+    @Override
+    public boolean modifyPaymentStatus(Long id, Integer paymentStatus) {
+        RLock client = this.redissonClient.getLock("modifyPaymentStatus");
+        client.lock();;
+        boolean result = purchaseRepository.modifyPaymentStatus(id, paymentStatus);
+        client.unlock();
+        return result;
     }
 }

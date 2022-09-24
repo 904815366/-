@@ -50,4 +50,6 @@ public class PurchaseReturnModifyFo implements Serializable {
     private List<ReturnDetailFo> returnDetailFoList;
     @NotNull(message = "不能为空")
     private String validToken;
+    //付款状态
+    private String paymentStatus;
 }

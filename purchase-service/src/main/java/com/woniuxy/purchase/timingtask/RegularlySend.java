@@ -20,6 +20,7 @@ public class RegularlySend {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+
     @Scheduled(initialDelay=1000, fixedRate=6000)
     private void process() {
         List<MessagePo> messagePos = messageDao.selectMessageAll();
