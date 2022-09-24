@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -25,5 +26,11 @@ public class CusOrderDetailServiceImpl extends ServiceImpl<CusOrderDetailMapper,
     @Override
     public void deltODetailByOid(Long oid) {
         cusorderDetailRepository.deltODetailByOid(oid);
+    }
+
+    @Override
+    public List<CusOrderDetail> selectByOrderId(Long Cusid) {
+        List<CusOrderDetail> cusOrderDetails = cusorderDetailRepository.selectByCusID(Cusid);
+        return cusOrderDetails;
     }
 }

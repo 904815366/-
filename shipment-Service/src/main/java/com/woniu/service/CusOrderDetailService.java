@@ -3,6 +3,8 @@ package com.woniu.service;
 import com.woniu.dao.po.CusOrderDetail;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -14,4 +16,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface CusOrderDetailService extends IService<CusOrderDetail> {
 
     void deltODetailByOid(Long oid);
+
+    List<CusOrderDetail> selectByOrderId(Long Cusid);
 }

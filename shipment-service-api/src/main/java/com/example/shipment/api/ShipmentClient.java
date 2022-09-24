@@ -10,4 +10,7 @@ public interface ShipmentClient {
 
     @PostMapping("/upShipmentStatus")
      ResponseResult<String> setShiStatus(@RequestParam("chdid") Long chdid);
+
+    @PostMapping("/setReturnSalesAsStatus")
+    ResponseResult<String> setReturnSalesAsStatus(@RequestParam("id") Long sid);
 }

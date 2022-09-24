@@ -6,7 +6,9 @@ import com.example.util.ResponseResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniu.MyException;
+import com.woniu.dao.CusorderMapper;
 import com.woniu.dao.ShipmentMapper;
+import com.woniu.dao.po.Cusorder;
 import com.woniu.dao.po.Shipment;
 import com.woniu.repository.converter.ShipmentConverter;
 import com.woniu.repository.dto.ShipmentDto;
@@ -34,6 +36,9 @@ public class ShipmentRepository {
     @Resource//仓库的openfeign
     private RepositoryClient repositoryClient;
 
+    @Resource
+    private CusorderMapper cusorderMapper;
+
 //    private
 
 //    新增出货订单
@@ -42,9 +47,10 @@ public class ShipmentRepository {
     public void addShipment(AddShipmentFo addShipmentFo){
             //  通过转换器将fo转换成po
         Shipment po = shipmentConverter.from(addShipmentFo);
+        Cusorder cusorder = cusorderMapper.selectById(po.getClorderId());
         shipmentMapper.insert(po);
         //  给资金发openfei                     出货单编号,客户id,结账账户id,本次收款
-        fundClient.getChdMsg(po.getId(), po.getClorderId(), po.getUmoneyId(), po.getPayeemoney());
+        fundClient.getChdMsg(po.getId(), cusorder.getCusId(), po.getUmoneyId(), po.getPayeemoney());
         //        生成出货单后修改订单的状态
         shipmentMapper.upCusorderStatus(po.getClorderId());
         //        给仓库减库存

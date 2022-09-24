@@ -5,4 +5,27 @@
         select * from cusorder cu inner join cus_order_detail co on cu.id=co.order_id
     </select>
 
+    <select id="getPageRetuensaless" resultType="com.woniu.repository.dto.ReturnsalesDto">
+        select ru.*,cus.name from returnsales ru inner join shipment sh on ru.shipment_id=sh.id inner join cusorder co on
+            sh.clorder_id=co.id inner join customers cus on co.cus_id=cus.id
+                <where>
+                    <if test="id!='' and id!=null">
+                        ru.id=#{id}
+                    </if>
+                    <if test="stareTime!=null">
+                        and  cd.ordertime>#{stareTime}
+                    </if>
+
+                    <if test="endTime!=null">
+                        and cd.ordertime &lt; #{endTime}
+                    </if>
+                   <if test="uID!=null and uId!=''">
+                        and   co.u_id=#{uID}
+                    </if>
+                    <if test="status!='' and status!=null">
+                        and ru.status=#{status}
+                    </if>
+                </where>
+    </select>
+
 </mapper>

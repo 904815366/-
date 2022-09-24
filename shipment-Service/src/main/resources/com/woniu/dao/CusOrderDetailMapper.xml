@@ -6,4 +6,8 @@
         delete from cus_order_detail where order_id=#{Oid}
     </delete>
 
+    <select id="selectByOrderId" resultType="com.woniu.dao.po.CusOrderDetail">
+        select * from cus_order_detail where order_id={Cusid}
+    </select>
+
 </mapper>

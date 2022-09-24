@@ -1,16 +1,15 @@
-package com.woniu.web.fo;
+package com.woniu.repository.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.woniu.dao.po.CusOrderDetail;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
-public class ReturnsalesFo {
-// 出货单编号
+public class ReturnsalesDto {
+    private Long id;
+
     private Long shipmentId;
 
     private String detailId;
@@ -27,8 +26,6 @@ public class ReturnsalesFo {
 
     private String version;
 
-    private Long accid;
-
-//    修改订单详情的数据
-    private List<CusOrderDetail> cusOrderDetails;
+//    客户名字
+    private String cusname;
 }
