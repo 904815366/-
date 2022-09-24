@@ -2,6 +2,7 @@ package com.example.fundservice.service;
 
 import com.example.fundservice.dao.mysql.BillmsgcgdDao;
 import com.example.fundservice.dao.mysql.po.BillmsgcgdPo;
+import com.woniuxy.purchaseserviceapi.client.PurchaseClient;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,8 @@ import javax.annotation.Resource;
 public class BillmsgcgdService {
     @Resource
     private BillmsgcgdDao billmsgcgdDao;
+    @Resource
+    private PurchaseClient purchaseClient;
     //采购单消息是否重复
     public BillmsgcgdPo getCgd(Long cgdid) {
         return billmsgcgdDao.getCgd(cgdid);
@@ -29,5 +32,9 @@ public class BillmsgcgdService {
     //新增采购单消息
     public Integer addCgd(BillmsgcgdPo billmsgcgdPo) {
         return billmsgcgdDao.addCgd(billmsgcgdPo);
+    }
+    //确认已付款
+    public void updPur(Long cgdid) {
+        purchaseClient.modifyPaymentStatus(cgdid,1);
     }
 }

@@ -17,7 +17,4 @@ public interface BillmsgcgdDao extends BaseMapper<BillmsgcgdPo> {
 
     @Insert("insert into billmsgcgd values (#{cgdid},#{gysid},#{accid},#{account},#{status})")
     Integer addCgd(BillmsgcgdPo billmsgcgdPo);
-
-    @Select("select gysid from billmsgcgd where cgdid=#{cgdid}")
-    Long getGysid(@Param("cgdid")Long cgdid);
 }

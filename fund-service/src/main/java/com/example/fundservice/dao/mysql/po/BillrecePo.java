@@ -31,4 +31,5 @@ public class BillrecePo implements Serializable {
     private Long userid;
     private String sdecr;
     private String sstatus;
+    private String type;
 }

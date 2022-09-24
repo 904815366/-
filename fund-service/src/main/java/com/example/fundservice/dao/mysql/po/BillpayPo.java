@@ -33,4 +33,5 @@ public class BillpayPo implements Serializable {
     private Long userid;
     private String fdecr;
     private String fstatus;
+    private String type;
 }

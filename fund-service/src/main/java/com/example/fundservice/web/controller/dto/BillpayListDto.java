@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 @Data
 public class BillpayListDto {
-    private Long fno;//单据编号
+    private String fno;//单据编号
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ftime;//单据日期
     @DateTimeFormat(pattern = "yyyy-MM-dd")

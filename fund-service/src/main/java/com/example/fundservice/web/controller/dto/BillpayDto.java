@@ -12,7 +12,7 @@ public class BillpayDto {
     private Date ftime;//单据日期
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date latime;
-    private Long fno;//单据编号
+    private String fno;//单据编号
     private String accname;//结算账户
     private Double faccount;//收款金额
     private String paytype;//结算方式

@@ -1,8 +1,10 @@
 package com.example.fundservice.web.controller;
 
+import com.example.fundservice.dao.mysql.po.BillmsgcgdrePo;
 import com.example.fundservice.dao.mysql.po.BillmsgchdrePo;
 import com.example.fundservice.dao.mysql.po.BillmsgchdPo;
 import com.example.fundservice.dao.mysql.po.BillrecePo;
+import com.example.fundservice.service.BillmsgcgdreService;
 import com.example.fundservice.service.BillmsgchdreService;
 import com.example.fundservice.service.BillmsgchdService;
 import com.example.fundservice.service.BillreceService;
@@ -21,7 +23,7 @@ public class BillreceController {
     @Resource
     private BillmsgchdService billmsgchdService;
     @Resource
-    private BillmsgchdreService billmsgchdreService;
+    private BillmsgcgdreService billmsgcgdreService;
     //收款单列表
     @GetMapping("/billrece/list")
     public ResponseResult<List<BillreceListDto>> BillreceList() {
@@ -35,10 +37,35 @@ public class BillreceController {
     public ResponseResult<Void> addBillrece(@RequestParam("chdid")Long chdid,
                                             @RequestParam("userid")Long userid,
                                             @RequestParam("sdecr")String fdecr){
-
         BillmsgchdPo chd = billmsgchdService.getChdByStatus(chdid);
+        BillmsgcgdrePo cgdRe = billmsgcgdreService.getThdByStatus(chdid);
         if (chd==null){
-            return new ResponseResult<Void>(0, "出货单不存在" );
+            if (cgdRe==null){
+                return new ResponseResult<Void>(0, "源单不存在" );
+            }else {
+                Long cstid = cgdRe.getGysid();
+                Long accid = cgdRe.getAccid();
+                Double account = cgdRe.getAccount();
+                BillrecePo billrecePo = new BillrecePo();
+                billrecePo.setChdid(chdid);
+                billrecePo.setUserid(userid);
+                billrecePo.setSdecr(fdecr);
+                billrecePo.setSstatus("正常");
+                billrecePo.setCstid(cstid);
+                billrecePo.setAccid(accid);
+                billrecePo.setSaccount(account);
+                billrecePo.setType("采购退款");
+                Integer add = billreceService.addBillrece(billrecePo);
+                if (add==1){
+                    billmsgcgdreService.delCgdRe(chdid);
+                    //采购退款成功,调用api发消息给采购员,退款已收
+                    billmsgcgdreService.cgdRe(billmsgcgdreService.getReid(chdid));
+                    return new ResponseResult<Void>(200, "OK" );
+                }else {
+                    return new ResponseResult<Void>(1, "系统维护中" );
+                }
+            }
+
         }else {
             Long cstid = chd.getCstid();
             Long accid = chd.getAccid();
@@ -52,14 +79,16 @@ public class BillreceController {
             billrecePo.setCstid(cstid);
             billrecePo.setAccid(accid);
             billrecePo.setSaccount(account);
+            billrecePo.setType("出货收款");
 
             Integer add = billreceService.addBillrece(billrecePo);
             if (add==1){
-                billreceService.updShip(chdid);
                 billmsgchdService.delChd(chdid);
+                //告诉出货员,收款已收
+                billmsgchdService.updShip(chdid);
                 return new ResponseResult<Void>(200, "OK" );
             }else {
-                return new ResponseResult<Void>(900, "系统维护中" );
+                return new ResponseResult<Void>(1, "系统维护中" );
             }
         }
     }
@@ -93,28 +122,26 @@ public class BillreceController {
         if (addChd==1){
             return new ResponseResult<>(200,"已保存");
         }else {
-            return new ResponseResult<>(00,"出错了");
+            return new ResponseResult<>(9,"出错了");
         }
     }
-
-    //出货单退货消息
-    @PostMapping("/billrece/addBillreceReMsg")
-    public ResponseResult<Void> getChdReMsg(@RequestParam("reid")Long reid,
-                                            @RequestParam("chdid")Long chdid,
-                                            @RequestParam("cstid")Long cstid,
+    //采购单退货消息
+    @PostMapping("/billpay/addBillpayReMsg")
+    public ResponseResult<Void> getCgdReMsg(@RequestParam("reid")Long reid,
+                                            @RequestParam("cgdid")Long cgdid,
+                                            @RequestParam("gysid")Long gysid,
                                             @RequestParam("accid")Long accid,
                                             @RequestParam("account")Double account){
-        //add   billmsgchdre
-        BillmsgchdrePo thd = billmsgchdreService.getThd(reid);
+        BillmsgcgdrePo thd = billmsgcgdreService.getThd(reid);
         if (thd!=null){
             return new ResponseResult<>(0, "重复发送");
         }
-        BillmsgchdrePo BillmsgchdrePo = new BillmsgchdrePo(reid,chdid, cstid, accid, account,"未审核");
-        Integer addThd = billmsgchdreService.addThd(BillmsgchdrePo);
+        BillmsgcgdrePo billmsgcgdrePo = new BillmsgcgdrePo(reid,cgdid, gysid, accid, account,"未审核");
+        Integer addThd = billmsgcgdreService.addThd(billmsgcgdrePo);
         if (addThd==1){
             return new ResponseResult<>(200,"已保存");
         }else {
-            return new ResponseResult<>(00,"出错了");
+            return new ResponseResult<>(9,"出错了");
         }
     }
 }

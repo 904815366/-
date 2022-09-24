@@ -3,6 +3,7 @@ package com.example.fundservice.service;
 import com.example.fundservice.dao.mysql.BillmsgchdDao;
 import com.example.fundservice.dao.mysql.BillreceDao;
 import com.example.fundservice.dao.mysql.po.BillmsgchdPo;
+import com.example.shipment.api.ShipmentClient;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +15,9 @@ import javax.annotation.Resource;
 @GlobalTransactional
 public class BillmsgchdService {
     @Resource
-    private BillreceDao billreceDao;
-    @Resource
     private BillmsgchdDao billmsgchdDao;
+    @Resource
+    private ShipmentClient shipmentClient;
     //出货单消息重复
     public BillmsgchdPo getChd(Long chdid) {
         return billmsgchdDao.getChd(chdid);
@@ -32,5 +33,9 @@ public class BillmsgchdService {
     //新增出货单消息
     public Integer addChd(BillmsgchdPo billmsgchdPo) {
         return billmsgchdDao.addChd(billmsgchdPo);
+    }
+    //确认已收款
+    public void updShip(Long chdid) {
+        shipmentClient.setShiStatus(chdid);
     }
 }

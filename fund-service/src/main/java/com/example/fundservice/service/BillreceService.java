@@ -9,6 +9,7 @@ import com.example.fundservice.web.controller.dto.BillreceListDto;
 import com.example.homeserviceapi.fo.SettlementAccountFo;
 import com.example.homeserviceapi.http.CustomersServiceClient;
 import com.example.homeserviceapi.http.SettlementServiceClient;
+import com.example.homeserviceapi.http.SupplierServiceClient;
 import com.example.homeserviceapi.http.UsersServiceClient;
 import com.example.homeserviceapi.utils.ResponseResult;
 import com.example.shipment.api.ShipmentClient;
@@ -36,6 +37,8 @@ public class BillreceService {
     private UsersServiceClient usersServiceClient;//用户
     @Resource
     private ShipmentClient shipmentClient;//出货
+    @Resource
+    private SupplierServiceClient supplierServiceClient;//供应商
 
     //收款单列表
     public List<BillreceListDto> billreceList() {
@@ -47,9 +50,16 @@ public class BillreceService {
             billreceListDto.setSno(billrecePo.getSno());
             billreceListDto.setSaccount(billrecePo.getSaccount());
             billreceListDto.setSdecr(billrecePo.getSdecr());
-            //通过出货单id获取cstid,通过auth-service-api获取cstname
-            ResponseResult<String> cstNameRes = customersServiceClient.queryNameById(billmsgchdDao.getCstid(billrecePo.getChdid()));
-            billreceListDto.setCstname(cstNameRes.getData());
+            //分类型  出货收款/采购退款
+            if ("出货收款".equals(billrecePo.getType())){
+                //通过auth-service-api获取cstname
+                ResponseResult<String> cstNameRes = customersServiceClient.queryNameById(billrecePo.getCstid());
+                billreceListDto.setCstname(cstNameRes.getData());
+            }else if("采购退款".equals(billrecePo.getType())){
+                //通过auth-service-api获取gysname
+                ResponseResult<String> gysNameRes = supplierServiceClient.queryNameById(billrecePo.getCstid());
+                billreceListDto.setCstname(gysNameRes.getData());
+            }
             //通过auth-service-api获取username
             ResponseResult<String> userNameRes = usersServiceClient.queryNameById(billrecePo.getUserid());
             billreceListDto.setUsername(userNameRes.getData());
@@ -68,7 +78,8 @@ public class BillreceService {
             billreceDao.addBillrece(billrecePo);
             return 1;
         } catch (Exception e){
-            return 000;
+            e.printStackTrace();
+            return 9;
         }
     }
 
@@ -87,7 +98,11 @@ public class BillreceService {
             return null;
         }else {
             BillreceDto billreceDto = new BillreceDto();
-            billreceDto.setCstname(customersServiceClient.queryNameById(billrecePo.getCstid()).getData());
+            if ("出货收款".equals(billrecePo.getType())){
+                billreceDto.setCstname(customersServiceClient.queryNameById(billrecePo.getCstid()).getData());
+            }else if("采购退款".equals(billrecePo.getType())){
+                billreceDto.setCstname(supplierServiceClient.queryNameById(billrecePo.getCstid()).getData());
+            }
             billreceDto.setStime(billrecePo.getStime());
             billreceDto.setSno(billrecePo.getSno());
             billreceDto.setAccname(settlementServiceClient.queryAccountById(billrecePo.getAccid()).getData());
@@ -98,10 +113,4 @@ public class BillreceService {
             return billreceDto;
         }
     }
-
-    //确认已收款
-    public void updShip(Long chdid) {
-        com.example.util.ResponseResult<String> updShipRes = shipmentClient.setShiStatus(chdid);
-    }
-
 }
