@@ -22,6 +22,8 @@ public class BillrecePo implements Serializable {
     private Long sno;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date stime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date latime;
     private Long chdid;
     private Long cstid;
     private Long accid;

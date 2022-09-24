@@ -1,7 +1,10 @@
 package com.example.fundservice.web.controller;
 
+import com.example.fundservice.dao.mysql.po.BillmsgchdrePo;
 import com.example.fundservice.dao.mysql.po.BillmsgchdPo;
 import com.example.fundservice.dao.mysql.po.BillrecePo;
+import com.example.fundservice.service.BillmsgchdreService;
+import com.example.fundservice.service.BillmsgchdService;
 import com.example.fundservice.service.BillreceService;
 import com.example.fundservice.util.ResponseResult;
 import com.example.fundservice.web.controller.dto.BillreceDto;
@@ -15,6 +18,10 @@ import java.util.List;
 public class BillreceController {
     @Resource
     private BillreceService billreceService;
+    @Resource
+    private BillmsgchdService billmsgchdService;
+    @Resource
+    private BillmsgchdreService billmsgchdreService;
     //收款单列表
     @GetMapping("/billrece/list")
     public ResponseResult<List<BillreceListDto>> BillreceList() {
@@ -29,11 +36,11 @@ public class BillreceController {
                                             @RequestParam("userid")Long userid,
                                             @RequestParam("sdecr")String fdecr){
 
-        BillmsgchdPo chd = billreceService.getChdByStatus(chdid);
+        BillmsgchdPo chd = billmsgchdService.getChdByStatus(chdid);
         if (chd==null){
             return new ResponseResult<Void>(0, "出货单不存在" );
         }else {
-            Long gysid = chd.getCstid();
+            Long cstid = chd.getCstid();
             Long accid = chd.getAccid();
             Double account = chd.getAccount();
 
@@ -42,14 +49,14 @@ public class BillreceController {
             billrecePo.setUserid(userid);
             billrecePo.setSdecr(fdecr);
             billrecePo.setSstatus("正常");
-            billrecePo.setCstid(gysid);
+            billrecePo.setCstid(cstid);
             billrecePo.setAccid(accid);
             billrecePo.setSaccount(account);
 
             Integer add = billreceService.addBillrece(billrecePo);
             if (add==1){
                 billreceService.updShip(chdid);
-                billreceService.delChd(chdid);
+                billmsgchdService.delChd(chdid);
                 return new ResponseResult<Void>(200, "OK" );
             }else {
                 return new ResponseResult<Void>(900, "系统维护中" );
@@ -76,15 +83,35 @@ public class BillreceController {
     public ResponseResult<Void> getChdMsg(@RequestParam("chdid")Long chdid,
                                           @RequestParam("cstid")Long cstid,
                                           @RequestParam("accid")Long accid,
-                                          @RequestParam("account")Double account,
-                                          @RequestParam("type")String type){
-        BillmsgchdPo chd = billreceService.getChd(chdid);
+                                          @RequestParam("account")Double account){
+        BillmsgchdPo chd = billmsgchdService.getChd(chdid);
         if (chd!=null){
             return new ResponseResult<>(0, "重复发送");
         }
-        BillmsgchdPo billmsgchdPo = new BillmsgchdPo(chdid, cstid, accid, account,"未审核",type);
-        Integer addChd = billreceService.addChd(billmsgchdPo);
+        BillmsgchdPo billmsgchdPo = new BillmsgchdPo(chdid, cstid, accid, account,"未审核");
+        Integer addChd = billmsgchdService.addChd(billmsgchdPo);
         if (addChd==1){
+            return new ResponseResult<>(200,"已保存");
+        }else {
+            return new ResponseResult<>(00,"出错了");
+        }
+    }
+
+    //出货单退货消息
+    @PostMapping("/billrece/addBillreceReMsg")
+    public ResponseResult<Void> getChdReMsg(@RequestParam("reid")Long reid,
+                                            @RequestParam("chdid")Long chdid,
+                                            @RequestParam("cstid")Long cstid,
+                                            @RequestParam("accid")Long accid,
+                                            @RequestParam("account")Double account){
+        //add   billmsgchdre
+        BillmsgchdrePo thd = billmsgchdreService.getThd(reid);
+        if (thd!=null){
+            return new ResponseResult<>(0, "重复发送");
+        }
+        BillmsgchdrePo BillmsgchdrePo = new BillmsgchdrePo(reid,chdid, cstid, accid, account,"未审核");
+        Integer addThd = billmsgchdreService.addThd(BillmsgchdrePo);
+        if (addThd==1){
             return new ResponseResult<>(200,"已保存");
         }else {
             return new ResponseResult<>(00,"出错了");

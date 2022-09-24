@@ -13,11 +13,12 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("billmsgchd")
-public class BillmsgchdPo implements Serializable {
+@TableName("billmsgchdre")
+public class BillmsgchdrePo implements Serializable {
     private static final long seriaVersionUID = 1L;
 
     @TableId(value = "id",type = IdType.AUTO)
+    private Long reid;
     private Long chdid;
     private Long cstid;
     private Long accid;

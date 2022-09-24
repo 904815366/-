@@ -37,6 +37,7 @@ public class BillreceService {
     @Resource
     private ShipmentClient shipmentClient;//出货
 
+    //收款单列表
     public List<BillreceListDto> billreceList() {
         List<BillreceListDto> billreceListDtos = new ArrayList<>();
         List<BillrecePo> billrecePoList = billreceDao.billreceList();
@@ -57,18 +58,7 @@ public class BillreceService {
         return billreceListDtos;
     }
 
-    public BillmsgchdPo getChd(Long chdid) {
-        return billmsgchdDao.getChd(chdid);
-    }
-
-    public BillmsgchdPo getChdByStatus(Long chdid) {
-        return billmsgchdDao.getChdByStatus(chdid);
-    }
-
-    public void delChd(Long chdid) {
-        billmsgchdDao.delChd(chdid);
-    }
-
+    //新增收款单
     public Integer addBillrece(BillrecePo billrecePo) {
         SettlementAccountFo saFo = new SettlementAccountFo();
         saFo.setId(billrecePo.getAccid());
@@ -81,10 +71,8 @@ public class BillreceService {
             return 000;
         }
     }
-    public Integer addChd(BillmsgchdPo billmsgchdPo) {
-        return billmsgchdDao.addChd(billmsgchdPo);
-    }
 
+    //删除收款单(该状态为销毁)
     public void delBillrece(String snos) {
         String[] snoArr = snos.split(",");
         for (String sno : snoArr) {
@@ -92,6 +80,7 @@ public class BillreceService {
         }
     }
 
+    //查看收款单
     public BillreceDto getBillreceByStatus(Long sno) {
         BillrecePo billrecePo = billreceDao.getBillreceByStatus(sno);
         if (billrecePo==null){
@@ -110,6 +99,7 @@ public class BillreceService {
         }
     }
 
+    //确认已收款
     public void updShip(Long chdid) {
         com.example.util.ResponseResult<String> updShipRes = shipmentClient.setShiStatus(chdid);
     }

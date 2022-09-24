@@ -22,5 +22,4 @@ public class BillmsgcgdPo implements Serializable {
     private Long accid;
     private Double account;
     private String status;
-    private String type;
 }

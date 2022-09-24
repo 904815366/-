@@ -2,7 +2,6 @@ package com.example.fundservice.service;
 
 import com.example.fundservice.dao.mysql.BillmsgcgdDao;
 import com.example.fundservice.dao.mysql.BillpayDao;
-import com.example.fundservice.dao.mysql.po.BillmsgcgdPo;
 import com.example.fundservice.dao.mysql.po.BillpayPo;
 import com.example.fundservice.web.controller.dto.BillpayDto;
 import com.example.fundservice.web.controller.dto.BillpayListDto;
@@ -34,6 +33,7 @@ public class BillpayService {
     @Resource
     private SupplierServiceClient supplierServiceClient;//供应商
 
+    //付款单列表
     public List<BillpayListDto> billpayList() {
         List<BillpayListDto> billpayListDtos = new ArrayList<>();
         List<BillpayPo> billpayPoList = billpayDao.billpayList();
@@ -53,19 +53,7 @@ public class BillpayService {
         }
         return billpayListDtos;
     }
-
-    public BillmsgcgdPo getCgd(Long cgdid) {
-        return billmsgcgdDao.getCgd(cgdid);
-    }
-
-    public BillmsgcgdPo getCgdByStatus(Long cgdid) {
-        return billmsgcgdDao.getCgdByStatus(cgdid);
-    }
-
-    public void delCgd(Long cgdid) {
-        billmsgcgdDao.delCgd(cgdid);
-    }
-
+    //新增付款单
     public Integer addBillpay(BillpayPo billpayPo) {
         SettlementAccountFo saFo = new SettlementAccountFo();
         saFo.setId(billpayPo.getAccid());
@@ -78,18 +66,14 @@ public class BillpayService {
             return 000;
         }
     }
-
-    public Integer addCgd(BillmsgcgdPo billmsgcgdPo) {
-        return billmsgcgdDao.addCgd(billmsgcgdPo);
-    }
-
+    //(批量)删除付款单
     public void delBillpay(String fnos) {
         String[] fnoArr = fnos.split(",");
         for (String fno : fnoArr) {
             billpayDao.delBillpay(Long.parseLong(fno));
         }
     }
-
+    //查看付款单
     public BillpayDto getBillpayByStatus(Long fno) {
         BillpayPo billpayPo = billpayDao.getBillpayByStatus(fno);
         if (billpayPo==null){

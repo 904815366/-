@@ -24,6 +24,8 @@ public class BillpayPo implements Serializable {
     private Long fno;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ftime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date latime;
     private Long cgdid;
     private Long gysid;
     private Long accid;

@@ -1,7 +1,10 @@
 package com.example.fundservice.web.controller;
 
 import com.example.fundservice.dao.mysql.po.BillmsgcgdPo;
+import com.example.fundservice.dao.mysql.po.BillmsgcgdrePo;
 import com.example.fundservice.dao.mysql.po.BillpayPo;
+import com.example.fundservice.service.BillmsgcgdService;
+import com.example.fundservice.service.BillmsgcgdreService;
 import com.example.fundservice.service.BillpayService;
 import com.example.fundservice.util.ResponseResult;
 import com.example.fundservice.web.controller.dto.BillpayDto;
@@ -15,6 +18,10 @@ import java.util.List;
 public class BillpayController {
     @Resource
     private BillpayService billpayService;
+    @Resource
+    private BillmsgcgdService billmsgcgdService;
+    @Resource
+    private BillmsgcgdreService billmsgcgdreService;
     //付款单列表
     @GetMapping("/billpay/list")
     public ResponseResult<List<BillpayListDto>> billpayList() {
@@ -28,7 +35,7 @@ public class BillpayController {
     public ResponseResult<Void> addBillpay(@RequestParam("cgdid")Long cgdid,
                                            @RequestParam("userid")Long userid,
                                            @RequestParam("fdecr")String fdecr){
-        BillmsgcgdPo cgd = billpayService.getCgdByStatus(cgdid);
+        BillmsgcgdPo cgd = billmsgcgdService.getCgdByStatus(cgdid);
         if (cgd==null){
             return new ResponseResult<Void>(0, "采购单不存在" );
         }else {
@@ -47,7 +54,7 @@ public class BillpayController {
 
             Integer add = billpayService.addBillpay(billpayPo);
             if (add==1){
-                billpayService.delCgd(cgdid);
+                billmsgcgdService.delCgd(cgdid);
                 return new ResponseResult<Void>(200, "OK" );
             }else {
                 return new ResponseResult<Void>(00, "系统维护中" );
@@ -74,19 +81,52 @@ public class BillpayController {
     public ResponseResult<Void> getCgdMsg(@RequestParam("cgdid")Long cgdid,
                                           @RequestParam("gysid")Long gysid,
                                           @RequestParam("accid")Long accid,
-                                          @RequestParam("account")Double account,
-                                          @RequestParam("type")String type){
-
-        BillmsgcgdPo cgd = billpayService.getCgd(cgdid);
+                                          @RequestParam("account")Double account){
+        BillmsgcgdPo cgd = billmsgcgdService.getCgd(cgdid);
         if (cgd!=null){
             return new ResponseResult<>(0, "重复发送");
         }
-        BillmsgcgdPo billmsgcgdPo = new BillmsgcgdPo(cgdid, gysid, accid, account,"未审核",type);
-        Integer addCgd = billpayService.addCgd(billmsgcgdPo);
+        BillmsgcgdPo billmsgcgdPo = new BillmsgcgdPo(cgdid, gysid, accid, account,"未审核");
+        Integer addCgd = billmsgcgdService.addCgd(billmsgcgdPo);
         if (addCgd==1){
             return new ResponseResult<>(200,"已保存");
         }else {
             return new ResponseResult<>(00,"出错了");
         }
     }
+
+    //采购单退货消息
+    @PostMapping("/billpay/addBillpayReMsg")
+    public ResponseResult<Void> getCgdReMsg(@RequestParam("reid")Long reid,
+                                            @RequestParam("cgdid")Long cgdid,
+                                            @RequestParam("gysid")Long gysid,
+                                            @RequestParam("accid")Long accid,
+                                            @RequestParam("account")Double account){
+        //add   billmsgcgdre
+        BillmsgcgdrePo thd = billmsgcgdreService.getThd(reid);
+        if (thd!=null){
+            return new ResponseResult<>(0, "重复发送");
+        }
+        BillmsgcgdrePo billmsgcgdrePo = new BillmsgcgdrePo(reid,cgdid, gysid, accid, account,"未审核");
+        Integer addThd = billmsgcgdreService.addThd(billmsgcgdrePo);
+        if (addThd==1){
+            return new ResponseResult<>(200,"已保存");
+        }else {
+            return new ResponseResult<>(00,"出错了");
+        }
+
+    }
+
+    //修改付款单(采购单退货后)     fno
+    //upd   billpay  set latime=now,faccount=faccount-account,status='已通过'
+    // 调用资金账户,加钱account
+//    @PostMapping("/billpay/reUpdBillpay")
+//    public ResponseResult<BillpayDto> reUpdBillpay(@RequestParam("fno")Long fno){
+//        BillpayDto billpayDto = billpayService.updBillpayByStatus(fno);
+//        if (billpayDto==null){
+//            return new ResponseResult<BillpayDto>(0, "付款单不存在" ,null);
+//        }
+//        return new ResponseResult<BillpayDto>(200, "OK" ,billpayDto);
+//    }
+
 }

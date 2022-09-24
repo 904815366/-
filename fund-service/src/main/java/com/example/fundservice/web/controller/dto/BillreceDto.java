@@ -10,6 +10,8 @@ public class BillreceDto {
     private String cstname;//客户
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date stime;//单据日期
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date latime;
     private Long sno;//单据编号
     private String accname;//结算账户
     private Double saccount;//收款金额
