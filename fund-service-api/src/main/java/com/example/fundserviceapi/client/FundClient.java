@@ -2,11 +2,10 @@ package com.example.fundserviceapi.client;
 
 import com.example.fundserviceapi.util.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient("fund-service")
+@FeignClient(name="fund-service",contextId = "fs01")
 public interface FundClient {
     /**
      * 采购消息

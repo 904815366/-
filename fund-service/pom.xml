@@ -88,6 +88,10 @@
             <artifactId>purchase-service-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
 
         <!--   分布式事务，同时调用两个openfeign -->
         <dependency>
