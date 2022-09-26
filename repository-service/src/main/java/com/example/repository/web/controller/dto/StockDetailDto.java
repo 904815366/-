@@ -13,5 +13,5 @@ public class StockDetailDto {
     private Long goodsid;
     private Integer num;
     private LocalDateTime time;
-    private 
+//    private
 }
