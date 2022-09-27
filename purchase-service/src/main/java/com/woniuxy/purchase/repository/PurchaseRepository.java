@@ -12,6 +12,8 @@ import com.woniuxy.purchase.entity.po.MessagePo;
 import com.woniuxy.purchase.entity.po.PurchaseDetailsPo;
 import com.woniuxy.purchase.entity.po.PurchasePo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 @Repository
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class PurchaseRepository {
     private final FundClient fundClient;
     private final MessageDao messageDao;
@@ -69,6 +72,7 @@ public class PurchaseRepository {
                         double laterMoney = purchasePo.getLaterMoney().doubleValue();
                         Long poId = purchasePo.getId();
                         ResponseResult<Void> cgdMsg = fundClient.getCgdMsg(poId, suppilerId, settlementAccountId, laterMoney);
+                        log.info("付款单生成结果:[{}]",cgdMsg);
                         if (cgdMsg.getCode() == 200) {
                             //发消息给仓库入库
                             PurchaseDetail practicalById = purchaseDao.findPracticalById(Long.parseLong(ids[i]));
@@ -77,7 +81,7 @@ public class PurchaseRepository {
                             List<String> collect = practicalById.getGoods().stream().filter(goods -> goods.getId() != null && goods.getNum() != null)
                                     .map(goods -> String.format("%s-%s", goods.getId(), goods.getNum()))
                                     .collect(Collectors.toList());
-                            String json = "{\" \":\"" + invoiceNumber + "\",\"invoiceTime\":\"" + invoiceTime + "\",\"goodsId\":\"" + collect + "\"}";
+                            String json = "{\"invoiceNumber\":\"" + invoiceNumber + "\",\"invoiceTime\":\"" + invoiceTime + "\",\"goods\":\"" + collect + "\"}";
                             MessagePo messagePo = new MessagePo(null, "", "add-storage", json, 5, "A");
                             messageDao.insert(messagePo);
                         }

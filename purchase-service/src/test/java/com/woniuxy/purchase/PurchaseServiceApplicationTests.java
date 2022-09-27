@@ -10,7 +10,9 @@ import com.woniuxy.purchase.entity.dto.PurchaseDetail;
 import com.woniuxy.purchase.utils.UuidUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
 
@@ -18,6 +20,8 @@ import javax.annotation.Resource;
 @Slf4j
 class PurchaseServiceApplicationTests {
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
     @Resource
     private FundClient fundClient;
     @Resource
@@ -27,8 +31,10 @@ class PurchaseServiceApplicationTests {
     private UuidUtils utils;
     @Test
     void contextLoads() {
-        PurchaseDetail purchaseDetail = purchaseRedisDao.findById(1L).get();
-        System.out.println(purchaseDetail);
+        Boolean delete = redisTemplate.delete("idempotent_token:" + "74d0114b-f62b-4d71-8380-9027eb144d8e");
+        System.out.println(delete);
+//        PurchaseDetail purchaseDetail = purchaseRedisDao.findById(1L).get();
+//        System.out.println(purchaseDetail);
     }
 
     @Test

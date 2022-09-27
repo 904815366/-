@@ -53,9 +53,11 @@ public class UuidUtils {
             // 根据 Key 前缀拼接 Key
             String key = IDEMPOTENT_TOKEN_PREFIX + token;
             // 执行 Lua 脚本
-            Long result = redisTemplate.execute(redisScript, Arrays.asList(key, value));
+            boolean result = redisTemplate.delete(key);
+                    //execute(redisScript, Arrays.asList(key, value));
             // 根据返回结果判断是否成功成功匹配并删除 Redis 键值对，若果结果不为空和0，则验证通过
-            if (result != null && result != 0L) {
+             //!= null && result != 0L
+            if (result) {
                 log.info("验证 token={},key={},value={} 成功", token, key, value);
                 return true;
             }
