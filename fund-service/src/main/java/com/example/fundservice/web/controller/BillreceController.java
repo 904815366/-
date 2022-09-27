@@ -132,7 +132,7 @@ public class BillreceController {
                                             @RequestParam("gysid")Long gysid,
                                             @RequestParam("accid")Long accid,
                                             @RequestParam("account")Double account){
-        BillmsgcgdrePo thd = billmsgcgdreService.getThd(reid);
+        BillmsgcgdrePo thd = billmsgcgdreService.getThd(cgdid);
         if (thd!=null){
             return new ResponseResult<>(0, "重复发送");
         }

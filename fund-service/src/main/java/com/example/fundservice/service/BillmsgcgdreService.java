@@ -19,8 +19,8 @@ public class BillmsgcgdreService {
     @Resource
     private PurchaseClient purchaseClient;
     //退货单是否重复
-    public BillmsgcgdrePo getThd(Long reid) {
-        return billmsgcgdreDao.getThd(reid);
+    public BillmsgcgdrePo getThd(Long cgdid) {
+        return billmsgcgdreDao.getThd(cgdid);
     }
     //新增采购退货单
     public Integer addThd(BillmsgcgdrePo billmsgcgdrePo) {

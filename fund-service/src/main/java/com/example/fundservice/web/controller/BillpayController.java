@@ -131,7 +131,7 @@ public class BillpayController {
                                             @RequestParam("cstid")Long cstid,
                                             @RequestParam("accid")Long accid,
                                             @RequestParam("account")Double account){
-        BillmsgchdrePo thd = billmsgchdreService.getThd(reid);
+        BillmsgchdrePo thd = billmsgchdreService.getThd(chdid);
         if (thd!=null){
             return new ResponseResult<>(0, "重复发送");
         }

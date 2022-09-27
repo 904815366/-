@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface BillmsgchdreDao  extends BaseMapper<BillmsgchdrePo> {
-    @Select("select * from billmsgchdre where reid = #{reid}")
-    BillmsgchdrePo getThd(@Param("reid") Long reid);
+    @Select("select * from billmsgchdre where chdid = #{chdid}")
+    BillmsgchdrePo getThd(@Param("chdid") Long chdid);
 
     @Insert("insert into billmsgchdre values (#{reid},#{chdid},#{cstid},#{accid},#{account},#{status})")
     Integer addThd(BillmsgchdrePo billmsgchdrePo);

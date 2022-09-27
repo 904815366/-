@@ -18,8 +18,8 @@ public class BillmsgchdreService {
     @Resource
     private ShipmentClient shipmentClient;
     //退货单是否重复
-    public BillmsgchdrePo getThd(Long reid) {
-        return billmsgchdreDao.getThd(reid);
+    public BillmsgchdrePo getThd(Long chdid) {
+        return billmsgchdreDao.getThd(chdid);
     }
     //新增采购退货单
     public Integer addThd(BillmsgchdrePo billmsgchdrePo) {
