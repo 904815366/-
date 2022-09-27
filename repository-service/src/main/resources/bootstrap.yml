@@ -12,6 +12,12 @@ seata:
             application: seata-server
             cluster: default
 spring:
+    redis:
+        host: 192.172.0.201 # 默认值就是 localhost
+        sentinel:
+            master: mymaster
+            nodes:
+                - 192.172.0.201:16379
     cloud:
         sentinel:
             transport:

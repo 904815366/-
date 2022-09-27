@@ -1,7 +1,9 @@
 package com.example.repository.subscriber;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.repository.dao.mysql.GoodsDao;
 import com.example.repository.dao.mysql.StockDetailDao;
+import com.example.repository.dao.mysql.po.GoodsPo;
 import com.example.repository.dao.mysql.po.StockDetailPo;
 import com.example.repository.service.GoodsService;
 import com.example.repository.service.StockService;
@@ -23,6 +25,8 @@ public class InvoiceCustomerApplication {
     public StockService stockService;
     @Resource
     public GoodsService goodsService;
+    @Resource
+    public GoodsDao goodsDao;
     @RabbitListener(queues = "ReturnSales")
     public void demo(String msg){
         System.out.println(msg);
@@ -35,12 +39,14 @@ public class InvoiceCustomerApplication {
                 .split(",");
         for (String goodString : goodStrings) {
             String[] split = goodString.replace(" ", "").split("-");
-
+            GoodsPo good = goodsService.findGood(Long.parseLong(split[0]));
+            good.setStock(good.getStock()+Integer.parseInt(split[1]));
+            goodsDao.save(good);
             StockDetailPo detailPo = StockDetailPo.builder()
                     .id(jsonObject.get("sid").toString())
                     .goods(goodsService.findGood(Long.parseLong(split[0])))
                     .num(Integer.parseInt(split[1]))
-                    .type(0)  //0是采购
+                    .type(1)  //1是出货
                     .status(0)
                     .time(LocalDateTime.parse(jsonObject.get("time").toString(),df))
                     .build();
