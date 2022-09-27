@@ -42,7 +42,9 @@ public class InventoryController {
         System.out.println(goodsid);
         Integer num = addShipFo.getNum();
         String time = addShipFo.getTime();
-        inventoryService.addShip(id,num,goodsid,time);
+        inventoryService.addShip(id,num,goodsid,time,addShipFo.getType());
         return new ResponseResult<>(200,"success",null);
     }
+
+
 }

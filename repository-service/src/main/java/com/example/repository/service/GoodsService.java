@@ -1,5 +1,6 @@
 package com.example.repository.service;
 
+import com.example.repository.dao.mysql.po.GoodsPo;
 import com.example.repository.repository.GoodsRepository;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
@@ -19,4 +20,7 @@ public class GoodsService {
         goodsRepository.releaseStock(goodsid,num);
     }
 
+    public GoodsPo findGood(Long goodsId) {
+        return goodsRepository.findGood(goodsId);
+    }
 }

@@ -29,6 +29,8 @@ public class InventoryService {
     private GoodsService goodsService;
     @Resource
     private StockDetailService stockDetailService;
+    @Resource
+    private StockService stockService;
 
     public PageDto<InventoryDto> getInventoryList(Integer pageNum, Integer pageSize, Long typeid, String searchName) {
         GoodsTypePo type = new GoodsTypePo();
@@ -49,8 +51,12 @@ public class InventoryService {
 
     }
 
-    public void addShip(String id, Integer num, Long goodsid, String time) {
+    public void addShip(String id, Integer num, Long goodsid, String time,Integer type) {
         goodsService.releaseStock(goodsid, num);
-        stockDetailService.addShip(id,num,goodsid,time);
+        GoodsPo good = goodsService.findGood(goodsid);
+        stockDetailService.addShip(id,num,goodsid,time,good,type);
+        stockService.addOutnum(goodsid, num);
     }
+
+
 }

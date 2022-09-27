@@ -18,7 +18,9 @@ public class StockDetailPo {
     @Column(nullable = false)
     private String id;
     private Integer type;
-    private Long goodsid;
+    @ManyToOne
+    @JoinColumn(name = "goodsid")
+    private GoodsPo goods;
     private Integer num;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime time;

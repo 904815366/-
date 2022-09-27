@@ -8,4 +8,5 @@ public class AddShipFo {
     private Integer num;
     private Long goodsid;
     private String time;
+    private Integer type;
 }

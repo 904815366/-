@@ -9,6 +9,7 @@ import com.example.repository.web.controller.dto.StockDto;
 import com.example.repository.web.fo.InventoryListFo;
 import com.example.repository.web.fo.StockListFo;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -26,5 +27,17 @@ public class StockController {
         String searchName = stockListFo.getSearchName();
         PageDto<StockDto> stockPage =stockService.getStockList(pageNum,pageSize,typeid,searchName);
         return new ResponseResult<PageDto<StockDto>>(200,"success",stockPage);
+    }
+
+    @PostMapping("/stock/addInnum")
+    public ResponseResult<Void> addInnum(Long goodsId, Integer innum){
+        stockService.addInnum(goodsId,innum);
+        return new ResponseResult<Void>(200,"success",null);
+    }
+
+    @PostMapping("/stock/addOutnum")
+    public ResponseResult<Void> addOutnum(Long goodsId, Integer num){
+        stockService.addOutnum(goodsId,num);
+        return new ResponseResult<Void>(200,"success",null);
     }
 }

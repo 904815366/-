@@ -45,4 +45,15 @@ public class StockService {
         PageDto<StockDto> pageDto=stockRepository.findAll(example,pageable);
         return pageDto;
     }
+
+    public void addInnum(Long goodsId, Integer innum) {
+        GoodsPo good = goodsService.findGood(goodsId);
+        stockRepository.addInventory(goodsId,innum,good);
+    }
+
+
+    public void addOutnum(Long goodsId, Integer outnum) {
+        GoodsPo good = goodsService.findGood(goodsId);
+        stockRepository.addOutnum(goodsId,outnum,good);
+    }
 }

@@ -10,8 +10,9 @@ import java.time.LocalDateTime;
 public class StockDetailDto {
     private String id;
     private Integer type;
-    private Long goodsid;
+    private String goodName;
+    private String goodUnit;
     private Integer num;
     private LocalDateTime time;
-//    private
+    private Integer status;
 }

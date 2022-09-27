@@ -2,6 +2,7 @@ package com.example.repository.repository;
 
 import com.example.homeservice.web.dto.PageDto;
 import com.example.repository.dao.mysql.StockDao;
+import com.example.repository.dao.mysql.po.GoodsPo;
 import com.example.repository.dao.mysql.po.InventoryPo;
 import com.example.repository.dao.mysql.po.StockPo;
 import com.example.repository.web.controller.dto.InventoryDto;
@@ -43,5 +44,20 @@ public class StockRepository {
         }
         PageDto<StockDto> pageDtoList = pageDto.getPageDto(pagePo, dtoList);
         return pageDtoList;
+    }
+
+
+
+    public void addInventory(Long goodsId, Integer innum,GoodsPo good) {
+        StockPo stockPo = stockDao.findByGoods(good);
+        stockPo.setInnum(stockPo.getInnum()+innum);
+        stockDao.save(stockPo);
+    }
+
+    public void addOutnum(Long goodsId, Integer outnum,GoodsPo good) {
+        StockPo stockPo = stockDao.findByGoods(good);
+        System.out.println(stockPo);
+        stockPo.setOutnum(stockPo.getOutnum()+outnum);
+        stockDao.save(stockPo);
     }
 }

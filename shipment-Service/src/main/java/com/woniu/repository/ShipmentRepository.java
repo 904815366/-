@@ -2,6 +2,7 @@ package com.woniu.repository;
 
 import com.example.fundserviceapi.client.FundClient;
 import com.example.repository.api.client.RepositoryClient;
+import com.example.repository.api.util.ResponseResult;
 import com.example.util.ResponseResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

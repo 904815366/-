@@ -21,4 +21,12 @@ public class GoodsRepository {
             return "ok";
         }
     }
+
+    public GoodsPo findGood(Long goodsId) {
+        if (goodsId!=null && !goodsId.equals("")){
+            GoodsPo goodsPo = goodsDao.findById(goodsId).get();
+            return goodsPo;
+        }
+        return null;
+    }
 }
