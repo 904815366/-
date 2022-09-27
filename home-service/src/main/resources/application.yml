@@ -1,44 +1,89 @@
-server:
-  port: 8080
 spring:
-  application:
-    name: home-service
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 192.172.0.201:8848
-        group: erp
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    name: defaultDataSource
-    password: 123456
-    url: jdbc:mysql://192.172.0.201:3307/erp?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2b8
-    username: root
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        enable_lazy_load_no_trans: true
-        format_sql: true
-        hbm2ddl:
-          auto: update
-    show-sql: true
-  main:
-    banner-mode: off
-#    allow-bean-definition-overriding: true
-  rabbitmq:
-    host: 192.172.0.201
-    password: guest
-    port: 5672
-    username: guest
-  redis:
-    host: 192.172.0.201
-logging:
-  level:
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
-    com:
-      example: DEBUG
-    root: INFO
-  pattern:
-    console: '%clr(%5level) %clr(|){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n'
-
+  profiles:
+    active: test   #激活的环境
+#  shardingsphere:
+#    datasource:
+#      names: erp0, erp1
+#      erp0:
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbc-url: jdbc:mysql://192.172.0.201:3307/erp?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
+#        password: 123456
+##        type: com.zaxxer.hikari.HikariDataSource
+#        username: root
+#      erp1:
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbc-url: jdbc:mysql://192.172.0.201:3308/erp?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
+#        password: 123456
+##        type: com.zaxxer.hikari.HikariDataSource
+#        username: root
+#    masterslave:
+#      name: ms
+#      load-balance-algorithm-type: round_robin
+#      master-data-source-name: erp0
+#      slave-data-source-names: erp1
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 192.172.0.201:8848
+#        group: erp
+#      sentinel:
+#        transport:
+#          dashboard: 192.172.0.201:8858
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    name: defaultDataSource
+#    password: 123456
+#    url: jdbc:mysql://192.172.0.201:3307/erp?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2b8
+#    username: root
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+#        enable_lazy_load_no_trans: true
+#        format_sql: true
+#        hbm2ddl:
+#          auto: update
+#    show-sql: true
+#  main:
+#    banner-mode: off
+##    allow-bean-definition-overriding: true
+#  rabbitmq:
+#    host: 192.172.0.201
+#    password: guest
+#    port: 5672
+#    username: guest
+#  redis:
+#    host: 192.172.0.201
+#    sentinel:
+#      master: mymaster
+#      nodes:
+#        - 192.172.0.201:16379
+#  elasticsearch:
+#    rest:
+#      uris: http://192.172.0.201:9200
+#      username: 'elastic'
+#      password: '123456'
+#logging:
+#  level:
+#    org.hibernate.type.descriptor.sql.BasicBinder: trace
+#    com:
+#      example: DEBUG
+#    root: INFO
+#  file:
+#    path: /var/logs
+#  config: classpath:logback-spring.xml
+#  pattern:
+#    console: '%clr(%5level) %clr(|){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n'
+#seata:
+#  application-id: ${spring.application.name}
+#  tx-service-group: my_test_tx_group
+#  service:
+#    vgroup-mapping:
+#      my_test_tx_group: default
+#  registry:
+#    type: nacos
+#    nacos:
+#      server-addr: 192.172.0.201:8848
+#      group: erp
+#      application: seata-server
+#      cluster: default

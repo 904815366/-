@@ -50,12 +50,11 @@ public class SignController {
      * @param request
      */
     @PutMapping("/sign")
-    public ResponseResult<Void> modifyStatus(String username, String status, HttpServletRequest request) {
+    public ResponseResult<Void> modifyStatus(String username, HttpServletRequest request) {
         try {
             //获取当前时间 yyyy-MM-dd
             String todaytime = SimpleFormatUtil.dateForString(System.currentTimeMillis());
             String yyyy_MM_dd = todaytime.substring(0, 10);
-
             SignPo po = SignPo.builder().username(username).todaytime(yyyy_MM_dd).build();
             SignPo signPo = signRepository.findByUsername(po).orElseThrow(() -> new NullPointerException("根据用户名,未查询到职员"));
             if (signPo.getStatus().equals("1")) throw new RuntimeException("今日已经签到过了,无需再签到");

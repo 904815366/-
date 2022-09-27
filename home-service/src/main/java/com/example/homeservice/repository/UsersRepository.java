@@ -3,6 +3,7 @@ package com.example.homeservice.repository;
 import com.example.homeservice.dao.mysql.UsersDao;
 import com.example.homeservice.dao.mysql.po.UsersPo;
 import com.example.homeservice.utils.SimpleFormatUtil;
+import com.example.homeservice.web.fo.AddUsersFo;
 import com.example.homeservice.web.fo.QueryUsersFo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
@@ -13,7 +14,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +27,6 @@ import java.util.Optional;
 public class UsersRepository {
     @Resource
     private UsersDao usersDao;
-    @Resource
-    private JdbcTemplate jdbcTemplate;
 
     public void modifyPassword(UsersPo usersPo) {
         usersDao.save(usersPo);
@@ -40,16 +42,23 @@ public class UsersRepository {
         Pageable pageable = PageRequest.of(num, size);
 
         UsersPo po = new UsersPo();
-//        Date date = SimpleFormatUtil.stringForDate(queryUsersFo.getCreatetime());
 
         po.setUsername((queryUsersFo.getUsername() == null || queryUsersFo.getUsername().equals("")) ? null : queryUsersFo.getUsername());
         po.setStatus((queryUsersFo.getStatus() == null || queryUsersFo.getStatus().equals("")) ? null : queryUsersFo.getStatus());
-        po.setCreatetime((queryUsersFo.getCreatetime() == null || queryUsersFo.getCreatetime().equals("")) ? null : queryUsersFo.getCreatetime());
+//        LocalDateTime createtime = queryUsersFo.getCreatetime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        Instant instant = queryUsersFo.getCreatetime().toInstant();
+        ZoneId zone = ZoneId.systemDefault();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
+
+
+        log.info("createtime:" + localDateTime);
+
+        po.setCreatetime((queryUsersFo.getCreatetime() == null || queryUsersFo.getCreatetime().equals("")) ? null : localDateTime);
         System.out.println(po);
 
         Example<UsersPo> example = Example.of(po);
-        Page<UsersPo> page = usersDao.findAll(example, pageable);
-        return page;
+        return usersDao.findAll(example, pageable);
+
     }
 
     public void addUser(UsersPo usersPo) {
@@ -60,26 +69,28 @@ public class UsersRepository {
         return usersDao.findByUsername(username);
     }
 
-    public boolean modifyUser(UsersPo po) {
+    public boolean modifyUser(AddUsersFo fo) {
+        log.info("here 4.");
 
-        String sql = "update users set username=?,password=?," +
-                "name=?,tel=?,email=?,role_id=?,status=?,version=?,avatar=? where username=? and version=?";
+        int update = usersDao.modifyUsers(fo.getUsername(), fo.getPassword(), fo.getName(), fo.getTel(),
+                fo.getEmail(), fo.getRoleid(), fo.getStatus(), fo.getAvatar(),
+                fo.getId(), fo.getVersion());
 
-        int update = jdbcTemplate.update(sql, po.getUsername(), po.getPassword(), po.getName(), po.getTel(),
-                po.getEmail(), po.getRole().getId(), po.getStatus(), po.getVersion() + 1, po.getAvatar(),
-                po.getUsername(), po.getVersion());
+        log.info("修改语句执行成功数量:{}",update);
+
+
         return update == 1;
     }
 
-    public Optional<UsersPo> findByIdAndStatusNot(Long id,String status) {
-        return usersDao.findByIdAndStatusNot(id,status);
+    public Optional<UsersPo> findByIdAndStatusNot(Long id, String status) {
+        return usersDao.findByIdAndStatusNot(id, status);
     }
 
     public void modifyStatus(UsersPo po) {
         usersDao.save(po);
     }
 
-    public Optional<UsersPo> findById(Long id){
+    public Optional<UsersPo> findById(Long id) {
         return usersDao.findById(id);
     }
 }

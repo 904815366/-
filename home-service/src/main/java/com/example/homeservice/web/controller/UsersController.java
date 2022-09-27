@@ -50,6 +50,10 @@ public class UsersController {
     @PutMapping("/users/password")
     public ResponseResult<Void> anewPassword(AnewPasswordFo anewPasswordFo) {
         log.info("进入anewPassword方法");
+        System.out.println(anewPasswordFo.getUsername());
+        if ("admin".equals(anewPasswordFo.getUsername())){
+            return new ResponseResult<>(403, "修改失败,不允许修改该账户", null);
+        }
         return anewPasswordFo.exec();
     }
 
@@ -61,6 +65,7 @@ public class UsersController {
      */
     @GetMapping("/users")
     public ResponseResult<PageDto<UsersDto>> findUsers(QueryUsersFo queryUsersFo) {
+        log.info("进入了findUsers方法");
         System.out.println(queryUsersFo);
         Page<UsersPo> page = usersRepository.findUsersByUsernameAndStatusAndCreatetime(queryUsersFo);
         List<UsersPo> collect = page.getContent().stream().filter(usersPo -> !usersPo.getUsername().equals("admin")).collect(Collectors.toList());
@@ -116,19 +121,30 @@ public class UsersController {
         if ("admin".equals(fo.getUsername())){
             return new ResponseResult<>(403, "修改失败,不允许修改该账户", null);
         }
+        /**
+         * jpa默认查出来的 po 是持久化状态, 对po进行set操作后,调用dao会默认多执行一条 update语句.
+         * 这对于[乐观锁]相关的修改操作,会造成影响.
+         * 解决方法 ① new一个新po, 将数据set到新po, 不对查出来的po做set操作.
+         *        ② 或者调用如下方法 , 把某个持久化状态的po从session中清除，该对象变为游离状态,这样就不会默认多执行一条 update语句
+         * HibernateEntityManager hibernateEntityManager = (HibernateEntityManager) entityManager;
+         * Session session = hibernateEntityManager.getSession();
+         * session.evict(obj);
+         */
         UsersPo po = usersRepository.findById(fo.getId()).orElseThrow(() -> new NullPointerException("不能修改ID"));
         upfile(files, fo);
-        po.setUsername(fo.getUsername());
-        po.setPassword(fo.getPassword());
-        po.setName(fo.getName());
-        po.setTel(fo.getTel());
-        po.setEmail(fo.getEmail());
-        po.setRole(RolePo.builder().id(fo.getRoleid()).build());
-        po.setStatus(fo.getStatus());
-        po.setAvatar(fo.getAvatar());
-        po.setVersion(fo.getVersion());
-        System.out.println(po);
-        boolean modifyResult = usersService.modifyUser(po);
+//        po.setUsername(fo.getUsername());
+//        po.setPassword(fo.getPassword());
+//        po.setName(fo.getName());
+//        po.setTel(fo.getTel());
+//        po.setEmail(fo.getEmail());
+//        po.setRole(RolePo.builder().id(fo.getRoleid()).build());
+//        po.setStatus(fo.getStatus());
+//        po.setAvatar(fo.getAvatar());
+//        po.setVersion(fo.getVersion());
+//        System.out.println(po);
+        log.info("here 1");
+        boolean modifyResult = usersService.modifyUser(fo);
+        log.info("here 1 end");
         if (modifyResult) return new ResponseResult<>(200, "修改成功", null);
         else return new ResponseResult<>(200, "修改失败,请稍后再试", null);
     }

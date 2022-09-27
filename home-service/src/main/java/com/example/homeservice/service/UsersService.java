@@ -9,6 +9,7 @@ import com.example.homeservice.utils.SnowflakeIdGenerator;
 import com.example.homeservice.web.converter.UsersConverter;
 import com.example.homeservice.web.fo.AddUsersFo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +26,9 @@ import java.time.LocalDateTime;
 public class UsersService {
     @Resource
     private UsersRepository usersRepository;
-    @Resource
+    @Autowired
     private UsersRedis usersRedis;
     @Resource
-
     private StringRedisTemplate stringRedisTemplate;
     @Resource
     private UsersConverter usersConverter;
@@ -62,15 +62,19 @@ public class UsersService {
         signService.addSign(usersPo.getUsername(),request);
     }
 
-    public boolean modifyUser(UsersPo usersPo) {
-
-        String username = queryNameById(usersPo.getId()).getUsername();
-        System.out.println("修改前username:"+username);
-        boolean b = usersRepository.modifyUser(usersPo);
+    public boolean modifyUser(AddUsersFo fo) {
+        log.info("准备修改员工{}信息", fo.getId());
+        log.info("修改前查询员工{}信息", fo.getId());
+        String username = queryNameById(fo.getId()).getUsername();
+        log.info("查询到员工{}信息", username);
+        boolean b = usersRepository.modifyUser(fo);
         if (b) {
+            log.info("修改员工{}信息成功", fo.getId());
             stringRedisTemplate.delete(username);
             log.info("修改员工权限,redis中将该员工jwtToken删除");
-            usersRedis.delete(usersConverter.fromRedisPo(usersPo));
+            usersRedis.deleteById(fo.getId());
+        } else {
+            log.info("修改员工{}信息失败", fo.getId());
         }
         return b;
     }

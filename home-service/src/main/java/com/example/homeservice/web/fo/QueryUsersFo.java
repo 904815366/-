@@ -18,7 +18,9 @@ public class QueryUsersFo {
 
     private String username;
     private String status;
-    private LocalDateTime createtime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createtime;
     private Integer num;
     private Integer size;
 
