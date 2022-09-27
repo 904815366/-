@@ -12,5 +12,5 @@ public interface RepositoryClient {
                                  @RequestParam("num") Integer num,
                                  @RequestParam("id") String id,
                                  @RequestParam("time")String time,
-                                 @RequestParam("type")String type);
+                                 @RequestParam("type")Integer type);
 }
