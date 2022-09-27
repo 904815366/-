@@ -1,7 +1,10 @@
 package com.woniuxy.purchase;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.fundserviceapi.client.FundClient;
 import com.example.fundserviceapi.util.ResponseResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woniuxy.purchase.dao.redis.PurchaseRedisDao;
 import com.woniuxy.purchase.entity.dto.PurchaseDetail;
 import com.woniuxy.purchase.utils.UuidUtils;
@@ -38,6 +41,10 @@ class PurchaseServiceApplicationTests {
     }
     @Test
     void demo2(){
+        String jsonStr="{\"invoiceNumber\":\"CG-359970223123595264\",\"invoiceTime\":\"2022-09-20 15:53:09\",\"goods\":\"[3-100, 33-100]\"}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JSONObject jsonObject = JSON.parseObject(jsonStr);
+        System.out.println(jsonObject.get("invoiceNumber"));
     }
 
 }

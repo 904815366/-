@@ -100,4 +100,61 @@
     <select id="findByPractical" resultMap="InvoiceNumber">
         SELECT invoice_number FROM purchase where id=#{id}
     </select>
+    <resultMap id="details" type="com.woniuxy.purchase.entity.dto.DetailsDto">
+        <result property="id" column="id"></result>
+        <result property="invoiceTime" column="invoice_time"></result>
+        <result property="invoiceNumber" column="invoice_number"></result>
+        <result property="businessType" column="business_type"></result>
+        <result property="supplierName" column="supplier_name"></result>
+        <result property="goodsId" column="goods_id"></result>
+        <result property="goodsName" column="goods_name"></result>
+        <result property="size" column="size"></result>
+        <result property="unit" column="unit"></result>
+    </resultMap>
+    <select id="findDetails" resultMap="details">
+        SELECT DISTINCT
+            a.id,
+            a.invoice_time,
+            a.invoice_number,
+            "购货" as business_type,
+            c.name as supplier_name,
+            d.id as goods_id,
+            d.name as goods_name,
+            d.size,
+            d.unit
+        FROM
+            purchase a
+                INNER JOIN purchase_details b ON a.id = b.purchase_id
+                INNER JOIN supplier c ON a.supplier_id = c.id
+                INNER JOIN goods d ON b.goods_id = d.id
+    </select>
+    <resultMap id="detailsByGoods" type="com.woniuxy.purchase.entity.dto.DetailsByGoodsDto">
+        <result property="id" column="id"></result>
+        <result property="invoiceTime" column="invoice_time"></result>
+        <result property="invoiceNumber" column="invoice_number"></result>
+        <result property="goodsId" column="goods_id"></result>
+        <result property="goodsName" column="goods_name"></result>
+        <result property="size" column="size"></result>
+        <result property="unit" column="unit"></result>
+        <result property="store" column="store"></result>
+        <result property="num" column="num"></result>
+    </resultMap>
+    <select id="findDetailsByGoods" resultMap="detailsByGoods">
+        SELECT DISTINCT
+            a.id,
+            a.invoice_time,
+            a.invoice_number,
+            d.id as goods_id,
+            d.name as goods_name,
+            d.size,
+            d.unit,
+            "本地仓库" as store,
+            CONCAT("-",b.num) as num
+        FROM
+            purchase_return a
+                INNER JOIN purchase_return_details b ON a.id = b.purchase_return_id
+                INNER JOIN supplier c ON a.supplier_id = c.id
+                INNER JOIN goods d ON b.goods_id = d.id
+
+    </select>
 </mapper>

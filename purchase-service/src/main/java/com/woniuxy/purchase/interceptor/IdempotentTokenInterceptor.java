@@ -1,5 +1,6 @@
 package com.woniuxy.purchase.interceptor;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.util.ResponseResult;
 import com.woniuxy.purchase.annotation.IdempotentToken;
@@ -67,7 +68,7 @@ public class IdempotentTokenInterceptor  implements HandlerInterceptor {
         // 从request请求体中拿到body中的JSON对象参数
         RequestReaderHttpServletRequestWrapper requestWrapper = new RequestReaderHttpServletRequestWrapper(request);
         String jsonBody = requestWrapper.getBody();
-        JSONObject jsonObject = JSONObject.parseObject(jsonBody);
+        JSONObject jsonObject = JSON.parseObject(jsonBody);
         String validToken = jsonObject.get("validToken").toString();
         // 获取用户信息（这里使用模拟数据）
         String userInfo = "myuser";

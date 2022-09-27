@@ -4,6 +4,9 @@ import com.example.util.ResponseResult;
 import com.github.pagehelper.PageInfo;
 import com.woniuxy.purchase.annotation.IdempotentToken;
 import com.woniuxy.purchase.dao.mysql.PurchaseDao;
+import com.woniuxy.purchase.dao.mysql.PurchaseReturnDao;
+import com.woniuxy.purchase.entity.dto.DetailsByGoodsDto;
+import com.woniuxy.purchase.entity.dto.DetailsDto;
 import com.woniuxy.purchase.entity.dto.PurchaseDetail;
 import com.woniuxy.purchase.entity.dto.PurchaseList;
 import com.woniuxy.purchase.entity.po.PurchaseDetailsPo;
@@ -22,8 +25,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.swing.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 public class PurchaseController {
@@ -31,6 +38,8 @@ public class PurchaseController {
     private PurchaseService purchaseService;
     @Resource
     private PurchaseDao purchaseDao;
+    @Resource
+    private PurchaseReturnDao purchaseReturnDao;
 
     @PostMapping("/purchase/list")
     public ResponseResult<PageInfo<PurchaseList>> findPurchaseList(@Validated @RequestBody PurchaseListFo fo) {
@@ -114,6 +123,22 @@ public class PurchaseController {
     public ResponseResult<String> getInvoiceNumber(@PathVariable("id") Long id){
         String invoiceNumber = purchaseDao.findByPractical(id).getInvoiceNumber();
         return new ResponseResult<>(200,"ok",invoiceNumber);
+    }
+
+    @GetMapping("/purchase/details/list")
+    public ResponseResult<List<DetailsDto>> getPurchase(){
+        List<DetailsDto> aReturn = purchaseReturnDao.findReturn();
+        List<DetailsDto> details = purchaseDao.findDetails();
+        List<DetailsDto> detailsDtoList = Stream.of(aReturn, details).flatMap(Collection::stream).collect(Collectors.toList());
+        return new ResponseResult<>(200,"ok",detailsDtoList);
+    }
+
+    @GetMapping("/purchase/details/goods/list")
+    public ResponseResult<List<DetailsByGoodsDto>> getByGoodsDto(){
+        List<DetailsByGoodsDto> detailsByGoods = purchaseReturnDao.findReturnDetailsByGoods();
+        List<DetailsByGoodsDto> byGoods = purchaseDao.findDetailsByGoods();
+        List<DetailsByGoodsDto> collect = Stream.of(detailsByGoods, byGoods).flatMap(Collection::stream).collect(Collectors.toList());
+        return new ResponseResult<>(200,"ok",collect);
     }
 
 }

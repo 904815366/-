@@ -25,8 +25,16 @@ class PurchaseDaoTest {
     private PurchaseDao purchaseDao;
     @Test
     void demo() throws JsonProcessingException {
-        GetInvoiceNumber byPractical = purchaseDao.findByPractical(7L);
-        System.out.println(byPractical.getInvoiceNumber());
+        List<DetailsByGoodsDto> detailsByGoods = purchaseDao.findDetailsByGoods();
+        for (DetailsByGoodsDto byGood : detailsByGoods) {
+            System.out.println(byGood);
+        }
+//        List<DetailsDto> details = purchaseDao.findDetails();
+//        for (DetailsDto detail : details) {
+//            System.out.println(detail);
+//        }
+//        GetInvoiceNumber byPractical = purchaseDao.findByPractical(7L);
+//        System.out.println(byPractical.getInvoiceNumber());
 //        PurchaseDetail practicalById = purchaseDao.findPracticalById(8L);
 //        String invoiceNumber = practicalById.getInvoiceNumber();
 //        String invoiceTime = practicalById.getInvoiceTime();

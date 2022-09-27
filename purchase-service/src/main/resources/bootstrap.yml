@@ -1,0 +1,10 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: purchase-service
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.172.0.201:8848   #配置中心地址
+        file-extension: yaml  #后缀名

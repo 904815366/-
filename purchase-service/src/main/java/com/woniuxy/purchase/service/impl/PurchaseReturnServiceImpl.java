@@ -89,7 +89,7 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
             PurchaseReturnDto po = purchaseReturnDao.findPurchaseReturnById(id);
             List<ReturnGoods> detailsByReturnId = purchaseReturnDetailsDao.findDetailsByReturnId(id);
             for (ReturnGoods goods : detailsByReturnId) {
-//                repositoryClient.addShip(goods.getGoodsId().longValue(),goods.getNum(),po.getInvoiceNumber(),po.getInvoiceTime());
+                repositoryClient.addShip(goods.getGoodsId().longValue(),goods.getNum(),po.getInvoiceNumber(),po.getInvoiceTime());
             }
             PurchaseReturnPo returnPo = purchaseReturnDao.selectById(id);
             List<ReturnGoods> details = purchaseReturnDetailsDao.findDetailsByReturnId(id);
