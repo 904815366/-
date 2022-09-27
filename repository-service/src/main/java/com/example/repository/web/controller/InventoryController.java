@@ -1,5 +1,6 @@
 package com.example.repository.web.controller;
 import com.example.homeservice.web.dto.PageDto;
+import com.example.repository.annotation.IdempotentToken;
 import com.example.repository.dao.mysql.po.InventoryEditPo;
 import com.example.repository.service.InventoryService;
 import com.example.repository.util.ResponseResult;
@@ -30,6 +31,7 @@ public class InventoryController {
         return new ResponseResult<PageDto<InventoryDto>>(200,"success",inventoryPage);
     }
     @PostMapping("/inventory/edit")
+    @IdempotentToken
     public ResponseResult<Void> editInventory(@RequestBody InventoryEditFo inventoryEditFo){
         List<InventoryEditPo> editFoPoList = inventoryEditFo.getPoList();
         inventoryService.edit(editFoPoList);
