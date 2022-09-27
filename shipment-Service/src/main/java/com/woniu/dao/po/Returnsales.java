@@ -1,17 +1,15 @@
 package com.woniu.dao.po;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -33,7 +31,7 @@ public class Returnsales implements Serializable {
 
     private Long shipmentId;
 
-    private String detailId;
+//    private String detailId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

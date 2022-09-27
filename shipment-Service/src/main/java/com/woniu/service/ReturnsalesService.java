@@ -18,4 +18,6 @@ public interface ReturnsalesService extends IService<Returnsales> {
 
     PageInfo<ReturnsalesDto> getPageRetuensaless(PageReturnSalesFo returnSalesFo);
 
+    void addReturnsale(Returnsales returnsales);
+
 }

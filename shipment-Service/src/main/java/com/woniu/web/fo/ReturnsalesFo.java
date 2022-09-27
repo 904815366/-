@@ -13,7 +13,7 @@ public class ReturnsalesFo {
 // 出货单编号
     private Long shipmentId;
 
-    private String detailId;
+//    private String detailId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -27,7 +27,7 @@ public class ReturnsalesFo {
 
     private String version;
 
-    private Long accid;
+    private Long accid;//账户id
 
 //    修改订单详情的数据
     private List<CusOrderDetail> cusOrderDetails;

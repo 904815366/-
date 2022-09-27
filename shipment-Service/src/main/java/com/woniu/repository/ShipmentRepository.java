@@ -19,6 +19,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -55,7 +57,13 @@ public class ShipmentRepository {
         shipmentMapper.upCusorderStatus(po.getClorderId());
         //        给仓库减库存
         addShipmentFo.getGoodsFos().forEach(e->{
-            ResponseResult<Void> msg = repositoryClient.addShip(e.getId(), e.getNum(),"CH-"+po.getId().toString(),po.getAttime().toString(),"1");
+            Date attime = po.getAttime();
+            //使用简单日期转换可以换成你想要的日期格式
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                //格式化时间
+            String createTime = sdf.format(attime);
+
+            ResponseResult<Void> msg = repositoryClient.addShip(e.getId(), e.getNum(),"CH-"+po.getId().toString(),createTime,1);
             int code = msg.getCode();
             if (code!=200){
                 throw new MyException("库存不足");

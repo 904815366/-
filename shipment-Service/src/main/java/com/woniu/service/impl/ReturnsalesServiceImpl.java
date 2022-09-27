@@ -28,9 +28,17 @@ public class ReturnsalesServiceImpl extends ServiceImpl<ReturnsalesMapper, Retur
     @Resource
     private ReturnsalesRepository returnsalesRepository;
 
+    @Resource
+    private ReturnsalesMapper returnsalesMapper;
+
     public PageInfo<ReturnsalesDto> getPageRetuensaless(PageReturnSalesFo returnSalesFo) {
         PageHelper.startPage(returnSalesFo.getPageNum(), returnSalesFo.getPageSize());
         List<ReturnsalesDto> pageReturnSales = returnsalesRepository.getPageReturnSales(returnSalesFo);
         return new PageInfo<>(pageReturnSales);
+    }
+
+    @Override
+    public void addReturnsale(Returnsales returnsales) {
+        returnsalesMapper.insert(returnsales);
     }
 }

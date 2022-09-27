@@ -12,7 +12,7 @@ public class ReturnsalesDto {
 
     private Long shipmentId;
 
-    private String detailId;
+//    private String detailId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

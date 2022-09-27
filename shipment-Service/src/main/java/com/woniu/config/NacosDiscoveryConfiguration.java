@@ -42,7 +42,7 @@ import java.util.List;
 @EnableDiscoveryClient
 @Configuration
 @EnableWebMvc
-@EnableFeignClients(basePackages = "com.example")
+@EnableFeignClients(basePackages = {"com.example.fundserviceapi.client","com.example.repository.api.client"})
 @EnableRabbit
 @Slf4j
 public class NacosDiscoveryConfiguration implements WebMvcConfigurer {
