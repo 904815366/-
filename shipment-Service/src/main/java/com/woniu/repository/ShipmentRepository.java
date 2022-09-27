@@ -3,7 +3,6 @@ package com.woniu.repository;
 import com.example.fundserviceapi.client.FundClient;
 import com.example.repository.api.client.RepositoryClient;
 import com.example.repository.api.util.ResponseResult;
-import com.example.util.ResponseResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniu.MyException;
@@ -56,7 +55,7 @@ public class ShipmentRepository {
         shipmentMapper.upCusorderStatus(po.getClorderId());
         //        给仓库减库存
         addShipmentFo.getGoodsFos().forEach(e->{
-            ResponseResult<Void> msg = repositoryClient.addShip(e.getId(), e.getNum(),"CH-"+po.getId().toString(),po.getAttime().toString());
+            ResponseResult<Void> msg = repositoryClient.addShip(e.getId(), e.getNum(),"CH-"+po.getId().toString(),po.getAttime().toString(),"1");
             int code = msg.getCode();
             if (code!=200){
                 throw new MyException("库存不足");
