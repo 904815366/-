@@ -1,37 +1,41 @@
-server:
-  port: 8080
 spring:
-  application:
-    name: shipment-Service
-  cloud:
-    nacos:
-      discovery:
-        namespace: public
-        password: nacos
-        server-addr: 192.172.0.201:8848
-        username: nacos
-        group: erp
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    name: defaultDataSource
-    password: 123456
-    url: jdbc:mysql://192.172.0.201:3307/erp?serverTimezone=UTC
-    username: root
-  rabbitmq:
-    host: 192.172.0.201
-    port: 5672
-    username: guest
-    password: guest
-  redis:
-    host: 192.172.0.201
+  profiles:
+    active: dev
 
-logging:
-  level:
-    com:
-      woniu: DEBUG
-      example: DEBUG
-    root: INFO
-  pattern:
-    console: ${CONSOLE_LOG_PATTERN:%clr(${LOG_LEVEL_PATTERN:%5p}) %clr(|){faint}
-      %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}}
-
+#server:
+#  port: 8080
+#spring:
+#  application:
+#    name: shipment-Service
+#  cloud:
+#    nacos:
+#      discovery:
+#        namespace: public
+#        password: nacos
+#        server-addr: 192.172.0.201:8848
+#        username: nacos
+#        group: erp
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    name: defaultDataSource
+#    password: 123456
+#    url: jdbc:mysql://192.172.0.201:3307/erp?serverTimezone=UTC
+#    username: root
+#  rabbitmq:
+#    host: 192.172.0.201
+#    port: 5672
+#    username: guest
+#    password: guest
+#  redis:
+#    host: 192.172.0.201
+#
+#logging:
+#  level:
+#    com:
+#      woniu: DEBUG
+#      example: DEBUG
+#    root: INFO
+#  pattern:
+#    console: ${CONSOLE_LOG_PATTERN:%clr(${LOG_LEVEL_PATTERN:%5p}) %clr(|){faint}
+#      %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}}
+#

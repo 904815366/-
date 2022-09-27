@@ -1,4 +1,4 @@
-package com.woniu;
+package com.woniu.ControllerException;
 
 public class MyException extends RuntimeException{
 

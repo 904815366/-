@@ -1,32 +1,17 @@
 package com.woniu;
-
-import com.example.fundserviceapi.client.FundClient;
-import com.example.repository.api.client.RepositoryClient;
-import com.example.util.ResponseResult;
-import com.woniu.dao.CusorderMapper;
-import com.woniu.dao.ShipmentMapper;
-import com.woniu.dao.po.CusOrderDetail;
-import com.woniu.dao.po.Cusorder;
-import com.woniu.service.CusOrderDetailService;
-import com.woniu.web.fo.CusorderFo;
-import com.woniuxy.purchaseserviceapi.client.MessageClient;
+ 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.annotation.Resource;
-import java.time.LocalDateTime;
 
 
 @SpringBootTest
 class ShipmentServiceApplicationTests {
-<<<<<<< Updated upstream
 
-
-=======
->>>>>>> Stashed changes
     @Test
     void contextLoads() {
+        String jsonStr="{\"sid\":\""+10+"\",\"time\":\"123456789\",\"goods\":["+3+"-"+4+"]}";
+        System.out.println(jsonStr);
     }
 
     @Test

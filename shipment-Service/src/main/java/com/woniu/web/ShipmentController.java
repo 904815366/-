@@ -2,7 +2,7 @@ package com.woniu.web;
 
 import com.example.util.ResponseResult;
 import com.github.pagehelper.PageInfo;
-import com.woniu.MyException;
+import com.woniu.ControllerException.MyException;
 import com.woniu.dao.po.Shipment;
 import com.woniu.repository.ShipmentRepository;
 import com.woniu.repository.dto.ShipmentDto;

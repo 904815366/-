@@ -16,16 +16,25 @@
  */
 package com.woniu.config;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.woniu.dao.MessageMapper;
+import com.woniu.dao.po.Message;
 import com.woniu.filter.IdempotentTokenInterceptor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
@@ -35,13 +44,47 @@ import javax.annotation.Resource;
 @EnableWebMvc
 @EnableFeignClients(basePackages = "com.example")
 @EnableRabbit
+@Slf4j
 public class NacosDiscoveryConfiguration implements WebMvcConfigurer {
 
     @Resource
     private IdempotentTokenInterceptor idempotentTokenInterceptor;
 
+    @Resource
+    private MessageMapper messageMapper;
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
+
 
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(idempotentTokenInterceptor);
+    }
+
+    @Scheduled(fixedRate = 6000)
+    public void handle() {
+        log.debug("定时任务开始干活，发送消息...");
+
+        // 查询待发送消息：status = '发送中' and retry_count > 0
+        QueryWrapper<Message> qw = new QueryWrapper<Message>()
+                .eq("status", "发送中")
+                .gt("retry_count", 0);
+
+        List<Message> messageList = messageMapper.selectList(qw);
+        if (messageList.isEmpty()) {
+            log.debug("没有待发送消息");
+            return;
+        }
+
+        log.debug("有 {} 条消息等待发送", messageList.size());
+        messageList.forEach(e->{
+            CorrelationData data=new CorrelationData(e.getId().toString());
+            if (ObjectUtils.isEmpty(e.getExchange())){
+                rabbitTemplate.convertAndSend( e.getRoutingKey(),(Object) e.getContent(), data);
+            }else {
+                rabbitTemplate.convertAndSend(e.getExchange(),e.getRoutingKey(),e.getContent(),data);
+            }
+//      messageList.
+        });
     }
 }

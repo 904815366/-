@@ -5,7 +5,7 @@ import com.example.repository.api.client.RepositoryClient;
 import com.example.repository.api.util.ResponseResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.woniu.MyException;
+import com.woniu.ControllerException.MyException;
 import com.woniu.dao.CusorderMapper;
 import com.woniu.dao.ShipmentMapper;
 import com.woniu.dao.po.Cusorder;

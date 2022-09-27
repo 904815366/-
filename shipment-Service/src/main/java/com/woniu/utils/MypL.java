@@ -22,7 +22,7 @@ public class MypL {
                     "123456",//数据库密码
                     "com.woniu",//项目最大的包名
                     "shipment-Service",//项目名或项目模块名
-                    "returnsales,cusorder,shipment,cus_order_detail");//要操作的表名,多个表名用逗号隔开
+                    "message");//要操作的表名,多个表名用逗号隔开
             System.out.println("mybaits代码生成成功");
         }catch (Exception e){
             e.printStackTrace();
@@ -155,10 +155,10 @@ public class MypL {
         templateConfig.setXml(ConstVal.TEMPLATE_XML);
         //不生成mapper.xml文件
 //        templateConfig.setXml(null);
-        //不生成service
-        //templateConfig.setService(null);
-        //不生成service实现类
-        //templateConfig.setServiceImpl(null);
+//        不生成service
+        templateConfig.setService(null);
+//        不生成service实现类
+        templateConfig.setServiceImpl(null);
         //不生成controller类
         templateConfig.setController(null);
         return templateConfig;
